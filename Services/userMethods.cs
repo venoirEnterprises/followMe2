@@ -1,13 +1,7 @@
 ﻿using FollowMe2.Models;
-using Microsoft.AspNet.SignalR;
+using Microsoft.AspNetCore.SignalR;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
 
 namespace FollowMe2.Services
 {
@@ -15,6 +9,10 @@ namespace FollowMe2.Services
     {
         multiplayerServices multi = new multiplayerServices();
         deployment deploy = new deployment();
+        public async Task SendMessage(string user, string message)
+        {
+            await Clients.All.SendAsync("ReceiveMessage", user, message);
+        }
 
         public void updateAccessTime(string action, string username)
         {
@@ -62,9 +60,8 @@ namespace FollowMe2.Services
             var result = collection.FindAll();
             foreach (var item in result)
             {
-                Clients.All.getWeapons(username, item);
+                //Clients.All.getWeapons(username, item);
             }
-            //}
         }
         public void getWeapon(string username, bool online, bool community)
         {
@@ -84,7 +81,7 @@ namespace FollowMe2.Services
                 var theirWeapon = weaponDefinition.FindOne(Query.EQ("identifierToSee", weaponID));
                 if (theUser.personType != "3")
                 {
-                    Clients.All.getWeapon(username, theirWeapon, online, community);
+                    //Clients.All.getWeapon(username, theirWeapon, online, community);
                 }
             }
         }
@@ -102,22 +99,22 @@ namespace FollowMe2.Services
                 case "update":
                     usertoupdate["name"] = newname;
                     collection.Save(usertoupdate);
-                    Clients.All.userMethods(existingName, newname);
+                    //Clients.All.userMethods(existingName, newname);
                     break;
                 case "delete":
                     collection.Remove(Query.EQ("name", existingName));
                     //collection.Save(usertoupdate);
-                    Clients.All.userMethods(existingName, existingName, method);
+                    //Clients.All.userMethods(existingName, existingName, method);
                     break;
                 case "insert":
                     var nameInserted = new QueryDocument("name", existingName);
                     nameInserted["title"] = "plumber";
                     collection.Insert(nameInserted);
                     collection.Save(nameInserted);
-                    Clients.All.userMethods(existingName, existingName, method);
+                    //Clients.All.userMethods(existingName, existingName, method);
                     break;
                 default:
-                    Clients.All.userMethods(existingName, "Unknown");
+                    //Clients.All.userMethods(existingName, "Unknown");
                     break;
             }
             return method;
@@ -179,8 +176,8 @@ namespace FollowMe2.Services
                         Query.EQ("to", username2),
                         Query.EQ("read", false))).Count();
 
-                    Clients.All.displaydesign(leader, userToQuery.head, userToQuery.chest, userToQuery.legs, userToQuery, username, statsToQuery, xpToRankForPlayer.maxXP, howManyNotifications);
-                    Clients.All.getXPAllocationArray(username, statsXPlist);
+                    //Clients.All.displaydesign(leader, userToQuery.head, userToQuery.chest, userToQuery.legs, userToQuery, username, statsToQuery, xpToRankForPlayer.maxXP, howManyNotifications);
+                    //Clients.All.getXPAllocationArray(username, statsXPlist);
                     //Should be statsToRank
                 }
             }
@@ -262,7 +259,7 @@ namespace FollowMe2.Services
             userToQuery.XP = xp;
             person.Save(userToQuery);
             var xpNextRank = xptoRankAll.FindOne(Query.EQ("rank", userToQuery.rank));
-            Clients.All.playerNewXPAndRank(changeStringDots(username, true), userToQuery.XP, userToQuery.rank, xpNextRank.maxXP, statsToQuery);
+            //Clients.All.playerNewXPAndRank(changeStringDots(username, true), userToQuery.XP, userToQuery.rank, xpNextRank.maxXP, statsToQuery);
         }
         public void updateXPLogForUser(string username, string XPStatsAction, string XPStatsType, string levelName)
         {

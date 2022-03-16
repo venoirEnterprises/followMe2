@@ -40,9 +40,9 @@ $(document).ready(function () {
     //alert(followMe.helpRequest + " = helpRequest")
 
     $("#levelNameForHelp-button span").remove();
-    followMe.userServicesDefined = $.connection.userMethods;
-    followMe.authServicesDefined = $.connection.authServices;
-    followMe.levelServicesDefined = $.connection.levelServices;
+    followMe.userServicesDefined = new signalR.HubConnectionBuilder().withUrl("/userMethods").build();
+    followMe.authServicesDefined = new signalR.HubConnectionBuilder().withUrl("/authServices").build();
+    followMe.levelServicesDefined = new signalR.HubConnectionBuilder().withUrl("/levelServices").build();
 
     followMe.imageDefintion = {};
 
@@ -123,7 +123,7 @@ $(document).ready(function () {
             }
         }
     };
-    followMe.memServer = $.connection.userMethods;
+    followMe.memServer = new signalR.HubConnectionBuilder().withUrl("/userMethods").build();
     $("#userdesigned").val(localStorage.getItem("username"));
     var url = document.URL.valueOf();
     var lengthSlash = ((url.match(/\//g) || []).length);
@@ -237,7 +237,7 @@ $(document).ready(function () {
 
     var newPos = followMe.x("player");
 
-    followMe.levelServicesDefined.client.newLevel = function (level, world, username, fromSelection) {
+    followMe.levelServicesDefined.on("newLevel", function (level, world, username, fromSelection) {
         if (username === localStorage.getItem("username")) {
             if (fromSelection === false) {//They're in a level here..
                 if (followMe.players[1].hasSurvived === 1) {
@@ -251,7 +251,7 @@ $(document).ready(function () {
                 window.location.assign("/" + world + "/" + level);
             }
         }
-    };
+    });
     $("#disconnect").on("click", function () {
         window.console.log("quitting...");
         if (confirm("Are you sure?")) {
@@ -293,4 +293,36 @@ $(document).ready(function () {
 
     $("#firstUserPassword").click(function () { $("#firstpassword").toggle(); });
     $("#secondUserPassword").click(function () { $("#secondpassword").toggle(); });
+
+
+
+
+
+
+    //Disable the send button until connection is established.
+    document.getElementById("sendButton").disabled = true;
+
+    followMe.userServicesDefined.on("ReceiveMessage", function (user, message) {
+        var li = document.createElement("li");
+        document.getElementById("messagesList").appendChild(li);
+        // We can assign user-supplied strings to an element's textContent because it
+        // is not interpreted as markup. If you're assigning in any other way, you 
+        // should be aware of possible script injection concerns.
+        li.textContent = `${user} says ${message}`;
+    });
+
+    followMe.userServicesDefined.start().then(function () {
+        document.getElementById("sendButton").disabled = false;
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    document.getElementById("sendButton").addEventListener("click", function (event) {
+        var user = document.getElementById("userInput").value;
+        var message = document.getElementById("messageInput").value;
+        followMe.userServicesDefined.invoke("SendMessage", user, message).catch(function (err) {
+            return console.error(err.toString());
+        });
+        event.preventDefault();
+    });
 });
