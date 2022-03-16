@@ -1,4 +1,4 @@
-namespace followMe2.Models
+namespace FollowMe2.Models
 {
     public class ErrorViewModel
     {

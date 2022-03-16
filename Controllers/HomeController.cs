@@ -1,8 +1,8 @@
-﻿using followMe2.Models;
+﻿using FollowMe2.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace followMe2.Controllers
+namespace FollowMe2.Controllers
 {
     public class HomeController : Controller
     {
@@ -15,6 +15,7 @@ namespace followMe2.Controllers
 
         public IActionResult Index()
         {
+            ViewData["Title"] = "Home Page";
             return View();
         }
 

@@ -1,7 +1,11 @@
+using FollowMe2.Hubs;
+using FollowMe2.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -23,5 +27,8 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapHub<ChatHub>("/chatHub");
+//app.MapHub<userMethods>("/userMethods");
+//app.MapHub<multiplayerServices>("/multiplayerServices");
 
 app.Run();
