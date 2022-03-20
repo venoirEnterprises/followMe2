@@ -205,15 +205,15 @@ namespace FollowMe2.Controllers
                 var userExistsCount = collection.Count(Query.EQ("username", model.Username));
                 bool firstpasswordValid = false;
 
-                if (model.Register == false && userExistsCount > 0)
+                if (model.Register == false && userExistsCount > 0 && model.FirstPassword != null)
                 {
-                    var toCheckPassword = 0;
-                    if (model.FirstPassword != null) { toCheckPassword = model.FirstPassword.GetHashCode(); }
+                    var toCheckPassword = "";
+                    if (model.FirstPassword != null) { toCheckPassword = model.FirstPassword; }
                     firstpasswordValid = auth.checkpassword(model.Username, toCheckPassword);
                     if (firstpasswordValid == false) { ViewBag.connectError = "User Credentials invalid"; return View(); }
 
                 }
-                long passwordcount = collection.Count(Query.EQ("password", model.FirstPassword.GetHashCode()));
+                long passwordcount = collection.Count(Query.EQ("password", auth.hashPassword(model.FirstPassword)));
                 long usercount = collection.Count(Query.EQ("username", model.Username));
 
                 long emailcount = 0;

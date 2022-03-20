@@ -25,7 +25,7 @@ namespace FollowMe2.Models
         public int legs { get; set; }
         public float health { get; set; }
         public bool usesPassword { get; set; }
-        public int password { get; set; }
+        public string password { get; set; }
         public int weaponID { get; set; }
         public float maxHealth { get; set; }
         //KEYBOARD START

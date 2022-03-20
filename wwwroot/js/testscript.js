@@ -253,7 +253,7 @@ $(document).ready(function () {
         window.console.log("quitting...");
         if (confirm("Are you sure?")) {
             window.console.log("else..");
-            followMe.userServicesDefined.server.quitUser(followMe.players[1].username);
+            followMe.userServicesDefined.invoke("quitUser",followMe.players[1].username);
             window.location.assign("/Connect/Welcome");
             localStorage.removeItem("checkpoint");
             localStorage.removeItem("checkpoint2");

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
+using BC = BCrypt.Net.BCrypt;
 
 namespace FollowMe2.Services
 {
@@ -41,23 +42,18 @@ namespace FollowMe2.Services
                 return false;
             }
         }
-        public bool checkpassword(string username, int password)
+        public bool checkpassword(string username, string password)
         {
             deployment deploy = new deployment();
             var db = deploy.getDB();
             var person = db.GetCollection<userDefined>("userDefined");
             var userToQuery = person.FindOne(Query.EQ("username", username));
-            if (password == 0 && userToQuery.usesPassword == false)
+            if (password == "" && userToQuery.usesPassword == false)
             {
                 return true;
             }
 
-            if (userToQuery.password.GetHashCode() == password)
-            {
-                return true;
-            }
-
-            return false;
+            return BC.EnhancedVerify(password, userToQuery.password);
         }
         public void setMplayer(bool multi)
         {
@@ -114,7 +110,7 @@ namespace FollowMe2.Services
 
             if (password != "")
             {
-                userToAdd["password"] = password.GetHashCode();
+                userToAdd["password"] = BC.EnhancedHashPassword(password);
                 userToAdd["usesPassword"] = true;
             }
             collection.Insert(userToAdd);
@@ -123,6 +119,11 @@ namespace FollowMe2.Services
             //collection.Save(userToAdd);
             //loginLog.Save(loginLogAdd);
             newLevelAccess(username, "1st", 1);
+        }
+
+        public string hashPassword(string password)
+        {
+            return BC.EnhancedHashPassword(password);
         }
     }
 }
