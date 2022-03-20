@@ -55,11 +55,11 @@
         return newmessage;
     }
 
-    followMe.levelServicesDefined.on("addImageFromServer", function (serveranimation, type, username, canAccess, totalLevelToDo, playerDone, countGameObjects) {//last param specifically for teleports
+    followMe.levelServicesDefined.on("addImageFromServer", function (serveranimation, type, username, canAccess, totalLevelToDo, playerDone, countGameObjects) {//last param specifically for teleports        
         countLocalObjects += 1;
         addGameObject(serveranimation);
         if (type === "surface" || type === "enemies" || type == "checkpoint") {
-            createDisplayForInternalClass(serveranimation._id, type)
+            createDisplayForInternalClass(serveranimation._systemId, type)
         }
         followMe.surfaces = getObjectsByType("surface");
         followMe.enemies = getObjectsByType("enemies");
@@ -97,12 +97,12 @@
                     .appendTo($("#game"));
             }
 
-            physicalDisplayAnimationForGameObject(serveranimation, serveranimation._id)
+            physicalDisplayAnimationForGameObject(serveranimation, serveranimation._systemId)
 
             if ((serveranimation.xend > 0 || serveranimation.yend > 0) && serveranimation.type !== "caves") {//&&( serveranimation.xend >0 || serveranimation.yend >0) ) {
                 //1.13.1.4 extension made, surfaces can now move too
                 //Method named changed from enemyIsAnimated, as surfaces etc. should be able to move too [dependent on difficulty in futures]
-                followMe.animateObject(serveranimation._id, serveranimation.type)
+                followMe.animateObject(serveranimation._systemId, serveranimation.type)
 
 
             }
@@ -162,7 +162,7 @@
                 object.heightY = 1
             }
 
-            iduse = object._id
+            iduse = object._systemId
 
 
         }
@@ -191,7 +191,7 @@
             .css("position", "absolute")
             .css("marginLeft", "0px!important")
             .css("backgroundPosition", startFrame)
-            .attr("id", object._id)
+            .attr("id", object._systemId)
             .attr("class", type);
 
         if (object.caveName === null) {
@@ -255,12 +255,12 @@
                     imageY -= parseFloat(object.yMove * 32)
                 }
 
-                imageDefined.css("backgroundPosition", imageX + "px " + imageY + "px").attr("id", "cave" + object._id)
+                imageDefined.css("backgroundPosition", imageX + "px " + imageY + "px").attr("id", "cave" + object._systemId)
 
                 y = parseFloat(object.y * 64);
                 x = parseFloat(object.x * 64);
 
-                followMe.caves[object._id] = new followMe.cave({
+                followMe.caves[object._systemId] = new followMe.cave({
                     caveName: object.caveName,
                     height: object.heightY * 64 + "px",
                     width: object.widthX * 64 + "px",
@@ -385,13 +385,18 @@
         followMe.communityServices.start().then(function () {
             if ($("#isGame").val() === "yes") {
                 //alert()
-                followMe.communityServices.server.checkLevelAttendanceForHelp(
+
+                $("button, a").off().on("click", function () {
+                    followMe.communityServices.invoke("deleteOnlinePresence", followMe.players[1].username, followMe.helpRequest);
+                })
+
+                followMe.communityServices.invoke("checkLevelAttendanceForHelp",
                     $("#welcome").text(),
                     localStorage.getItem("username"),
                     true//For helper
                 );
                 if (followMe.helpRequest !== null) {//You're helping, let's tell the person that asked
-                    followMe.communityServices.server.checkLevelAttendanceForHelp(
+                    followMe.communityServices.invoke("checkLevelAttendanceForHelp",
                         $("#welcome").text(),
                         followMe.helpUsername,
                         false
@@ -399,6 +404,7 @@
                 }
             }
         })
+
         followMe.levelServicesDefined.start().then(function () {
             followMe.levelServicesDefined.invoke("getImages",
                 $("#welcome").text(),
@@ -407,240 +413,239 @@
             );
 
 
-            followMe.levelServicesDefined.invoke("sendMessage","test");
+            followMe.levelServicesDefined.invoke("sendMessage", "test");
         });
     }
 
-function addDownloadKey(checkpointObject) {
-    $("<p>" + checkpointObject.messageForKey + "</p>")
-        .css("position", "absolute")
-        .css("top", checkpointObject.y - 8)
-        .css("left", checkpointObject.x + 20)
-        .css("fontSize", "10pt")
-        .attr("id", checkpointObject.identifier + "key")
-        .appendTo($("#game"))
-}
-//1.13.1.4 extension made, surfaces can now move too
-//We'e dealing with the local objects now
-followMe.animateObject = function (iduse, objectName) {
-    var object = followMe.enemies[iduse];
-    var myY = 0;
-    var myMaxY = 0;
-    var myX = 0;
-    var myMaxX = 0;
-    var timeToMove = 500;
-    switch (objectName) {
-        case "surface":
-            object = followMe.surfaces[iduse];
-            myY = object.miny;
-            myMaxY = object.maxy;
-            myX = object.minx;
-            myMaxX = object.maxx;
-            timeToMove = 500;
-            break;
-        case "enemies":
-            myY = object.y;
-            myX = object.x;
-            break;
+    function addDownloadKey(checkpointObject) {
+        $("<p>" + checkpointObject.messageForKey + "</p>")
+            .css("position", "absolute")
+            .css("top", checkpointObject.y - 8)
+            .css("left", checkpointObject.x + 20)
+            .css("fontSize", "10pt")
+            .attr("id", checkpointObject.identifier + "key")
+            .appendTo($("#game"))
     }
-    var top = $("." + objectName + "#" + iduse).css("top")
-    var left = $("." + objectName + "#" + iduse).css("left")
-    left = left.substring(0, left.length - 2)
-    var left2 = left
-    var code = 65;
-    var direction = "left"//could be an option in the future
-    var x = object.xend
-    var newleft2 = parseFloat(left) + 64 + "px"
+    //1.13.1.4 extension made, surfaces can now move too
+    //We'e dealing with the local objects now
+    followMe.animateObject = function (iduse, objectName) {
+        var object = followMe.enemies[iduse];
+        var myY = 0;
+        var myMaxY = 0;
+        var myX = 0;
+        var myMaxX = 0;
+        var timeToMove = 500;
+        switch (objectName) {
+            case "surface":
+                object = followMe.surfaces[iduse];
+                myY = object.miny;
+                myMaxY = object.maxy;
+                myX = object.minx;
+                myMaxX = object.maxx;
+                timeToMove = 500;
+                break;
+            case "enemies":
+                myY = object.y;
+                myX = object.x;
+                break;
+        }
+        var top = $("." + objectName + "#" + iduse).css("top")
+        var left = $("." + objectName + "#" + iduse).css("left")
+        left = left.substring(0, left.length - 2)
+        var left2 = left
+        var code = 65;
+        var direction = "left"//could be an option in the future
+        var x = object.xend
+        var newleft2 = parseFloat(left) + 64 + "px"
 
-    if (object.backToStartPoint) {
-        setInterval(function () {
-            //The loop is right, down, left, up
+        if (object.backToStartPoint) {
+            setInterval(function () {
+                //The loop is right, down, left, up
 
 
+                if (object.xend > 0) {
+                    moveObjectOnLoop(object.xend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, false, false);
+                }
+                if (object.yend > 0 && (object.fly || objectName !== "enemies")) {
+                    moveObjectOnLoop(object.yend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, true, false);
+                }
+                if (object.xend > 0) {
+                    moveObjectOnLoop(object.xend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, false, true);
+                }
+                if (object.yend > 0 && (object.fly || objectName !== "enemies")) {
+                    moveObjectOnLoop(object.yend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, true, true);
+                }
+            }, 1000)
+        }
+        //sleep(500)
+        //Not back to startpoint
+        else {
             if (object.xend > 0) {
                 moveObjectOnLoop(object.xend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, false, false);
             }
             if (object.yend > 0 && (object.fly || objectName !== "enemies")) {
                 moveObjectOnLoop(object.yend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, true, false);
             }
-            if (object.xend > 0) {
-                moveObjectOnLoop(object.xend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, false, true);
-            }
-            if (object.yend > 0 && (object.fly || objectName !== "enemies")) {
-                moveObjectOnLoop(object.yend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, true, true);
-            }
-        }, 1000)
-    }
-    //sleep(500)
-    //Not back to startpoint
-    else {
-        if (object.xend > 0) {
-            moveObjectOnLoop(object.xend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, false, false);
-        }
-        if (object.yend > 0 && (object.fly || objectName !== "enemies")) {
-            moveObjectOnLoop(object.yend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, true, false);
         }
     }
-}
 
-//based on surface collection, set the max and min coordinates of the "surfaceAnimationCollection"
-function checksurfaceAnimationCollection(surfaces) {
-    return surfaces.surfaceAnimationCollection === followMe.checkSurfaceAnimationCollection;
-}
-
-
-//27/01/18 code centralised for object animation looping, called above
-function moveObjectOnLoop(valueToLoop, top, left, object, iduse, objectName, timeToMove, code, myX, myY, isY, reverse) {
-    for (var i = 0; i < valueToLoop; i++) {
-        var newattribute = parseFloat(left) + 64 /** (i+1)*/ + "px";
-        if (reverse) {
-            newattribute = parseFloat(left) - 64 /** (i+1)*/ + "px"
-        }
-        var newattribute2 = newattribute.substring(0, newattribute.length - 2);
-        var identifier = "." + objectName + "#" + iduse;
-        var attributeToChange = "top";
-        if (!isY) {
-            attributeToChange = "left";
-        }
-        var animationProperties = {}; animationProperties[attributeToChange] = "+=64px";
-        if (reverse) {
-            animationProperties = {}; animationProperties[attributeToChange] = "-=64px";
-        }
+    //based on surface collection, set the max and min coordinates of the "surfaceAnimationCollection"
+    function checksurfaceAnimationCollection(surfaces) {
+        return surfaces.surfaceAnimationCollection === followMe.checkSurfaceAnimationCollection;
+    }
 
 
-        $(identifier).animate(animationProperties,
-            {
-                duration: timeToMove
-                ,
-                step: function (now, fx) {
-                    switch (objectName) {
-                        case "enemies":
-
-                            if (!isY) {
-                                followMe.enemyDrop(code, fx.end, iduse, object.fly)
-                                followMe.enemies[iduse].x = fx.end;
-                            }
-                            if (isY) {
-                                followMe.enemies[iduse].y = fx.end;
-                            }
-                            followMe.enemyHurt(fx.end, iduse, object)
-
-                            break;
-                        case "surface":
-                            object.miny = myY;
-                            var playerObj = followMe.players[1];
-                            if (!isY) {
-                                if (object.surfaceAnimationCollection !== "")//This should always be true for surfaces, we're in an animation collection, the min and max x forced by the overall width
-                                {
-                                    //Got to make it wider for the matching to take place less harshly as they do if the surface isn't moving'
-                                    followMe.checkSurfaceAnimationCollection = object.surfaceAnimationCollection;
-                                    var arrayToModifyXCoords = followMe.surfaces.filter(checksurfaceAnimationCollection);
-                                    //object.minx = arrayToModifyXCoords[0].minx;
-                                    //object.maxx = arrayToModifyXCoords[arrayToModifyXCoords.length - 1].maxx
-                                    if (reverse) {
-                                        object.minx = fx.end;
-                                        object.maxx = fx.end + 128;
-                                    }
-                                    else {
-                                        object.minx = fx.end - 128;
-                                        object.maxx = fx.end;
-                                    }
-                                }
+    //27/01/18 code centralised for object animation looping, called above
+    function moveObjectOnLoop(valueToLoop, top, left, object, iduse, objectName, timeToMove, code, myX, myY, isY, reverse) {
+        for (var i = 0; i < valueToLoop; i++) {
+            var newattribute = parseFloat(left) + 64 /** (i+1)*/ + "px";
+            if (reverse) {
+                newattribute = parseFloat(left) - 64 /** (i+1)*/ + "px"
+            }
+            var newattribute2 = newattribute.substring(0, newattribute.length - 2);
+            var identifier = "." + objectName + "#" + iduse;
+            var attributeToChange = "top";
+            if (!isY) {
+                attributeToChange = "left";
+            }
+            var animationProperties = {}; animationProperties[attributeToChange] = "+=64px";
+            if (reverse) {
+                animationProperties = {}; animationProperties[attributeToChange] = "-=64px";
+            }
 
 
-                            }
-                            else {
-                                object.miny = fx.end
-                                object.maxy = fx.end + 64;
-                            }
-                            if (playerObj.currentSurfaceID === iduse) {
-                                iduse2 = iduse
-                                var realTop = $(iduse2).css("top");//will need to get the current x as it animates, so the player moves along
-                                var realLeft = $(iduse2).css("left");
+            $(identifier).animate(animationProperties,
+                {
+                    duration: timeToMove
+                    ,
+                    step: function (now, fx) {
+                        switch (objectName) {
+                            case "enemies":
+
                                 if (!isY) {
-                                    followMe.x("player", realLeft.substring(0, realLeft.length - 2) - 10, true);
+                                    followMe.enemyDrop(code, fx.end, iduse, object.fly)
+                                    followMe.enemies[iduse].x = fx.end;
+                                }
+                                if (isY) {
+                                    followMe.enemies[iduse].y = fx.end;
+                                }
+                                followMe.enemyHurt(fx.end, iduse, object)
+
+                                break;
+                            case "surface":
+                                object.miny = myY;
+                                var playerObj = followMe.players[1];
+                                if (!isY) {
+                                    if (object.surfaceAnimationCollection !== "")//This should always be true for surfaces, we're in an animation collection, the min and max x forced by the overall width
+                                    {
+                                        //Got to make it wider for the matching to take place less harshly as they do if the surface isn't moving'
+                                        followMe.checkSurfaceAnimationCollection = object.surfaceAnimationCollection;
+                                        var arrayToModifyXCoords = followMe.surfaces.filter(checksurfaceAnimationCollection);
+                                        //object.minx = arrayToModifyXCoords[0].minx;
+                                        //object.maxx = arrayToModifyXCoords[arrayToModifyXCoords.length - 1].maxx
+                                        if (reverse) {
+                                            object.minx = fx.end;
+                                            object.maxx = fx.end + 128;
+                                        }
+                                        else {
+                                            object.minx = fx.end - 128;
+                                            object.maxx = fx.end;
+                                        }
+                                    }
+
+
                                 }
                                 else {
-                                    followMe.y("player", realTop.substring(0, realTop.length - 2) - 96, 0, true);//Set the physical here, the other one will just move when an animation ends
+                                    object.miny = fx.end
+                                    object.maxy = fx.end + 64;
                                 }
-                            }
-                            break;
+                                if (playerObj.currentSurfaceID === iduse) {
+                                    iduse2 = iduse
+                                    var realTop = $(iduse2).css("top");//will need to get the current x as it animates, so the player moves along
+                                    var realLeft = $(iduse2).css("left");
+                                    if (!isY) {
+                                        followMe.x("player", realLeft.substring(0, realLeft.length - 2) - 10, true);
+                                    }
+                                    else {
+                                        followMe.y("player", realTop.substring(0, realTop.length - 2) - 96, 0, true);//Set the physical here, the other one will just move when an animation ends
+                                    }
+                                }
+                                break;
+                        }
+                        //Special behaviour is needed here, as they are "dynamic" objects that know where the floor is
+
+
                     }
-                    //Special behaviour is needed here, as they are "dynamic" objects that know where the floor is
-
-
-                }
-            })
-        if (!isY) {
-            left = newattribute2;
-        }
-        else {
-            top = newattribute2;
-        }
-    }
-}
-
-/* Detach a datepicker from its control.
- * @param  ID   int - the ID of the element from the server, to grab its object
- * @param type  string - the type of element to root the details from
- */
-function createDisplayForInternalClass(ID, type) {
-
-    var obj = getObjectsByType(type)[ID]
-    var imageDefined = $("<aside>").css("backgroundImage", "url('/images/spriteSheet.png')")
-        .css("left", obj.x + "px")
-        .css("top", obj.y + "px")
-        .css("width", obj.widthX + "px")
-        .css("height", obj.heightY + "px")
-        .css("position", "absolute")
-        .css("marginLeft", "0px!important")
-        .css("backgroundPosition", obj.startFrame)
-        .attr("id", obj._id)
-        .attr("class", type);
-
-
-    switch (type) {
-        case "enemies":
-            imageDefined.append("<progress class='standard' max='" + obj.maxHealth +
-                "' value='" + obj.maxHealth + "' min='0' style=margin-top:" + obj.heightY +
-                "px;position:absolute;width:" + obj.widthX + "px!important" + "/>");
-            break;
-        case "checkpoint":
-            imageDefined.attr("alt", obj.checkpoint);
-            console.log(obj.checkpoint);
-            break;
-    }
-    if (obj.fan === true) {
-        //alert()
-        imageDefined.css("backgroundPosition", (-64 * obj.startFrame) + "px " + followMe.imageDefintion.fan)
-        imageDefined.css("top", (parseFloat(obj.y) - 2) * 64 + "px")
-        imageDefined.css("height", "192px")
-        imageDefined.attr("class", "surface fan")
-    }
-
-    imageDefined.appendTo($("#game"))
-};
-
-function physicalDisplayAnimationForGameObject(obj, iduse) {
-    if (obj.animate === true) {
-        var frameCount = parseFloat(obj.endFrame) - parseFloat(obj.startFrame)
-        if (parseFloat(obj.checkpoint) === 0) { rateDefined = 200 }
-        var animationDefined = new followMe.animation(
-            {
-
-                url: "/images/spriteSheet.png", numberOfFrames: frameCount,
-                currentFrame: obj.startFrame, startFrame: obj.startFrame, spriteY: obj.spriteY * 64
-            });
-        setInterval(function () {
-            animationDefined.currentFrame += 1
-            if (animationDefined.currentFrame - animationDefined.startFrame > animationDefined.numberOfFrames) {
-                animationDefined.currentFrame = animationDefined.startFrame
+                })
+            if (!isY) {
+                left = newattribute2;
             }
-            setFrame(iduse, animationDefined);
-
-            setSpeed(iduse, animationDefined, animationDefined.pace + 1);
-        }, animationDefined.rate)
+            else {
+                top = newattribute2;
+            }
+        }
     }
-}
+
+    /* Detach a datepicker from its control.
+     * @param  ID   int - the ID of the element from the server, to grab its object
+     * @param type  string - the type of element to root the details from
+     */
+    function createDisplayForInternalClass(ID, type) {
+
+        var obj = getObjectsByType(type)[ID]
+        var imageDefined = $("<aside>").css("backgroundImage", "url('/images/spriteSheet.png')")
+            .css("left", obj.x + "px")
+            .css("top", obj.y + "px")
+            .css("width", obj.widthX + "px")
+            .css("height", obj.heightY + "px")
+            .css("position", "absolute")
+            .css("marginLeft", "0px!important")
+            .css("backgroundPosition", obj.startFrame)
+            .attr("id", obj._systemId)
+            .attr("class", type);
+
+
+        switch (type) {
+            case "enemies":
+                imageDefined.append("<progress class='standard' max='" + obj.maxHealth +
+                    "' value='" + obj.maxHealth + "' min='0' style=margin-top:" + obj.heightY +
+                    "px;position:absolute;width:" + obj.widthX + "px!important" + "/>");
+                break;
+            case "checkpoint":
+                imageDefined.attr("alt", obj.checkpoint);
+                // console.log(obj.checkpoint);
+                break;
+        }
+        if (obj.fan === true) {
+            //alert()
+            imageDefined.css("backgroundPosition", (-64 * obj.startFrame) + "px " + followMe.imageDefintion.fan)
+            imageDefined.css("top", (parseFloat(obj.y) - 2) * 64 + "px")
+            imageDefined.css("height", "192px")
+            imageDefined.attr("class", "surface fan")
+        }
+        imageDefined.appendTo($("#game"))
+    };
+
+    function physicalDisplayAnimationForGameObject(obj, iduse) {
+        if (obj.animate === true) {
+            var frameCount = parseFloat(obj.endFrame) - parseFloat(obj.startFrame)
+            if (parseFloat(obj.checkpoint) === 0) { rateDefined = 200 }
+            var animationDefined = new followMe.animation(
+                {
+
+                    url: "/images/spriteSheet.png", numberOfFrames: frameCount,
+                    currentFrame: obj.startFrame, startFrame: obj.startFrame, spriteY: obj.spriteY * 64
+                });
+            setInterval(function () {
+                animationDefined.currentFrame += 1
+                if (animationDefined.currentFrame - animationDefined.startFrame > animationDefined.numberOfFrames) {
+                    animationDefined.currentFrame = animationDefined.startFrame
+                }
+                setFrame(iduse, animationDefined);
+
+                setSpeed(iduse, animationDefined, animationDefined.pace + 1);
+            }, animationDefined.rate)
+        }
+    }
 
 });

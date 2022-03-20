@@ -10,7 +10,7 @@
     if ($("#isGame").val() === "no") {
         $("#player").hide();
     }
-    $("#player").hide()
+    //$("#player").hide()
     followMe.players = [];
     $("#comp_recurringType").hide();
     $("#comp_recurring").off().on("click", function () {
@@ -131,7 +131,7 @@
                 //URL end
             }
 
-            switch (followMe.players[1].personType) {
+            switch (followMe.players[identifier].personType) {
                 case "3":
                     $("#weaponFull").hide()
                     $("#weaponID").val(0)

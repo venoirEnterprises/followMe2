@@ -1,5 +1,5 @@
 /*
-index and uniqueIdentifier to be removed, in place of server-side _id
+index and uniqueIdentifier to be removed, in place of server-side _systemId
 xMove replaced by maxx
 yMove replaced my maxy
 */
@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var GameObject = /** @class */ (function () {
     function GameObject() {
-        this._id = "";
+        this._systemId = "";
         this.x = 0;
         this.y = 0;
     }
@@ -47,10 +47,10 @@ var PassiveGameObject = /** @class */ (function (_super) {
         _this.spriteY = 0;
         return _this;
     }
-    PassiveGameObject.prototype.setPassiveObjectProperties = function (type, _id, x, y, caveName, hideMinimumDifficulty, showMinimumDifficulty, spriteY, width, height) {
+    PassiveGameObject.prototype.setPassiveObjectProperties = function (type, _systemId, x, y, caveName, hideMinimumDifficulty, showMinimumDifficulty, spriteY, width, height) {
         this.hideMinimumDifficulty = hideMinimumDifficulty;
         this.showMinimumDifficulty = showMinimumDifficulty;
-        this._id = _id;
+        this._systemId = _systemId;
         this.x = x * 64;
         this.y = y * 64;
         this.widthX = width * 64;
@@ -243,14 +243,14 @@ var FollowMeDefinition = /** @class */ (function () {
         this.Caves = Caves;
         this.Players = Players;
     }
-    FollowMeDefinition.prototype.addEnemy = function (enemy) { this.Enemies[enemy._id] = enemy; };
-    FollowMeDefinition.prototype.addWeapon = function (weapon) { this.Weapons[weapon._id] = weapon; };
-    FollowMeDefinition.prototype.addItem = function (item) { this.Items[item._id] = item; };
-    FollowMeDefinition.prototype.addSurface = function (surface) { this.Surfaces[surface._id] = surface; };
-    FollowMeDefinition.prototype.addCheckpoint = function (checkpoint) { this.Checkpoints[checkpoint._id] = checkpoint; };
-    FollowMeDefinition.prototype.addTeleport = function (teleport) { this.Teleports[teleport._id] = teleport; };
-    FollowMeDefinition.prototype.addCave = function (cave) { this.Caves[cave._id] = cave; };
-    FollowMeDefinition.prototype.addPlayer = function (player) { this.Players[player._id] = player; };
+    FollowMeDefinition.prototype.addEnemy = function (enemy) { this.Enemies[enemy._systemId] = enemy; };
+    FollowMeDefinition.prototype.addWeapon = function (weapon) { this.Weapons[weapon._systemId] = weapon; };
+    FollowMeDefinition.prototype.addItem = function (item) { this.Items[item._systemId] = item; };
+    FollowMeDefinition.prototype.addSurface = function (surface) { this.Surfaces[surface._systemId] = surface; };
+    FollowMeDefinition.prototype.addCheckpoint = function (checkpoint) { this.Checkpoints[checkpoint._systemId] = checkpoint; };
+    FollowMeDefinition.prototype.addTeleport = function (teleport) { this.Teleports[teleport._systemId] = teleport; };
+    FollowMeDefinition.prototype.addCave = function (cave) { this.Caves[cave._systemId] = cave; };
+    FollowMeDefinition.prototype.addPlayer = function (player) { this.Players[player._systemId] = player; };
     FollowMeDefinition.prototype.getEnemies = function () { return this.Enemies; };
     FollowMeDefinition.prototype.getWeapons = function () { return this.Weapons; };
     FollowMeDefinition.prototype.getItems = function () { return this.Items; };

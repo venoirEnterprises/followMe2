@@ -21,7 +21,7 @@ namespace FollowMe2.Services
             var db = deploy.getDB();
             var person = db.GetCollection<userDefined>("userDefined");
             userDefined personToReward = person.FindOne(Query.EQ("username", shareUsername));
-            //Clients.All.sharedXP(shareUsername, helpRequest, personToReward.XP, newXPValueForShow, message);
+            Clients.All.SendAsync("sharedXP",shareUsername, helpRequest, personToReward.XP, newXPValueForShow, message);
 
         }
         public void showOtherPlayer(int x, int y, string username, string caveName, bool stealth, string helpRequestString)//Only see people in a specific cave
@@ -32,11 +32,11 @@ namespace FollowMe2.Services
             var xpStats = database.GetCollection<statsForRank>("statsToRank").FindOneAs<statsForRank>(Query.EQ("rank", userDefined.rank));
             var weaponDefinition = database.GetCollection<weapon>("weapons").FindOne(Query.EQ("identifierToSee", userDefined.weaponID));
 
-            //Clients.All.showPlayers(x, y, userDefined, xpStats, caveName, weaponDefinition, stealth, helpRequestString);
+            Clients.All.SendAsync("showPlayers",x, y, userDefined, xpStats, caveName, weaponDefinition, stealth, helpRequestString);
         }
         public void fireOnlineBullet(int shotID, string down, string moveEachTime, float mouseX, float mouseY, bool behind, int weaponClass, string username, string caveName, shot shotDefinition)
         {
-            //Clients.All.onlineShotFired(shotID, down, moveEachTime, mouseX, mouseY, behind, weaponClass, username, caveName, shotDefinition);
+            Clients.All.SendAsync("onlineShotFired",shotID, down, moveEachTime, mouseX, mouseY, behind, weaponClass, username, caveName, shotDefinition);
         }
 
         public void showPrimaryHealth(float health, string username, float lives)
@@ -56,7 +56,7 @@ namespace FollowMe2.Services
             {
                 userDefined.lives = xpStats.numberOfLives;
             }
-            //Clients.All.showLocalStatsFromShot(username, userDefined.health, userDefined.lives, dying);
+            Clients.All.SendAsync("showLocalStatsFromShot",username, userDefined.health, userDefined.lives, dying);
         }
     }
 }

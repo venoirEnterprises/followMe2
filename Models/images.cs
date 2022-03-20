@@ -26,6 +26,7 @@ namespace FollowMe2.Models
     {
         [BsonId]
         public ObjectId _id { get; set; }
+        public int systemId { get; set; }
         public bool fan { get; set; }
         public float x { get; set; }
         public float y { get; set; }

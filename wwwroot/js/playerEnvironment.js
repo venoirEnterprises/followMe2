@@ -19,15 +19,9 @@
 
     var url = document.URL.valueOf();
     followMe.players = [];
-    followMe.levelServicesDefined.on("Startpoint", function (
-        serveranimation, y, user, firstplayer, username) {
+    followMe.levelServicesDefined.on("Startpoint", function ( serveranimation, y, user, firstplayer, username) {
         if (username == localStorage.getItem("username")) {
             var playerObject = followMe.players[1];
-            if (followMe.url.search("/connect") == -1 && $("#isGame").val() == "yes") {
-                //setInterval(function(){
-                followMe.communityServices.server.recordLevelAccomplishment(username, "checkpoint", user.checkpoint, $("#welcome").text(), "EndingTheBeginning")
-                //},1000)
-            }
 
             if (serveranimation.checkpoint != 0) {
                 if (followMe.players[1] != undefined) {
@@ -76,6 +70,11 @@
             if (serveranimation.checkpoint != "") {
                 $(id).attr("class", "background checkpoint")
                 $(id).attr("alt", serveranimation.checkpoint)
+            }
+            if (followMe.url.search("/connect") == -1 && $("#isGame").val() == "yes") {
+                //setInterval(function(){
+                followMe.communityServices.server.recordLevelAccomplishment(username, "checkpoint", user.checkpoint, $("#welcome").text(), "EndingTheBeginning")
+                //},1000)
             }
         }
     })
@@ -681,7 +680,6 @@
     })
     $("#weaponID").val(1)
     followMe.userServicesDefined.on("getWeapons", function (username, theWeapon) {
-        window.console.log("vnorris", username, theWeapon);
         if (username == localStorage.getItem("username")) {
             var theID = parseFloat(theWeapon.identifierToSee);
             var top = ((theID + 2) * 64)

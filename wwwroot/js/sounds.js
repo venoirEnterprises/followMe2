@@ -49,7 +49,7 @@
             sound.pause();
         }
         else {
-            sound.play()
+            //sound.play()
             sound.volume = parseFloat(localStorage.getItem("volume"));
         }
     }

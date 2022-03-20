@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-
+    var url = document.URL.valueOf();
     $("#furtherDetails #sounds div.ui-checkbox input").off().on("click", function () {
         var idToSet = this.id
 
@@ -78,6 +78,13 @@
     followMe.xpStats = [];
 
     followMe.memServer.start().then(function () {
+
+        var lengthSlash = ((url.match(/\//g) || []).length);
+
+        if (url.search("Welcome") === -1 && lengthSlash > 3) {
+            followMe.memServer.invoke("getUserStats", true, localStorage.getItem("username"), $("#welcome").text());
+        }
+
         followMe.memServer.invoke("getWeapons", localStorage.getItem("username"));
         if ($("#isGame").val() != "no") {
             followMe.memServer.invoke("getWeapon", localStorage.getItem("username"), false, false);
@@ -182,16 +189,16 @@
                     message += "<p>" + statsArray.xpPoints + "<p>";
                     xpToUpdate += parseFloat(statsArray.xpPoints);
                     //alert(xpToUpdate)                   
-                    followMe.userServicesDefined.server.updateXPLogForUser(localStorage.getItem("username"), statsArray.action, statsArray.type, $("#welcome").text())
+                    followMe.userServicesDefined.invoke("updateXPLogForUser",localStorage.getItem("username"), statsArray.action, statsArray.type, $("#welcome").text())
                     if (statsArray.oncePerLevel == true || statsArray.special == true) {
                         statsArray.type = "done";
                         if (statsArray.type == "kill" || statsArray.type == "level") {//Extend to other XP actions
-                            followMe.userServicesDefined.server.updateXPorLevel(localStorage.getItem("username"), parseFloat(followMe.players[1].XP + statsArray.xpPoints))
-                            followMe.userServicesDefined.server.updateXPLogForUser(localStorage.getItem("username"), "one", statsArray.type, $("#welcome").text())
+                            followMe.userServicesDefined.invoke("updateXPorLevel",localStorage.getItem("username"), parseFloat(followMe.players[1].XP + statsArray.xpPoints))
+                            followMe.userServicesDefined.invoke("updateXPLogForUser",localStorage.getItem("username"), "one", statsArray.type, $("#welcome").text())
 
                             if (useExternal) {
-                                followMe.userServicesDefined.server.updateXPorLevel(shareUsername, parseFloat(followMe.players[1].XP + statsArray.xpPoints))
-                                followMe.userServicesDefined.server.updateXPLogForUser(shareUsername, "one", statsArray.type, $("#welcome").text())
+                                followMe.userServicesDefined.invoke("updateXPorLevel",shareUsername, parseFloat(followMe.players[1].XP + statsArray.xpPoints))
+                                followMe.userServicesDefined.invoke("updateXPLogForUser",shareUsername, "one", statsArray.type, $("#welcome").text())
                             }
                         }
                         message += statsArray.message
@@ -200,7 +207,7 @@
 
                     if (followMe.helpRequest != null) {
                         $.connection.hub.start("~/signalr").done(function () {
-                            followMe.multiplayer.server.shareXP(shareUsername, followMe.helpRequest, xpToUpdate, message);//This is just for displaying to other user, see if(useExternal) for actual XP processing
+                            followMe.multiplayer.invoke("shareXP",shareUsername, followMe.helpRequest, xpToUpdate, message);//This is just for displaying to other user, see if(useExternal) for actual XP processing
                         });
                     }
 
@@ -208,7 +215,7 @@
             }
         };
         followMe.players[1].XP = xpToUpdate
-        followMe.userServicesDefined.server.updateXPorLevel(localStorage.getItem("username"), parseFloat(xpToUpdate))
+        followMe.userServicesDefined.invoke("updateXPorLevel",localStorage.getItem("username"), parseFloat(xpToUpdate))
 
     }
 

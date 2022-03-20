@@ -46,7 +46,7 @@ namespace FollowMe2.Services
             var loginLog = db.GetCollection("loginLog");
             loginLog.Remove(Query.EQ(username, 1));
 
-            //Clients.All.userQuitting(username);
+            Clients.All.SendAsync("userQuitting",username);
         }
         public async Task getWeapons(string username)
         {
@@ -175,8 +175,8 @@ namespace FollowMe2.Services
                         Query.EQ("to", username2),
                         Query.EQ("read", false))).Count();
 
-                    //Clients.All.displaydesign(leader, userToQuery.head, userToQuery.chest, userToQuery.legs, userToQuery, username, statsToQuery, xpToRankForPlayer.maxXP, howManyNotifications);
-                    //Clients.All.getXPAllocationArray(username, statsXPlist);
+                    Clients.All.SendAsync("displaydesign",leader, userToQuery.head, userToQuery.chest, userToQuery.legs, userToQuery, username, statsToQuery, xpToRankForPlayer.maxXP, howManyNotifications);
+                    Clients.All.SendAsync("getXPAllocationArray",username, statsXPlist);
                     //Should be statsToRank
                 }
             }
@@ -206,7 +206,7 @@ namespace FollowMe2.Services
                     userToQuery.lives = maxLives;
                 }
                 userToQuery.health = oldHealth;
-                //Clients.All.updateMemberLives(userToQuery, startpoint2, username);
+                Clients.All.SendAsync("updateMemberLives",userToQuery, startpoint2, username);
                 //All back calls need to be removed
             }
             userToQuery.health = newhealth;
@@ -258,7 +258,7 @@ namespace FollowMe2.Services
             userToQuery.XP = xp;
             person.Save(userToQuery);
             var xpNextRank = xptoRankAll.FindOne(Query.EQ("rank", userToQuery.rank));
-            //Clients.All.playerNewXPAndRank(changeStringDots(username, true), userToQuery.XP, userToQuery.rank, xpNextRank.maxXP, statsToQuery);
+            Clients.All.SendAsync("playerNewXPAndRank",changeStringDots(username, true), userToQuery.XP, userToQuery.rank, xpNextRank.maxXP, statsToQuery);
         }
         public void updateXPLogForUser(string username, string XPStatsAction, string XPStatsType, string levelName)
         {

@@ -1,5 +1,5 @@
 ﻿/*
-index and uniqueIdentifier to be removed, in place of server-side _id
+index and uniqueIdentifier to be removed, in place of server-side _systemId
 xMove replaced by maxx
 yMove replaced my maxy
 */
@@ -7,7 +7,7 @@ yMove replaced my maxy
 abstract class GameObject {
     constructor(
     ) { }
-    public _id: string = "";
+    public _systemId: string = "";
     public x: number = 0;
     public y: number = 0;
 }
@@ -34,10 +34,10 @@ abstract class PassiveGameObject extends GameObject {
     public inCave: boolean = false;
     public spriteY: number = 0;
 
-    setPassiveObjectProperties(type: string, _id: string, x: number, y: number, caveName: string, hideMinimumDifficulty: number, showMinimumDifficulty: number, spriteY: number, width:number, height: number) {
+    setPassiveObjectProperties(type: string, _systemId: string, x: number, y: number, caveName: string, hideMinimumDifficulty: number, showMinimumDifficulty: number, spriteY: number, width:number, height: number) {
         this.hideMinimumDifficulty = hideMinimumDifficulty;
         this.showMinimumDifficulty = showMinimumDifficulty;
-        this._id = _id;
+        this._systemId = _systemId;
         this.x = x * 64;
         this.y = y * 64;
         this.widthX = width * 64;
@@ -196,14 +196,14 @@ class FollowMeDefinition {
         public Caves: Array<Cave> = new Array<Cave>(),
         public Players: Array<Player> = new Array<Player>(),
     ) { }
-    addEnemy(enemy: Enemy) { this.Enemies[enemy._id] = enemy; }
-    addWeapon(weapon: Weapon) { this.Weapons[weapon._id] = weapon }
-    addItem(item: Item) { this.Items[item._id] = item; }
-    addSurface(surface: Surface) { this.Surfaces[surface._id] = surface; }
-    addCheckpoint(checkpoint: Checkpoint) { this.Checkpoints[checkpoint._id] = checkpoint; }
-    addTeleport(teleport: Teleport) { this.Teleports[teleport._id] = teleport; }
-    addCave(cave: Cave) { this.Caves[cave._id] = cave; }
-    addPlayer(player: Player) { this.Players[player._id] = player; }
+    addEnemy(enemy: Enemy) { this.Enemies[enemy._systemId] = enemy; }
+    addWeapon(weapon: Weapon) { this.Weapons[weapon._systemId] = weapon }
+    addItem(item: Item) { this.Items[item._systemId] = item; }
+    addSurface(surface: Surface) { this.Surfaces[surface._systemId] = surface; }
+    addCheckpoint(checkpoint: Checkpoint) { this.Checkpoints[checkpoint._systemId] = checkpoint; }
+    addTeleport(teleport: Teleport) { this.Teleports[teleport._systemId] = teleport; }
+    addCave(cave: Cave) { this.Caves[cave._systemId] = cave; }
+    addPlayer(player: Player) { this.Players[player._systemId] = player; }
 
     getEnemies() { return this.Enemies; }
     getWeapons() { return this.Weapons; }

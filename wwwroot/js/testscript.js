@@ -129,16 +129,7 @@ $(document).ready(function () {
     followMe.memServer = new signalR.HubConnectionBuilder().withUrl("/userMethods").build();
     $("#userdesigned").val(localStorage.getItem("username"));
     var url = document.URL.valueOf();
-    var lengthSlash = ((url.match(/\//g) || []).length);
     $("#player2").hide();
-
-    if (url.search("Welcome") === -1 && lengthSlash > 3) {
-        //followMe.userServicesDefined.start().then(function () {
-        //    followMe.memServer.invoke("getWeapons");
-
-        //    followMe.memServer.server.getUserStats(true, localStorage.getItem("username"), $("#welcome").text());
-        //});
-    }
 
     var isGame = $("#isGame").val() == '' ? 'No' : $("#isGame").val()
     if (isGame === "no" || isGame === "") {
@@ -166,7 +157,7 @@ $(document).ready(function () {
         followMe.imagesToPreload = [];
         //add an image tp the list of preload
 
-        followMe.userServicesDefined.client.getmDB = function (name, title) {
+        followMe.userServicesDefined.on("getmDB"), function (name, title) {
             $("#mDB").append($("<p id=" + name + ">" + name + " : " + title + "</p>"));
             $("#namelist").append($("<option>" + name + "</option>"));
         };
@@ -174,6 +165,8 @@ $(document).ready(function () {
 
     followMe.x = function (divId, position) {
         if ($("#isGame").val() === "yes") {
+
+            window.console.log("vnorrisx", divId, position);
             if (position) {
                 followMe.players[1].x = position;
                 if (divId.search("player") !== -1) {
@@ -190,6 +183,7 @@ $(document).ready(function () {
         }
     };
     followMe.y = function (divId, position, rate) {
+        window.console.log("vnorrisy", divId, position, rate);
         if ($("#isGame").val() === "yes") {
             if (position) {
                 followMe.players[1].y = position;

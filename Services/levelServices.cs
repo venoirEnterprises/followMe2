@@ -19,7 +19,7 @@ namespace FollowMe2.Services
 
             //send back same message with DateTime
             msg = "Server: " + msg;
-            //Clients.All.messageReceived(msg);
+            Clients.All.SendAsync("messageReceived",msg);
             return msg;
         }
 
@@ -77,6 +77,7 @@ namespace FollowMe2.Services
 
                 foreach (var item in collection.FindAll().Where(m => m.showMinimumDifficulty <= theUser.difficulty).Where(m => m.hideMinimumDifficulty >= theUser.difficulty))
                 {
+                    item.systemId = item._id.Timestamp;
                     var canAccessTeleport = false;
                     canAccessTeleport = auth.hasAccessToLevel(username2, item.level, item.world);
                     int totalLevelCount = 0;
@@ -89,7 +90,7 @@ namespace FollowMe2.Services
 
                     if ((theUser.difficulty >= item.showMinimumDifficulty || item.showMinimumDifficulty == 0) && (theUser.difficulty <= item.hideMinimumDifficulty || item.hideMinimumDifficulty == 0))
                     {
-                        //Clients.All.addImageFromServer(item, item.type, usernameForClient, canAccessTeleport, totalLevelCount, totalPlayerDoneCount, collection.Count());
+                        Clients.All.SendAsync("addImageFromServer",item, item.type, usernameForClient, canAccessTeleport, totalLevelCount, totalPlayerDoneCount, collection.Count());
                     }
 
                 }
@@ -99,8 +100,8 @@ namespace FollowMe2.Services
                 {
                     var startpoint = collection.FindOne(Query.EQ("startpoint", true));
 
-                    //Clients.All.Startpoint(startpoint, startpoint.y, theUser, true, usernameForClient);
-                    //Clients.All.setLocalCheckpoint(theUser.checkpoint);
+                    Clients.All.SendAsync("Startpoint",startpoint, startpoint.y, theUser, true, usernameForClient);
+                    Clients.All.SendAsync("setLocalCheckpoint",theUser.checkpoint);
                 }
                 if (theUser.checkpoint != -1)
                 {
@@ -111,9 +112,12 @@ namespace FollowMe2.Services
                     {
                         startpoint = collection.Find(Query.Exists("checkpoint")).Where(
                         m => m.checkpoint == 0).FirstOrDefault();
+                        startpoint.systemId = startpoint._id.Timestamp;
+                    } else {
+                        startpoint.systemId = startpoint._id.Timestamp;
                     }
-                    //Clients.All.Startpoint(startpoint, startpoint.y + startpoint.heightY, theUser, true, usernameForClient);
-                    //Clients.All.setLocalCheckpoint(theUser.checkpoint, true);
+                    
+                    Clients.All.SendAsync("Startpoint",startpoint, startpoint.y + startpoint.heightY, theUser, true, usernameForClient);
                 }
             }
             return "Complete";
@@ -158,7 +162,7 @@ namespace FollowMe2.Services
                 comm.addPlayerProgress(username2, nextLevel.fullName, nextLevel.worldName);
                 comm.setFastestLevelTime(username2, levelname, timeToFinish);
 
-                //Clients.All.newLevel(nextLevel.fullName, nextLevel.worldName, username, false);
+                Clients.All.SendAsync("newLevel",nextLevel.fullName, nextLevel.worldName, username, false);
 
             }
 
@@ -193,7 +197,7 @@ namespace FollowMe2.Services
 
 
             comm.addPlayerProgress(user.changeStringDots(username, true), world.fullName, world.worldName);
-            //Clients.All.newLevel(world.fullName, world.worldName, username, true);
+            Clients.All.SendAsync("newLevel",world.fullName, world.worldName, username, true);
         }
     }
 }

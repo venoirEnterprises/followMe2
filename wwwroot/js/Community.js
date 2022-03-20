@@ -10,14 +10,6 @@
         $.extend(this, defaultValues, options);
     };
 
-    if ($("#isGame").val() == "yes") {
-        $.connection.hub.start("~/signalr").done(function () {
-            $("button, a").off().on("click", function () {
-                followMe.communityServices.server.deleteOnlinePresence(followMe.players[1].username, followMe.helpRequest);
-            })
-        });
-    }
-
     followMe.recordPlayTime = function () {
         setInterval(function () {
             followMe.players[1].playTime += 0.5
@@ -297,8 +289,7 @@
 
             followMe.updateMessageForPlayer(true, message, from)
         }
-    })
-    //Clients.All.showOtherPlayerMessage(to, from, additionalDetail);
+    });
 
 
 
