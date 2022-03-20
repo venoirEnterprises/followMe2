@@ -48,7 +48,7 @@ namespace FollowMe2.Services
 
             //Clients.All.userQuitting(username);
         }
-        public void getWeapons(string username)
+        public async Task getWeapons(string username)
         {
             deployment deploy = new deployment();
             var server = deploy.getMongoClient();
@@ -60,10 +60,10 @@ namespace FollowMe2.Services
             var result = collection.FindAll();
             foreach (var item in result)
             {
-                //Clients.All.getWeapons(username, item);
+                await Clients.All.SendAsync("getWeapons", username, item);
             }
         }
-        public void getWeapon(string username, bool online, bool community)
+        public async Task getWeapon(string username, bool online, bool community)
         {
             var username2 = changeStringDots(username, false);
             deployment deploy = new deployment();
@@ -81,7 +81,7 @@ namespace FollowMe2.Services
                 var theirWeapon = weaponDefinition.FindOne(Query.EQ("identifierToSee", weaponID));
                 if (theUser.personType != "3")
                 {
-                    //Clients.All.getWeapon(username, theirWeapon, online, community);
+                    await Clients.All.SendAsync("getWeapon", username, theirWeapon, online, community);
                 }
             }
         }
@@ -99,22 +99,21 @@ namespace FollowMe2.Services
                 case "update":
                     usertoupdate["name"] = newname;
                     collection.Save(usertoupdate);
-                    //Clients.All.userMethods(existingName, newname);
+                    Clients.All.SendAsync("userMethods", existingName, newname);
                     break;
                 case "delete":
                     collection.Remove(Query.EQ("name", existingName));
-                    //collection.Save(usertoupdate);
-                    //Clients.All.userMethods(existingName, existingName, method);
+                    Clients.All.SendAsync("userMethods", existingName, newname, method);
                     break;
                 case "insert":
                     var nameInserted = new QueryDocument("name", existingName);
                     nameInserted["title"] = "plumber";
                     collection.Insert(nameInserted);
                     collection.Save(nameInserted);
-                    //Clients.All.userMethods(existingName, existingName, method);
+                    Clients.All.SendAsync("userMethods", existingName, method);
                     break;
                 default:
-                    //Clients.All.userMethods(existingName, "Unknown");
+                    Clients.All.SendAsync("userMethods", existingName, "Unknown");
                     break;
             }
             return method;

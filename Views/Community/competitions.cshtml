@@ -1,0 +1,31 @@
+﻿@model FollowMe2.ViewModels.competeViewModel
+
+
+
+<button id="newCompete">[+]</button>
+<section id="competeForm" class="right partial onlyBorder">
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(m => m.comp.createdBy)
+        @Html.LabelFor(m => m.comp.competeName)<b class="inline required"> *</b>
+        @Html.TextBoxFor(m => m.comp.competeName)
+        <hr />
+        @Html.LabelFor(m => m.comp.levelName)
+        @Html.DropDownListFor(m => m.comp.levelName, Model.levelNames)
+        @Html.LabelFor(m => m.comp.type)
+        @Html.DropDownListFor(m => m.comp.type, Model.types)
+        @Html.LabelFor(m => m.comp.start)
+        @Html.EditorFor(m => m.comp.start)
+        @Html.LabelFor(m => m.comp.end)
+        @Html.EditorFor(m => m.comp.end)
+        @Html.LabelFor(m => m.comp.prizeType)
+        @Html.DropDownListFor(m => m.comp.prizeType, Model.prizeTypes)
+        @Html.LabelFor(m => m.comp.recurring)
+        @Html.CheckBoxFor(m => m.comp.recurring)
+        @Html.DropDownListFor(m => m.comp.recurringType, Model.recurringTypes)
+        @Html.LabelFor(m => m.comp.inviteOnly)
+        @Html.CheckBoxFor(m => m.comp.inviteOnly)
+        <input type="submit" />
+        <p id="compError">@ViewBag.validationMessage</p>
+    }
+</section>

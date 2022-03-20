@@ -1,7 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FollowMe2.Views.Home
+namespace FollowMe2.Views.Test
 {
     public class TestModel : PageModel
     {

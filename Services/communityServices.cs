@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNet.SignalR;
-using FollowMe2.Models;
+﻿using FollowMe2.Models;
+using Microsoft.AspNetCore.SignalR;
 using MongoDB.Driver.Builders;
-using System.Collections.Generic;
-using System;
-using MongoDB.Bson;
 using MongoDB.Driver;
-using System.Linq;
 
 namespace FollowMe2.Services
 {
@@ -48,7 +44,7 @@ namespace FollowMe2.Services
         }
         public void deleteOnlinePresence(string username, string helpRequest)
         {
-            Clients.All.thisPlayerPresenceRemoved(username, helpRequest);
+            //Clients.All.thisPlayerPresenceRemoved(username, helpRequest);
         }
 
         public void sharePartnerEnemyHurt(string sourceName, string name1, string name2, int hurt, string helpRequest, string enemyID)
@@ -58,7 +54,7 @@ namespace FollowMe2.Services
             {
                 nameForClient = name2;
             }
-            Clients.All.hurtPartnerEnemy(nameForClient, helpRequest, hurt, enemyID);
+            //Clients.All.hurtPartnerEnemy(nameForClient, helpRequest, hurt, enemyID);
         }
 
         public void shareCheckpoint(string sourceName, string name1, string name2, int checkpoint, string helpRequest)
@@ -68,7 +64,7 @@ namespace FollowMe2.Services
             {
                 nameForClient = name2;
             }
-            Clients.All.givePartnerCheckpoint(nameForClient, helpRequest, checkpoint);
+            //Clients.All.givePartnerCheckpoint(nameForClient, helpRequest, checkpoint);
         }
 
         public void checkLevelAttendanceForHelp(string levelName, string forWho, bool forHelper)
@@ -194,7 +190,7 @@ namespace FollowMe2.Services
 
         public void addNotificationToPlayer(string to, string from, string type, string additionalDetail, string additional2)
         {
-            var hubContext = GlobalHost.ConnectionManager.GetHubContext<communityServices>();
+            //var hubContext = GlobalHost.ConnectionManager.GetHubContext<communityServices>();
             var db = deploy.getDB();
             var notifications = db.GetCollection<notification>("notifications");
             var addRequests = db.GetCollection<addRequest>("addRequests");
@@ -238,12 +234,12 @@ namespace FollowMe2.Services
                     break;
                 case "newMessage":
                     contentFromType = "New message from your friend: " + from;
-                    Clients.All.showNotificationCount(1, to, type);//Notify them even if they didn't read the last message
-                    Clients.All.showOtherPlayerMessage(to, from, additionalDetail);
+                    //Clients.All.showNotificationCount(1, to, type);//Notify them even if they didn't read the last message
+                    //Clients.All.showOtherPlayerMessage(to, from, additionalDetail);
                     break;
                 case "help":
                     contentFromType = "Your friend: " + from + " has asked for help in the level: " + additionalDetail;
-                    Clients.All.showNotifiicationCount(1, to, type);
+                    //Clients.All.showNotifiicationCount(1, to, type);
                     if (helpRequests.Find(Query.And(Query.EQ("to", to), Query.EQ("from", from), Query.EQ("level", additionalDetail))).Count() > 0)
                     {
                         continuing = false;
@@ -292,8 +288,7 @@ namespace FollowMe2.Services
                 };
                 if (type != "newMessage")
                 {
-
-                    hubContext.Clients.All.showNotificationCount(1, to, type, contentFromType);
+                    //hubContext.Clients.All.showNotificationCount(1, to, type, contentFromType);
                 }
                 if (type == "helpAttending" || type == "helpConfirmation")
                 {
@@ -537,10 +532,7 @@ namespace FollowMe2.Services
                     whyLocked = "You've done this world, congratulations! Have you got 100%?";
                 }
 
-                Clients.All.DisplayFullProgress(rankName, level.fullName,
-                levelBonus, levelCave, levelAllies, levelCheckpoint,
-                playerBonus, playerCave, playerAllies, playerCheckpoint,
-                level.worldName, totalProgressInWorld, username, whyLocked);
+                //Clients.All.DisplayFullProgress(rankName, level.fullName, levelBonus, levelCave, levelAllies, levelCheckpoint, playerBonus, playerCave, playerAllies, playerCheckpoint, level.worldName, totalProgressInWorld, username, whyLocked);
             }
 
         }
@@ -606,7 +598,7 @@ namespace FollowMe2.Services
                 .FindAs<playerProgressFullDefinition>(Query.And(Query.EQ("username", username), Query.EQ("whichLevel", levelName)));
             foreach (var item in progressDefinition)
             {
-                Clients.All.addLevelProgressObject(item);
+                //Clients.All.addLevelProgressObject(item);
             }
         }
     }

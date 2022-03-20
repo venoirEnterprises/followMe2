@@ -1,0 +1,99 @@
+﻿<div class="flexboxDefined">
+    <section class="smallboxDefined" data-ng-app="angularUsers" data-ng-init="" ng-controller="usernameAngController">
+        <h4>Players and your friends</h4>
+
+        <p class="inline">Key: </p><p class="inline notifyStatus0">No request  </p><p class="inline notifyStatus1">Pending request  </p><p class="inline notifyStatus2">Friend offline  </p><p class="inline notifyStatus3">Friend online  </p>
+        <input type="text" id="playerCommunitySearch" placeholder="search for users here..." ng-model="usernameFilter" />
+        <div ng-switch="(otherPlayerData | filter:usernameFilter).length">
+
+            <table class="playersAngular" width="80%">
+                <tr>
+                    <th class="heading">
+                        Friend Status
+                    </th>
+                    <th class="heading">
+                        <a class="heading" href="#" ng-click="otherPlayersSortType = 'username'; otherPlayersSortReverse = !otherPlayersSortReverse">
+                            Username
+                        </a>
+                    </th>
+                    <th class="heading">
+                        <a href="#" ng-click="otherPlayersSortType = 'rank'; otherPlayersSortReverse = !otherPlayersSortReverse">
+                            Rank
+                        </a>
+                    </th>
+                    <th class="heading"></th>
+                    @*<th>Status</th>*@
+                </tr>
+
+                <tr ng-switch-default ng-repeat="x in otherPlayerData | orderBy:otherPlayersSortType:otherPlayersSortReverse | filter: {username : usernameFilter }">
+                    <td class="{{x.playerStatus}}"></td>
+                    @*<td>{{x.activeNow}}</td>*@
+                    <td ng-if="$odd" class="oddAngular">{{x.username}}</td>
+                    <td ng-if="$even" class="evenAngular">{{x.username}}</td>
+                    <td ng-if="$odd" class="oddAngular">{{x.rank}}</td>
+                    <td ng-if="$even" class="evenAngular">{{x.rank}}</td>
+                    <td><button ng-click="showOtherPlayer(x);" class="commShowUser" id="{{x.username}}">Details +</button></td>
+                </tr>
+                <tr><td ng-switch-when="0" colspan="4">Try something else, or start typing to search for other players, and your friends!</td></tr>
+            </table>
+        </div>
+        <hr />
+
+        <aside id="myNotifcations" ng-switch="(notifcationsData).length">
+            <h4>Notifications</h4>
+            <p ng-if="(notifcationsData.length == 0)">You currently have no new notifications</p>
+            <table class="playersAngular" ng-if="notifcationsData.length > 0">
+                <tr>
+                    <th class="heading">Message</th>
+                    <th class="heading" id="notificationsAction"></th>
+                </tr>
+                <tr ng-repeat="x in notifcationsData | orderBy:when">
+                    <td ng-if="$odd" class="oddAngular">{{x.content}}</td>
+                    <td ng-if="$even" class="evenAngular">{{x.content}}</td>
+                    <td ng-if="$odd" class="oddAngular" id="{{notificationIdentifier}}">
+                        <button ng-click="notifyAction(x,true)">{{x.firstNotifyButtonMessage}}</button>
+                        <button ng-if="x.secondMessage == true" ng-click="notifyAction(notifyAction(x,false))">{{x.secondNotifyButtonMessage}}</button>
+                    </td>
+                    <td ng-if="$even" class="evenAngular" id="{{notificationIdentifier}}">
+                        <button ng-click="notifyAction(x,true)">{{x.firstNotifyButtonMessage}}</button>
+                        <button ng-if="x.secondMessage == true" ng-click="notifyAction(notifyAction(x,false))">{{x.secondNotifyButtonMessage}}</button>
+                    </td>
+                </tr>
+            </table>
+        </aside>
+    </section>
+
+    <section class="smallboxDefined borderLeft">
+        <h4>Details for <b id="otherPlayerName"></b></h4>
+        <aside id="otherPlayerDetails">
+            <aside id="helping">
+                <select class="inline" id="levelNameForHelp" name="">
+                    <option value="0">Which level?</option>
+                </select>
+                <button id="helpMe" class="inline">Ask for help</button>
+                <b id="helpMessage"></b>
+                <br />
+            </aside>
+            
+            <p>Friend status</p>
+            <button class="right" id="add">Add as friend</button>
+            <div id="otherWeapon" class="otherPlayer"></div>
+            <div id="otherPlayer" class="player otherPlayer">
+                <aside id="head" class="head"></aside>
+                <aside id="chest" class="torso"></aside>
+                <aside id="legs" class="legs"></aside>
+                <progress class="xp" id="otherXP"></progress>
+            </div>
+            
+            <section id="otherPlayersText">
+                <p>Currently in the <b id="otherPlayerLevel"></b> level of world <b id="otherPlayerWorld"></b></p>
+            </section>
+            <fieldset id="otherPlayerChat">
+                <legend>Chat</legend>
+                <section id="chatMessages">
+                </section>
+                    <input type="text" id="sendChatMessage" placeholder="new message" /><button id="submitChatMessage">Send</button>
+            </fieldset>
+        </aside>
+    </section>
+</div>

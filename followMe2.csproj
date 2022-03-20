@@ -15,15 +15,20 @@
 
   <ItemGroup>
     <None Include="wwwroot\audio\youllKnowWhatToDo[1_1].mp3" />
+    <None Include="wwwroot\Images\alpha.png" />
+    <None Include="wwwroot\Images\beta.png" />
+    <None Include="wwwroot\Images\preAlpha.png" />
+    <None Include="wwwroot\Images\spriteSheet.png" />
+    <None Include="wwwroot\Images\spriteSheet2.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.SignalR.Core" Version="2.4.3" />
     <PackageReference Include="mongocsharpdriver" Version="2.15.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.15.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="temp\" />
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 

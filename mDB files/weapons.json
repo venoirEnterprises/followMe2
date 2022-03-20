@@ -1,0 +1,5 @@
+﻿{
+    { "identifierToSee": 1, "hurt": 20, "rate": 1, "weaponLevel": 1 },
+    { "identifierToSee": 2, "hurt": 4, "rate": 0, "weaponLevel": 1 },
+    { "identifierToSee": 3, "hurt": 7, "rate": 3, "weaponLevel": 1 }
+}

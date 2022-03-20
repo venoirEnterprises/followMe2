@@ -1,0 +1,62 @@
+In General
+
+-	The index field is used to match to that ID, it must be unique
+
+**************************************************
+
+Surface
+
+DESIGN
+		start|endFrame		what?
+		0			start block
+		1			connector | standalone
+		2			fan animation [width 128]
+		[3 | 4 is fan]
+		5			end block
+		6			welcome start [width 128]
+		7			welcome end
+**************************************************
+Caves
+-	uniqueIdenitifer must be different, or it isn't shown
+-	All images will be flipped to the inside automatically so be wary of startFrame
+-	Entrance as a boolean means "if I press 'up' here, I go into the cave", which logically only makes sense if the UI shows that. There could be some experimentation here with switches and jumping in later levels
+-	xMove and yMove tell the design where to go [see below] and oves the image from the start point e.g. a xMove of 2 is down 2 from the original startFrame setting
+-	caveWall and caveCeiling declare if you can be shot and | or if you can jump to this object. If you try to jump at a wall, you can't, bullets die.
+	o	They can walk until they encounter one, so declare it around the cave or they'll be able to die out of bad design
+
+DESIGN
+[entrance]
+
+-	The door on its own is declared as heiggtY of 2 and xMove 0 for the right side, xMove is 2 for the left side.
+-	To make the door bigger you can add as many 0.5 height elements with a startFrame of 0 and an xMove of 2 [as default size is smaller than 0]
+-	This will automatically change to the inside of the door on "up"
+-	entrance should be true
+
+[Wall]
+-	widthX is always 0.5 - due to the cave design
+-	an xMove of 1.5 states that this is the circuit walls [height of 2] which is a thicker circuit line
+-	Height of 0.5 and yMove of 3 will allow you to extend the wall down [lowest part of the wall above repeated]
+-	If you want a nice consistent wall, you should use widthX of 0.5, heightY of 1.5, yMove of 0.5 and xMove of 1.5 which will give you the "trunk" of the door. Just repeat this for the main cave structure
+
+[Rugged Roof]
+-	x 0.5 to the right [or left], and an xMove of 1.5 [or 0] width of 1.25, height 0.5
+
+[Cascading wall]
+-	yMove of .5 and xMove of 2. With is 1 and heightY is 0.5. That's for the hanging being on the right
+**************************************************
+background [checkpoints]
+
+-	If you specify both a "checkpoint" of a negative number and "newLevel" with the name of the level it is a teleport to that
+-	If you specify a "message", that is a key which is used in the downloaded game. Enter will download it	
+
+
+DESIGN
+		start|endFrame		what?
+		0			standard
+		2			Finish point
+
+**************************************************
+
+Extra notes
+
+CaveName, states what cave it appears in. inCave needs to be true too

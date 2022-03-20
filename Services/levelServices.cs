@@ -1,8 +1,7 @@
 ﻿using FollowMe2.Models;
-using Microsoft.AspNet.SignalR;
+using Microsoft.AspNetCore.SignalR;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
-using System.Linq;
 
 namespace FollowMe2.Services
 {
@@ -90,7 +89,7 @@ namespace FollowMe2.Services
 
                     if ((theUser.difficulty >= item.showMinimumDifficulty || item.showMinimumDifficulty == 0) && (theUser.difficulty <= item.hideMinimumDifficulty || item.hideMinimumDifficulty == 0))
                     {
-                        Clients.All.addImageFromServer(item, item.type, usernameForClient, canAccessTeleport, totalLevelCount, totalPlayerDoneCount, collection.Count());
+                        //Clients.All.addImageFromServer(item, item.type, usernameForClient, canAccessTeleport, totalLevelCount, totalPlayerDoneCount, collection.Count());
                     }
 
                 }
@@ -100,12 +99,7 @@ namespace FollowMe2.Services
                 {
                     var startpoint = collection.FindOne(Query.EQ("startpoint", true));
 
-                    Clients.All.Startpoint(
-                        startpoint,
-                        startpoint.y,
-                        theUser,
-                        true,
-                        usernameForClient);
+                    //Clients.All.Startpoint(startpoint, startpoint.y, theUser, true, usernameForClient);
                     //Clients.All.setLocalCheckpoint(theUser.checkpoint);
                 }
                 if (theUser.checkpoint != -1)
@@ -118,12 +112,7 @@ namespace FollowMe2.Services
                         startpoint = collection.Find(Query.Exists("checkpoint")).Where(
                         m => m.checkpoint == 0).FirstOrDefault();
                     }
-                    Clients.All.Startpoint(
-                        startpoint,
-                        startpoint.y + startpoint.heightY,
-                        theUser,
-                        true,
-                        usernameForClient);
+                    //Clients.All.Startpoint(startpoint, startpoint.y + startpoint.heightY, theUser, true, usernameForClient);
                     //Clients.All.setLocalCheckpoint(theUser.checkpoint, true);
                 }
             }
@@ -169,7 +158,7 @@ namespace FollowMe2.Services
                 comm.addPlayerProgress(username2, nextLevel.fullName, nextLevel.worldName);
                 comm.setFastestLevelTime(username2, levelname, timeToFinish);
 
-                Clients.All.newLevel(nextLevel.fullName, nextLevel.worldName, username, false);
+                //Clients.All.newLevel(nextLevel.fullName, nextLevel.worldName, username, false);
 
             }
 
@@ -204,7 +193,7 @@ namespace FollowMe2.Services
 
 
             comm.addPlayerProgress(user.changeStringDots(username, true), world.fullName, world.worldName);
-            Clients.All.newLevel(world.fullName, world.worldName, username, true);
+            //Clients.All.newLevel(world.fullName, world.worldName, username, true);
         }
     }
 }

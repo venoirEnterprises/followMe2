@@ -19,7 +19,8 @@ $(document).ready(function () {
     window.followMe = window.followMe || {};
 
     followMe.allSoundNames = ["background", "jump", "shoot", "notification", "whatHappen;d"];
-    followMe.playingSounds = []; //Duplicated sound, make an arr../a//udio  followMe.soundTest = new Audio("../audio/youllKnowWhatToDo[1_1].mp3");//Background sound not going to change based on scene
+    followMe.playingSounds = []; //Duplicated sound, make an array
+    followMe.soundTest = new Audio("/Sounds/youllKnowWhatToDo[1_1].mp3");//Background sound not going to change based on scene
     followMe.url = document.URL.valueOf().toLocaleLowerCase();
     followMe.url2 = document.URL.valueOf();
     followMe.homeurl = followMe.url.substring(7); followMe.homeurl = "http://" + followMe.homeurl.substring(0, followMe.homeurl.indexOf("/"));
@@ -43,6 +44,8 @@ $(document).ready(function () {
     followMe.userServicesDefined = new signalR.HubConnectionBuilder().withUrl("/userMethods").build();
     followMe.authServicesDefined = new signalR.HubConnectionBuilder().withUrl("/authServices").build();
     followMe.levelServicesDefined = new signalR.HubConnectionBuilder().withUrl("/levelServices").build();
+    followMe.multiplayer = new signalR.HubConnectionBuilder().withUrl("/multiplayerServices").build();
+    followMe.communityServices = new signalR.HubConnectionBuilder().withUrl("/communityServices").build();
 
     followMe.imageDefintion = {};
 
@@ -130,14 +133,14 @@ $(document).ready(function () {
     $("#player2").hide();
 
     if (url.search("Welcome") === -1 && lengthSlash > 3) {
-        $.connection.hub.start("~/signalr").done(function () {
-            followMe.memServer.server.getWeapons();
+        //followMe.userServicesDefined.start().then(function () {
+        //    followMe.memServer.invoke("getWeapons");
 
-            followMe.memServer.server.getUserStats(true, localStorage.getItem("username"), $("#welcome").text());
-        });
+        //    followMe.memServer.server.getUserStats(true, localStorage.getItem("username"), $("#welcome").text());
+        //});
     }
 
-    var isGame = $("#isGame").val();
+    var isGame = $("#isGame").val() == '' ? 'No' : $("#isGame").val()
     if (isGame === "no" || isGame === "") {
         localStorage.setItem("multi", false);
         $("footer").hide();
@@ -293,36 +296,4 @@ $(document).ready(function () {
 
     $("#firstUserPassword").click(function () { $("#firstpassword").toggle(); });
     $("#secondUserPassword").click(function () { $("#secondpassword").toggle(); });
-
-
-
-
-
-
-    //Disable the send button until connection is established.
-    document.getElementById("sendButton").disabled = true;
-
-    followMe.userServicesDefined.on("ReceiveMessage", function (user, message) {
-        var li = document.createElement("li");
-        document.getElementById("messagesList").appendChild(li);
-        // We can assign user-supplied strings to an element's textContent because it
-        // is not interpreted as markup. If you're assigning in any other way, you 
-        // should be aware of possible script injection concerns.
-        li.textContent = `${user} says ${message}`;
-    });
-
-    followMe.userServicesDefined.start().then(function () {
-        document.getElementById("sendButton").disabled = false;
-    }).catch(function (err) {
-        return console.error(err.toString());
-    });
-
-    document.getElementById("sendButton").addEventListener("click", function (event) {
-        var user = document.getElementById("userInput").value;
-        var message = document.getElementById("messageInput").value;
-        followMe.userServicesDefined.invoke("SendMessage", user, message).catch(function (err) {
-            return console.error(err.toString());
-        });
-        event.preventDefault();
-    });
 });

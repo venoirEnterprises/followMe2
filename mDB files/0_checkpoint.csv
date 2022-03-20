@@ -1,0 +1,2 @@
+type,x,y,widthX,heightY,animate,startFrame,endFrame,checkpoint
+background,1,9,1,2,FALSE,0,1,0

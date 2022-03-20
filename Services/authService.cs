@@ -1,9 +1,7 @@
 ﻿using FollowMe2.Models;
-using Microsoft.AspNet.SignalR;
+using Microsoft.AspNetCore.SignalR;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
-using System;
-using System.Linq;
 
 namespace FollowMe2.Services
 {

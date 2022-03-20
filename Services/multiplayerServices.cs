@@ -1,10 +1,6 @@
 ﻿using FollowMe2.Models;
-using Microsoft.AspNet.SignalR;
+using Microsoft.AspNetCore.SignalR;
 using MongoDB.Driver.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace FollowMe2.Services
 {
@@ -36,11 +32,11 @@ namespace FollowMe2.Services
             var xpStats = database.GetCollection<statsForRank>("statsToRank").FindOneAs<statsForRank>(Query.EQ("rank", userDefined.rank));
             var weaponDefinition = database.GetCollection<weapon>("weapons").FindOne(Query.EQ("identifierToSee", userDefined.weaponID));
 
-            Clients.All.showPlayers(x, y, userDefined, xpStats, caveName, weaponDefinition, stealth, helpRequestString);
+            //Clients.All.showPlayers(x, y, userDefined, xpStats, caveName, weaponDefinition, stealth, helpRequestString);
         }
         public void fireOnlineBullet(int shotID, string down, string moveEachTime, float mouseX, float mouseY, bool behind, int weaponClass, string username, string caveName, shot shotDefinition)
         {
-            Clients.All.onlineShotFired(shotID, down, moveEachTime, mouseX, mouseY, behind, weaponClass, username, caveName, shotDefinition);
+            //Clients.All.onlineShotFired(shotID, down, moveEachTime, mouseX, mouseY, behind, weaponClass, username, caveName, shotDefinition);
         }
 
         public void showPrimaryHealth(float health, string username, float lives)
@@ -60,7 +56,7 @@ namespace FollowMe2.Services
             {
                 userDefined.lives = xpStats.numberOfLives;
             }
-            Clients.All.showLocalStatsFromShot(username, userDefined.health, userDefined.lives, dying);
+            //Clients.All.showLocalStatsFromShot(username, userDefined.health, userDefined.lives, dying);
         }
     }
 }

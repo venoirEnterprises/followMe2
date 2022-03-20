@@ -1,0 +1,5 @@
+type,x,y,widthX,heightY,animate,startFrame,endFrame,checkpoint,newLevel,caveName,inCave,message,spriteY,showMinimumDifficulty,hideMinimumDifficulty
+background,1,4,1,2,0,0,1,0,,,0,,0,1,5
+background,22,12,1,2,0,0,1,1,,,0,,0,1,2
+background,26,6,1,2,5,2,5,-1,3rd,,0,,-1,1,5
+background,4,12,1,2,0,6,0,-2,,firstTest,1,test1,0,3,5

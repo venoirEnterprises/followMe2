@@ -1,0 +1,36 @@
+﻿@page
+@model FollowMe2.Models.Connection
+@using (Html.BeginForm())
+{    
+
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.Register)
+            @Html.EditorFor(m => m.Register, new { @class = "btn btn-default" })
+        </div>
+        <div class="col-md-3">
+
+            @Html.TextBoxFor(m => m.Username, new { @Placeholder = "Username" })
+        </div>
+        <div class="col-md-3">
+            @Html.TextBoxFor(m => m.FirstPassword, new { @Placeholder = "Your Password", @type = "password" })
+        </div>
+        <div class="col-md-3">
+            <input type="submit" id="welcomeSubmit" class="btn btn-default">
+        </div>
+    </div>
+    <p id="venoirError" class="red">@ViewBag.connectError</p>
+    <div class="col-md-12">
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.GoOnline)
+            @Html.CheckBoxFor(m => m.GoOnline)
+        </div>
+        <div class="col-md-3">
+            @Html.LabelFor(m => m.IsVenoir)
+            @Html.CheckBoxFor(m => m.IsVenoir, new { @Id = "addCommunity" })
+        </div>
+        <div class="col-md-3">
+            @Html.TextBoxFor(m => m.Email, new { @Placeholder = "Your email" })
+        </div>
+    </div>
+}

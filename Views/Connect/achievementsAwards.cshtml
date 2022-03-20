@@ -1,0 +1,26 @@
+﻿@model FollowMe2.ViewModels.achievementsAwardsViewModel
+@{
+    ViewBag.Title = "Achievements and Awards";
+}
+
+<nav id="achievementsProgress">
+    <p>Progressing... please be patient</p>
+</nav>
+
+<section class="flexboxDefined">
+    <div class="smallboxDefined">
+        @foreach (var item in Model.achievementsList.OrderBy(m => m.internalID).Take((Model.achievementsList.Count()) - (Model.achievementsList.Count() / 2)))
+        { <section>
+            <aside id="@item.specialID" style="width:32px;height:32px"></aside>
+        </section>
+        }
+    </div>
+    <div class="smallboxDefined">
+        @foreach (var item in Model.achievementsList.OrderByDescending(m => m.internalID).Take(Model.achievementsList.Count() / 2))
+        {
+            <section>
+                <aside id="@item.specialID" style="width:32px;height:32px"></aside>
+            </section>
+        }
+    </div>
+</section>

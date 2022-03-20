@@ -1,0 +1,3 @@
+type,x,y,widthX,heightY,animate,startFrame,endFrame,spriteY,world,level,whyLocked
+teleports,16,10,1,1.75,TRUE,0,1,-9,1,1st, 
+teleports,18,7,1,1.75,TRUE,0,1,-9,1,2nd,Finish level 1
