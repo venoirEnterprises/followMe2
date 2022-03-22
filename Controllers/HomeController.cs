@@ -12,6 +12,7 @@ namespace FollowMe2.Controllers
         userMethods userChange = new userMethods();
         deployment deploy = new deployment();
         authServices auth = new authServices();
+        levelServices level = new levelServices();
 
         private readonly ILogger<HomeController> _logger;
 
@@ -118,14 +119,15 @@ namespace FollowMe2.Controllers
 
                     return RedirectToAction("design", "Connect", new { isRegistering = true });
                 }
+                //#22 no need to check loginLog, multiple permitted 
                 //need to count loginLog for single user now, as this is going to be a login here
-                var loginLogCount = loginLog.Count(Query.Exists(model.Username));
+                //var loginLogCount = loginLog.Count(Query.Exists(model.Username));
 
-                if (loginLogCount > 0)//They are already connected, user probably wrong
-                {
-                    ViewBag.connectError = "You are already connected, check your usernames";
-                    return View();
-                }
+                //if (loginLogCount > 0)//They are already connected, user probably wrong
+                //{
+                //    ViewBag.connectError = "You are already connected, check your usernames";
+                //    return View();
+                //}
                 if (model.Register == false)
                 {
                     if (userExistsCount == 0)
@@ -134,8 +136,9 @@ namespace FollowMe2.Controllers
                         return View();
                     }
                 }
+                //#22 no need to check loginLog, multiple permitted
                 //If the count is 0 then they are allowed to connect
-                if (userExistsCount > 0 && model.Register == false && loginLogCount == 0)
+                if (userExistsCount > 0 && model.Register == false) // && loginLogCount == 0)
                 {
                     model.Username = userChange.changeStringDots(model.Username, false);
                     var person = db.GetCollection<userDefined>("userDefined");
@@ -145,7 +148,8 @@ namespace FollowMe2.Controllers
                     var newlog = new QueryDocument(model.Username, 1);
                     loginLog.Insert(newlog);
 
-                    return RedirectToAction("levelSelect", "Connect");
+                    levelList world = level.redirectToWorld(personToUpdate.world, personToUpdate.level, "");//username should just comefrom cient
+                    return RedirectToAction(world.fullName, world.worldName);
                 }
                 //Invalid settings
                 if (userExistsCount > 0 && model.Register)
