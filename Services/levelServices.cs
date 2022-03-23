@@ -78,7 +78,7 @@ namespace FollowMe2.Services
 
                 foreach (var item in getAllImagesForLevelAndDifficulty)
                 {
-                    item.systemId = item._id.Timestamp;
+                    item.systemId = item._id.Increment;
                     var canAccessTeleport = false;
                     canAccessTeleport = auth.hasAccessToLevel(username2, item.level, item.world);
                     int totalLevelCount = 0;

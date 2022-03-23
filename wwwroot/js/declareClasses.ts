@@ -37,7 +37,7 @@ abstract class PassiveGameObject extends GameObject {
     setPassiveObjectProperties(type: string, _systemId: string, x: number, y: number, caveName: string, hideMinimumDifficulty: number, showMinimumDifficulty: number, spriteY: number, width:number, height: number) {
         this.hideMinimumDifficulty = hideMinimumDifficulty;
         this.showMinimumDifficulty = showMinimumDifficulty;
-        this._systemId = _systemId;
+        this.systemId = _systemId;
         this.x = x * 64;
         this.y = y * 64;
         this.widthX = width * 64;
@@ -196,14 +196,14 @@ class FollowMeDefinition {
         public Caves: Array<Cave> = new Array<Cave>(),
         public Players: Array<Player> = new Array<Player>(),
     ) { }
-    addEnemy(enemy: Enemy) { this.Enemies[enemy._systemId] = enemy; }
-    addWeapon(weapon: Weapon) { this.Weapons[weapon._systemId] = weapon }
-    addItem(item: Item) { this.Items[item._systemId] = item; }
-    addSurface(surface: Surface) { this.Surfaces[surface._systemId] = surface; }
-    addCheckpoint(checkpoint: Checkpoint) { this.Checkpoints[checkpoint._systemId] = checkpoint; }
-    addTeleport(teleport: Teleport) { this.Teleports[teleport._systemId] = teleport; }
-    addCave(cave: Cave) { this.Caves[cave._systemId] = cave; }
-    addPlayer(player: Player) { this.Players[player._systemId] = player; }
+    addEnemy(enemy: Enemy) { this.Enemies[enemy.systemId] = enemy; }
+    addWeapon(weapon: Weapon) { this.Weapons[weapon.systemId] = weapon }
+    addItem(item: Item) { this.Items[item.systemId] = item; }
+    addSurface(surface: Surface) { this.Surfaces[surface.systemId] = surface; }
+    addCheckpoint(checkpoint: Checkpoint) { this.Checkpoints[checkpoint.systemId] = checkpoint; }
+    addTeleport(teleport: Teleport) { this.Teleports[teleport.systemId] = teleport; }
+    addCave(cave: Cave) { this.Caves[cave.systemId] = cave; }
+    addPlayer(player: Player) { this.Players[player.systemId] = player; }
 
     getEnemies() { return this.Enemies; }
     getWeapons() { return this.Weapons; }

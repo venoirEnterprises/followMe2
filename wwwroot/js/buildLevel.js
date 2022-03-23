@@ -32,7 +32,7 @@
     followMe.animation = function (options) {
         var defaultValues =
         {
-            url: false, width: 64, numberOfFrames: 2, currentFrame: 0, rate: 200, pace: 3,
+            url: false, width: 64, numberOfFrames: 2, currentFrame: 0, rate: 50, pace: 3,
             top: 100,
             id: ""
         };
@@ -59,7 +59,7 @@
         countLocalObjects += 1;
         addGameObject(serveranimation);
         if (type === "surface" || type === "enemies" || type == "checkpoint") {
-            createDisplayForInternalClass(serveranimation._systemId, type)
+            createDisplayForInternalClass(serveranimation.systemId, type)
         }
         followMe.surfaces = getObjectsByType("surface");
         followMe.enemies = getObjectsByType("enemies");
@@ -97,12 +97,12 @@
                     .appendTo($("#game"));
             }
 
-            physicalDisplayAnimationForGameObject(serveranimation, serveranimation._systemId)
+            physicalDisplayAnimationForGameObject(serveranimation, serveranimation.systemId)
 
             if ((serveranimation.xend > 0 || serveranimation.yend > 0) && serveranimation.type !== "caves") {//&&( serveranimation.xend >0 || serveranimation.yend >0) ) {
                 //1.13.1.4 extension made, surfaces can now move too
                 //Method named changed from enemyIsAnimated, as surfaces etc. should be able to move too [dependent on difficulty in futures]
-                followMe.animateObject(serveranimation._systemId, serveranimation.type)
+                followMe.animateObject(serveranimation.systemId, serveranimation.type)
 
 
             }
@@ -162,7 +162,7 @@
                 object.heightY = 1
             }
 
-            iduse = object._systemId
+            iduse = object.systemId
 
 
         }
@@ -191,7 +191,7 @@
             .css("position", "absolute")
             .css("marginLeft", "0px!important")
             .css("backgroundPosition", startFrame)
-            .attr("id", object._systemId)
+            .attr("id", object.systemId)
             .attr("class", type);
 
         if (object.caveName === null) {
@@ -255,12 +255,12 @@
                     imageY -= parseFloat(object.yMove * 32)
                 }
 
-                imageDefined.css("backgroundPosition", imageX + "px " + imageY + "px").attr("id", "cave" + object._systemId)
+                imageDefined.css("backgroundPosition", imageX + "px " + imageY + "px").attr("id", "cave" + object.systemId)
 
                 y = parseFloat(object.y * 64);
                 x = parseFloat(object.x * 64);
 
-                followMe.caves[object._systemId] = new followMe.cave({
+                followMe.caves[object.systemId] = new followMe.cave({
                     caveName: object.caveName,
                     height: object.heightY * 64 + "px",
                     width: object.widthX * 64 + "px",
@@ -337,20 +337,7 @@
 
 
     }
-    followMe.animation = function (options) {
-        var defaultValues =
-        {
-            url: false, width: 64, numberOfFrames: 2, currentFrame: 0, rate: 500, pace: 3,
-            top: 100,
-            spriteY: 0,
-            id: "",
-            startFrame: 0
-        };
-        $.extend(this, defaultValues, options);
-        if (this.url) {
-            followMe.addImage(this.url)
-        }
-    };
+        
     followMe.addSprite = function (parentId, divId, options) {
         options = $.extend({
             x: 0, y: 0, width: 64, height: 64
@@ -601,7 +588,7 @@
             .css("position", "absolute")
             .css("marginLeft", "0px!important")
             .css("backgroundPosition", obj.startFrame)
-            .attr("id", obj._systemId)
+            .attr("id", obj.systemId)
             .attr("class", type);
 
 
@@ -632,10 +619,10 @@
             if (parseFloat(obj.checkpoint) === 0) { rateDefined = 200 }
             var animationDefined = new followMe.animation(
                 {
-
                     url: "/images/spriteSheet.png", numberOfFrames: frameCount,
                     currentFrame: obj.startFrame, startFrame: obj.startFrame, spriteY: obj.spriteY * 64
                 });
+            window.console.log("vnorris-ad", animationDefined, obj);
             setInterval(function () {
                 animationDefined.currentFrame += 1
                 if (animationDefined.currentFrame - animationDefined.startFrame > animationDefined.numberOfFrames) {

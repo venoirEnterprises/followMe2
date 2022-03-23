@@ -166,7 +166,6 @@ $(document).ready(function () {
     followMe.x = function (divId, position) {
         if ($("#isGame").val() === "yes") {
 
-            window.console.log("vnorrisx", divId, position);
             if (position) {
                 followMe.players[1].x = position;
                 if (divId.search("player") !== -1) {
@@ -183,7 +182,6 @@ $(document).ready(function () {
         }
     };
     followMe.y = function (divId, position, rate) {
-        window.console.log("vnorrisy", divId, position, rate);
         if ($("#isGame").val() === "yes") {
             if (position) {
                 followMe.players[1].y = position;
