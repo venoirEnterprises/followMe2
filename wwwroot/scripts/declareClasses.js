@@ -1,13 +1,18 @@
 /*
-index and uniqueIdentifier to be removed, in place of server-side _systemId
+index and uniqueIdentifier to be removed, in place of server-side systemId
 xMove replaced by maxx
 yMove replaced my maxy
 */
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -15,7 +20,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var GameObject = /** @class */ (function () {
     function GameObject() {
-        this.systemId = "";
+        this.systemId = "0";
         this.x = 0;
         this.y = 0;
     }
@@ -38,8 +43,8 @@ var PassiveGameObject = /** @class */ (function (_super) {
     __extends(PassiveGameObject, _super);
     function PassiveGameObject() {
         var _this = _super.call(this) || this;
-        _this.widthX = 64;
-        _this.heightY = 64;
+        _this.widthX = 32;
+        _this.heightY = 32;
         _this.hideMinimumDifficulty = 0;
         _this.showMinimumDifficulty = 0;
         _this.caveName = "";
@@ -47,14 +52,14 @@ var PassiveGameObject = /** @class */ (function (_super) {
         _this.spriteY = 0;
         return _this;
     }
-    PassiveGameObject.prototype.setPassiveObjectProperties = function (type, _systemId, x, y, caveName, hideMinimumDifficulty, showMinimumDifficulty, spriteY, width, height) {
+    PassiveGameObject.prototype.setPassiveObjectProperties = function (type, systemId, x, y, caveName, hideMinimumDifficulty, showMinimumDifficulty, spriteY, width, height) {
         this.hideMinimumDifficulty = hideMinimumDifficulty;
         this.showMinimumDifficulty = showMinimumDifficulty;
-        this.systemId = _systemId;
-        this.x = x * 64;
-        this.y = y * 64;
-        this.widthX = width * 64;
-        this.heightY = height * 64;
+        this.systemId = systemId;
+        this.x = x * 32;
+        this.y = y * 32;
+        this.widthX = width * 32;
+        this.heightY = height * 32;
         if (type === "enemies") {
             this.heightY += 8;
         }

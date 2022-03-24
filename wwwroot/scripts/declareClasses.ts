@@ -1,5 +1,5 @@
 ﻿/*
-index and uniqueIdentifier to be removed, in place of server-side _systemId
+index and uniqueIdentifier to be removed, in place of server-side systemId
 xMove replaced by maxx
 yMove replaced my maxy
 */
@@ -7,7 +7,7 @@ yMove replaced my maxy
 abstract class GameObject {
     constructor(
     ) { }
-    public _systemId: string = "";
+    public systemId: string = "0";
     public x: number = 0;
     public y: number = 0;
 }
@@ -26,22 +26,22 @@ abstract class PassiveGameObject extends GameObject {
     constructor(
     ) { super() }
 
-    public widthX: number = 64;
-    public heightY: number = 64;
+    public widthX: number = 32;
+    public heightY: number = 32;
     public hideMinimumDifficulty: number = 0;
     public showMinimumDifficulty: number = 0;
     public caveName: string = "";
     public inCave: boolean = false;
     public spriteY: number = 0;
 
-    setPassiveObjectProperties(type: string, _systemId: string, x: number, y: number, caveName: string, hideMinimumDifficulty: number, showMinimumDifficulty: number, spriteY: number, width:number, height: number) {
+    setPassiveObjectProperties(type: string, systemId: string, x: number, y: number, caveName: string, hideMinimumDifficulty: number, showMinimumDifficulty: number, spriteY: number, width:number, height: number) {
         this.hideMinimumDifficulty = hideMinimumDifficulty;
         this.showMinimumDifficulty = showMinimumDifficulty;
-        this.systemId = _systemId;
-        this.x = x * 64;
-        this.y = y * 64;
-        this.widthX = width * 64;
-        this.heightY = height * 64;
+        this.systemId = systemId;
+        this.x = x * 32;
+        this.y = y * 32;
+        this.widthX = width * 32;
+        this.heightY = height * 32;
         if (type === "enemies")
         {
             this.heightY += 8;
