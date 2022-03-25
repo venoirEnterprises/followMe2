@@ -14,6 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\scripts\levelBuilder.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\audio\youllKnowWhatToDo[1_1].mp3" />
     <None Include="wwwroot\Images\alpha.png" />
     <None Include="wwwroot\Images\beta.png" />
@@ -30,6 +34,10 @@
 
   <ItemGroup>
     <Folder Include="temp\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\scripts\levelBuilder.ts" />
   </ItemGroup>
 
 </Project>

@@ -75,10 +75,12 @@ namespace FollowMe2.Services
 
                 var collection = db.GetCollection<image>(level);
                 var getAllImagesForLevelAndDifficulty = collection.FindAll().Where(m => m.showMinimumDifficulty <= theUser.difficulty).Where(m => m.hideMinimumDifficulty >= theUser.difficulty);
+                int systemId = 1;
 
                 foreach (var item in getAllImagesForLevelAndDifficulty)
                 {
-                    item.systemId = item._id.Increment;
+                    item.systemId = systemId;
+                    systemId++;
                     var canAccessTeleport = false;
                     canAccessTeleport = auth.hasAccessToLevel(username2, item.level, item.world);
                     int totalLevelCount = 0;

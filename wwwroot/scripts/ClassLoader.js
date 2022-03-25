@@ -28,7 +28,7 @@ function addGameObject(ObjIncoming) {
     switch (ObjIncoming.type) {
         case "surface":
             var newSurface = new Surface(ObjIncoming.fan, ObjIncoming.surfaceAnimationCollection);
-            newSurface.setPassiveObjectProperties(ObjIncoming.type, ObjIncoming.systemId, ObjIncoming.x, ObjIncoming.y, ObjIncoming.caveName, ObjIncoming.hideMinimumDifficulty, ObjIncoming.showMinimumDifficulty, ObjIncoming.spriteY, ObjIncoming.widthX, ObjIncoming.heightY);
+            newSurface.setPassiveObjectProperties(ObjIncoming.type, ObjIncoming.systemId, ObjIncoming.x, ObjIncoming.y, ObjIncoming.caveName, ObjIncoming.hideMinimumDifficulty, ObjIncoming.showMinimumDifficulty, ObjIncoming.spriteY, ObjIncoming.widthX, ObjIncoming.heightY, ObjIncoming.imageName);
             newSurface.setAnimationProperties(ObjIncoming.animate, ObjIncoming.startFrame, ObjIncoming.endFrame, ObjIncoming.type);
             newSurface.setMovementProperties(ObjIncoming.xend, ObjIncoming.yend, ObjIncoming.backToStartPoint);
             newSurface.setSurfaceCollisionProperties();
@@ -37,35 +37,36 @@ function addGameObject(ObjIncoming) {
             break;
         case "Item":
             var newItem = new Item(ObjIncoming.message);
-            newItem.setPassiveObjectProperties(ObjIncoming.type, ObjIncoming.systemId, ObjIncoming.x, ObjIncoming.y, ObjIncoming.caveName, ObjIncoming.hideMinimumDifficulty, ObjIncoming.showMinimumDifficulty, ObjIncoming.spriteY, ObjIncoming.widthX, ObjIncoming.heightY);
+            newItem.setPassiveObjectProperties(ObjIncoming.type, ObjIncoming.systemId, ObjIncoming.x, ObjIncoming.y, ObjIncoming.caveName, ObjIncoming.hideMinimumDifficulty, ObjIncoming.showMinimumDifficulty, ObjIncoming.spriteY, ObjIncoming.widthX, ObjIncoming.heightY, ObjIncoming.imageName);
             newItem.setAnimationProperties(ObjIncoming.animate, ObjIncoming.startFrame, ObjIncoming.endFrame, ObjIncoming.type);
             gameProperties.addItem(newItem);
             break;
         case "Weapon":
             var newWeapon = new Weapon(ObjIncoming.hurt, ObjIncoming.rate, ObjIncoming.weaponLevel);
-            newWeapon.setPassiveObjectProperties(ObjIncoming.type, ObjIncoming.systemId, ObjIncoming.x, ObjIncoming.y, ObjIncoming.caveName, ObjIncoming.hideMinimumDifficulty, ObjIncoming.showMinimumDifficulty, ObjIncoming.spriteY, ObjIncoming.widthX, ObjIncoming.heightY);
+            newWeapon.setPassiveObjectProperties(ObjIncoming.type, ObjIncoming.systemId, ObjIncoming.x, ObjIncoming.y, ObjIncoming.caveName, ObjIncoming.hideMinimumDifficulty, ObjIncoming.showMinimumDifficulty, ObjIncoming.spriteY, ObjIncoming.widthX, ObjIncoming.heightY, ObjIncoming.imageName);
+            window.console.log("vnorris-o", ObjIncoming);
             gameProperties.addWeapon(newWeapon);
             break;
         case "checkpoint":
             var newCheckpoint = new Checkpoint(ObjIncoming.checkpoint, ObjIncoming.newLevel, 1, ObjIncoming.messageForKey, ObjIncoming.levelName);
-            newCheckpoint.setPassiveObjectProperties(ObjIncoming.type, ObjIncoming.systemId, ObjIncoming.x, ObjIncoming.y, ObjIncoming.caveName, ObjIncoming.hideMinimumDifficulty, ObjIncoming.showMinimumDifficulty, ObjIncoming.spriteY, ObjIncoming.widthX, ObjIncoming.heightY);
+            newCheckpoint.setPassiveObjectProperties(ObjIncoming.type, ObjIncoming.systemId, ObjIncoming.x, ObjIncoming.y, ObjIncoming.caveName, ObjIncoming.hideMinimumDifficulty, ObjIncoming.showMinimumDifficulty, ObjIncoming.spriteY, ObjIncoming.widthX, ObjIncoming.heightY, ObjIncoming.imageName);
             newCheckpoint.setAnimationProperties(ObjIncoming.animate, ObjIncoming.startFrame, ObjIncoming.endFrame, ObjIncoming.type);
             gameProperties.addCheckpoint(newCheckpoint);
             break;
         case "Teleport":
             var newTeleport = new Teleport(ObjIncoming.world, ObjIncoming.level, ObjIncoming.whyLocked, ObjIncoming.teleportAllowed);
-            newTeleport.setPassiveObjectProperties(ObjIncoming.type, ObjIncoming.systemId, ObjIncoming.x, ObjIncoming.y, ObjIncoming.caveName, ObjIncoming.hideMinimumDifficulty, ObjIncoming.showMinimumDifficulty, ObjIncoming.spriteY, ObjIncoming.widthX, ObjIncoming.heightY);
+            newTeleport.setPassiveObjectProperties(ObjIncoming.type, ObjIncoming.systemId, ObjIncoming.x, ObjIncoming.y, ObjIncoming.caveName, ObjIncoming.hideMinimumDifficulty, ObjIncoming.showMinimumDifficulty, ObjIncoming.spriteY, ObjIncoming.widthX, ObjIncoming.heightY, ObjIncoming.imageName);
             newTeleport.setAnimationProperties(ObjIncoming.animate, ObjIncoming.startFrame, ObjIncoming.endFrame, ObjIncoming.type);
             gameProperties.addTeleport(newTeleport);
             break;
         case "Cave":
             var newCave = new Cave(ObjIncoming.entrance, ObjIncoming.caveWall, ObjIncoming.caveCeiling, ObjIncoming.xMove, ObjIncoming.yMove);
-            newCave.setPassiveObjectProperties(ObjIncoming.type, ObjIncoming.systemId, ObjIncoming.x, ObjIncoming.y, ObjIncoming.caveName, ObjIncoming.hideMinimumDifficulty, ObjIncoming.showMinimumDifficulty, ObjIncoming.spriteY, ObjIncoming.widthX, ObjIncoming.heightY);
+            newCave.setPassiveObjectProperties(ObjIncoming.type, ObjIncoming.systemId, ObjIncoming.x, ObjIncoming.y, ObjIncoming.caveName, ObjIncoming.hideMinimumDifficulty, ObjIncoming.showMinimumDifficulty, ObjIncoming.spriteY, ObjIncoming.widthX, ObjIncoming.heightY, ObjIncoming.imageName);
             gameProperties.addCave(newCave);
             break;
         case "enemies":
             var newEnemy = new Enemy(ObjIncoming.hurt, ObjIncoming.fly);
-            newEnemy.setPassiveObjectProperties(ObjIncoming.type, ObjIncoming.systemId, ObjIncoming.x, ObjIncoming.y, ObjIncoming.caveName, ObjIncoming.hideMinimumDifficulty, ObjIncoming.showMinimumDifficulty, ObjIncoming.spriteY, ObjIncoming.widthX, ObjIncoming.heightY);
+            newEnemy.setPassiveObjectProperties(ObjIncoming.type, ObjIncoming.systemId, ObjIncoming.x, ObjIncoming.y, ObjIncoming.caveName, ObjIncoming.hideMinimumDifficulty, ObjIncoming.showMinimumDifficulty, ObjIncoming.spriteY, ObjIncoming.widthX, ObjIncoming.heightY, ObjIncoming.imageName);
             newEnemy.setMovementProperties(ObjIncoming.xend, ObjIncoming.yend, ObjIncoming.backToStartPoint);
             newEnemy.setHealth(ObjIncoming.maxHealth, ObjIncoming.maxHealth);
             newEnemy.setAnimationProperties(ObjIncoming.animate, ObjIncoming.startFrame, ObjIncoming.endFrame, ObjIncoming.type);

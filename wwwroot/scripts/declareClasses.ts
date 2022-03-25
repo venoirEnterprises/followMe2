@@ -10,6 +10,7 @@ abstract class GameObject {
     public systemId: string = "0";
     public x: number = 0;
     public y: number = 0;
+    public imageName: string= "";
 }
 
 class Player extends GameObject {
@@ -33,8 +34,9 @@ abstract class PassiveGameObject extends GameObject {
     public caveName: string = "";
     public inCave: boolean = false;
     public spriteY: number = 0;
+    public imageName: string = "";
 
-    setPassiveObjectProperties(type: string, systemId: string, x: number, y: number, caveName: string, hideMinimumDifficulty: number, showMinimumDifficulty: number, spriteY: number, width:number, height: number) {
+    setPassiveObjectProperties(type: string, systemId: string, x: number, y: number, caveName: string, hideMinimumDifficulty: number, showMinimumDifficulty: number, spriteY: number, width: number, height: number, imageName: string) {
         this.hideMinimumDifficulty = hideMinimumDifficulty;
         this.showMinimumDifficulty = showMinimumDifficulty;
         this.systemId = systemId;
@@ -49,6 +51,7 @@ abstract class PassiveGameObject extends GameObject {
         this.spriteY = spriteY;
         this.caveName = caveName || "";
         this.inCave = this.caveName.length > 0 ? true : false;
+        this.imageName = imageName;
     }
 
     getCaveDetails() {

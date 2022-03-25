@@ -32,7 +32,7 @@
     followMe.animation = function (options) {
         var defaultValues =
         {
-            url: false, width: 64, numberOfFrames: 2, currentFrame: 0, rate: 50, pace: 3,
+            url: false, width: 64, numberOfFrames: 2, currentFrame: 0, rate: 200, pace: 3,
             top: 100,
             id: ""
         };
@@ -573,6 +573,7 @@
         }
     }
 
+
     /* Detach a datepicker from its control.
      * @param  ID   int - the ID of the element from the server, to grab its object
      * @param type  string - the type of element to root the details from
@@ -580,14 +581,13 @@
     function createDisplayForInternalClass(ID, type) {
 
         var obj = getObjectsByType(type)[ID]
-        var imageDefined = $("<aside>").css("backgroundImage", "url('/images/spriteSheet.png')")
+        var imageDefined = $("<aside>")
             .css("left", obj.x + "px")
             .css("top", obj.y + "px")
             .css("width", obj.widthX + "px")
             .css("height", obj.heightY + "px")
             .css("position", "absolute")
             .css("marginLeft", "0px!important")
-            .css("backgroundPosition", obj.startFrame)
             .attr("id", obj.systemId)
             .attr("class", type);
 
@@ -597,10 +597,14 @@
                 imageDefined.append("<progress class='standard' max='" + obj.maxHealth +
                     "' value='" + obj.maxHealth + "' min='0' style=margin-top:" + obj.heightY +
                     "px;position:absolute;width:" + obj.widthX + "px!important" + "/>");
+                imageDefined.css("backgroundImage", "url(".concat(getImageFileURL(type, obj.imageName)).concat(")"));
                 break;
             case "checkpoint":
                 imageDefined.attr("alt", obj.checkpoint);
                 // console.log(obj.checkpoint);
+            default:
+                imageDefined.css("backgroundImage", "url('/images/spriteSheet.png')")
+                    .css("backgroundPosition", obj.startFrame)
                 break;
         }
         if (obj.fan === true) {

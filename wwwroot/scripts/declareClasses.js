@@ -23,6 +23,7 @@ var GameObject = /** @class */ (function () {
         this.systemId = "0";
         this.x = 0;
         this.y = 0;
+        this.imageName = "";
     }
     return GameObject;
 }());
@@ -50,9 +51,10 @@ var PassiveGameObject = /** @class */ (function (_super) {
         _this.caveName = "";
         _this.inCave = false;
         _this.spriteY = 0;
+        _this.imageName = "";
         return _this;
     }
-    PassiveGameObject.prototype.setPassiveObjectProperties = function (type, systemId, x, y, caveName, hideMinimumDifficulty, showMinimumDifficulty, spriteY, width, height) {
+    PassiveGameObject.prototype.setPassiveObjectProperties = function (type, systemId, x, y, caveName, hideMinimumDifficulty, showMinimumDifficulty, spriteY, width, height, imageName) {
         this.hideMinimumDifficulty = hideMinimumDifficulty;
         this.showMinimumDifficulty = showMinimumDifficulty;
         this.systemId = systemId;
@@ -66,6 +68,7 @@ var PassiveGameObject = /** @class */ (function (_super) {
         this.spriteY = spriteY;
         this.caveName = caveName || "";
         this.inCave = this.caveName.length > 0 ? true : false;
+        this.imageName = imageName;
     };
     PassiveGameObject.prototype.getCaveDetails = function () {
         console.log(this.caveName.length > 0 ? this.caveName + ", in cave? " + this.inCave : "[no cave]");

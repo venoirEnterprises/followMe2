@@ -50,6 +50,8 @@ namespace FollowMe2.Models
         public int world { get; set; }
         public string level { get; set; }
         public string type { get; set; }
+
+        public string imageName { get; set; }
         //caves
         public string caveName { get; set; }
         public float xMove { get; set; }
