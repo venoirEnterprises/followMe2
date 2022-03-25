@@ -20,7 +20,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var GameObject = /** @class */ (function () {
     function GameObject() {
-        this.systemId = "0";
+        this.systemId = 0;
         this.x = 0;
         this.y = 0;
         this.imageName = "";
@@ -259,15 +259,17 @@ var FollowMeDefinition = /** @class */ (function () {
     FollowMeDefinition.prototype.addTeleport = function (teleport) { this.Teleports[teleport.systemId] = teleport; };
     FollowMeDefinition.prototype.addCave = function (cave) { this.Caves[cave.systemId] = cave; };
     FollowMeDefinition.prototype.addPlayer = function (player) { this.Players[player.systemId] = player; };
-    FollowMeDefinition.prototype.getEnemies = function () { return this.Enemies; };
-    FollowMeDefinition.prototype.getWeapons = function () { return this.Weapons; };
-    FollowMeDefinition.prototype.getItems = function () { return this.Items; };
-    FollowMeDefinition.prototype.getSurfaces = function () { return this.Surfaces; };
-    FollowMeDefinition.prototype.getCheckpoints = function () { return this.Checkpoints; };
-    FollowMeDefinition.prototype.getTeleports = function () { return this.Teleports; };
     FollowMeDefinition.prototype.getCaves = function () { return this.Caves; };
-    FollowMeDefinition.prototype.getPlayer = function () { return this.Players.filter(function (m) { return m.local == true; }); };
+    FollowMeDefinition.prototype.getCheckpoints = function () { return this.Checkpoints; };
+    FollowMeDefinition.prototype.getEnemies = function () { return this.Enemies; };
+    FollowMeDefinition.prototype.getEnemy = function (systemId) { return this.Enemies.filter(function (m) { return m.systemId == systemId; }); };
     FollowMeDefinition.prototype.getOnlinePlayers = function () { return this.Players.filter(function (m) { return m.local == true; }); };
+    FollowMeDefinition.prototype.getPlayer = function () { return this.Players.filter(function (m) { return m.local == true; }); };
+    FollowMeDefinition.prototype.getItems = function () { return this.Items; };
+    FollowMeDefinition.prototype.getWeapons = function () { return this.Weapons; };
+    FollowMeDefinition.prototype.getSurfaces = function () { return this.Surfaces; };
+    FollowMeDefinition.prototype.getSurface = function (systemId) { return this.Surfaces.filter(function (m) { return m.systemId == systemId; }); };
+    FollowMeDefinition.prototype.getTeleports = function () { return this.Teleports; };
     return FollowMeDefinition;
 }());
 //# sourceMappingURL=declareClasses.js.map

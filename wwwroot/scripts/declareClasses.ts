@@ -7,7 +7,7 @@ yMove replaced my maxy
 abstract class GameObject {
     constructor(
     ) { }
-    public systemId: string = "0";
+    public systemId: number = 0;
     public x: number = 0;
     public y: number = 0;
     public imageName: string= "";
@@ -36,7 +36,7 @@ abstract class PassiveGameObject extends GameObject {
     public spriteY: number = 0;
     public imageName: string = "";
 
-    setPassiveObjectProperties(type: string, systemId: string, x: number, y: number, caveName: string, hideMinimumDifficulty: number, showMinimumDifficulty: number, spriteY: number, width: number, height: number, imageName: string) {
+    setPassiveObjectProperties(type: string, systemId: number, x: number, y: number, caveName: string, hideMinimumDifficulty: number, showMinimumDifficulty: number, spriteY: number, width: number, height: number, imageName: string) {
         this.hideMinimumDifficulty = hideMinimumDifficulty;
         this.showMinimumDifficulty = showMinimumDifficulty;
         this.systemId = systemId;
@@ -207,14 +207,15 @@ class FollowMeDefinition {
     addTeleport(teleport: Teleport) { this.Teleports[teleport.systemId] = teleport; }
     addCave(cave: Cave) { this.Caves[cave.systemId] = cave; }
     addPlayer(player: Player) { this.Players[player.systemId] = player; }
-
-    getEnemies() { return this.Enemies; }
-    getWeapons() { return this.Weapons; }
-    getItems() { return this.Items }
-    getSurfaces() { return this.Surfaces; }
-    getCheckpoints() { return this.Checkpoints; }
-    getTeleports() { return this.Teleports; }
     getCaves() { return this.Caves; }
-    getPlayer() { return this.Players.filter(m => m.local == true) }
+    getCheckpoints() { return this.Checkpoints; }
+    getEnemies() { return this.Enemies; }
+    getEnemy(systemId:number) { return this.Enemies.filter(m => m.systemId == systemId) }
     getOnlinePlayers() { return this.Players.filter(m => m.local == true) }
+    getPlayer() { return this.Players.filter(m => m.local == true) }    
+    getItems() { return this.Items }
+    getWeapons() { return this.Weapons; }    
+    getSurfaces() { return this.Surfaces; }
+    getSurface(systemId:number) { return this.Surfaces.filter(m => m.systemId == systemId) }
+    getTeleports() { return this.Teleports; }        
 }

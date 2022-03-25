@@ -448,19 +448,21 @@
         if (object.backToStartPoint) {
             setInterval(function () {
                 //The loop is right, down, left, up
-
-
                 if (object.xend > 0) {
                     moveObjectOnLoop(object.xend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, false, false);
+                    window.console.log("right")
                 }
                 if (object.yend > 0 && (object.fly || objectName !== "enemies")) {
                     moveObjectOnLoop(object.yend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, true, false);
+                    window.console.log("down")
                 }
                 if (object.xend > 0) {
                     moveObjectOnLoop(object.xend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, false, true);
+                    window.console.log("left")
                 }
                 if (object.yend > 0 && (object.fly || objectName !== "enemies")) {
                     moveObjectOnLoop(object.yend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, true, true);
+                    window.console.log("up")
                 }
             }, 1000)
         }
@@ -588,6 +590,7 @@
             .css("height", obj.heightY + "px")
             .css("position", "absolute")
             .css("marginLeft", "0px!important")
+            .css("transform", "scaleX(1)") // so we can flip it's direction later
             .attr("id", obj.systemId)
             .attr("class", type);
 
@@ -595,8 +598,7 @@
         switch (type) {
             case "enemies":
                 imageDefined.append("<progress class='standard' max='" + obj.maxHealth +
-                    "' value='" + obj.maxHealth + "' min='0' style=margin-top:" + obj.heightY +
-                    "px;position:absolute;width:" + obj.widthX + "px!important" + "/>");
+                    "' value='" + obj.maxHealth + "' min='0' style=position:absolute;width:" + obj.widthX + "px!important" + " />");
                 imageDefined.css("backgroundImage", "url(".concat(getImageFileURL(type, obj.imageName)).concat(")"));
                 break;
             case "checkpoint":
