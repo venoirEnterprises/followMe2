@@ -22,7 +22,7 @@
 
         if ((automated && health < object.maxHealth) || automated === undefined || localStorage.getItem("resetting") === true) {
             object.health = health;
-            memServer.server.updateHealth(object.username, object.health, object.maxHealth, isDying, object.maxLives)
+            followMe.userServicesDefined.invoke("updateHealth",object.username, object.health, object.maxHealth, isDying, object.maxLives)
             if (otherObj === undefined) {
                 followMe.showPlayerStats(object, true);
             }
@@ -55,7 +55,7 @@
                 $("#onlineWeapon" + object.username).hide();
                 $("#" + object.username + "name").hide();
             }
-            followMe.userServicesDefined.server.updateHealth(object.username, object.health, object.maxHealth, isDying, object.maxLives)
+            followMe.userServicesDefined.invoke("updateHealth",object.username, object.health, object.maxHealth, isDying, object.maxLives)
 
         }
 
@@ -72,7 +72,7 @@
                 if (checkpoint === localStorage.getItem("checkpoint")) {
                     displayValue = -64
                 }
-                followMe.userServicesDefined.server.gameOver(localStorage.getItem("username"), object.lives, object.maxHealth)
+                followMe.userServicesDefined.invoke("gameOver",localStorage.getItem("username"), object.lives, object.maxHealth)
                 //alert(object.lives + ", " + object.maxHealth)
 
                 if (followMe.checkpoints[x.substring(10)].caveName === "") {
@@ -85,7 +85,7 @@
             localStorage.setItem("checkpoint", 0)
             localStorage.setItem("checkpoint2", 0)
             followMe.players[1].checkpoint = 0;
-            followMe.userServicesDefined.server.gameOver(localStorage.getItem("username"), object.lives, object.maxHealth)
+            followMe.userServicesDefined.invoke("gameOver",localStorage.getItem("username"), object.lives, object.maxHealth)
             followMe.resetPlayer(1)
             $("#livesPlayer").val(object.maxLives)
             followMe.x("player", localStorage.getItem("startX"))

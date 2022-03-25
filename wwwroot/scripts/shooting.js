@@ -192,10 +192,6 @@
                     }
                 }
             }
-
-            $.connection.hub.start("~/signalr").done(function () {
-
-            });
             $("#weaponID").val(1);
         }
     }

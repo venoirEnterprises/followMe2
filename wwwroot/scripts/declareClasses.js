@@ -43,8 +43,8 @@ var PassiveGameObject = /** @class */ (function (_super) {
     __extends(PassiveGameObject, _super);
     function PassiveGameObject() {
         var _this = _super.call(this) || this;
-        _this.widthX = 32;
-        _this.heightY = 32;
+        _this.widthX = 64;
+        _this.heightY = 64;
         _this.hideMinimumDifficulty = 0;
         _this.showMinimumDifficulty = 0;
         _this.caveName = "";
@@ -56,10 +56,10 @@ var PassiveGameObject = /** @class */ (function (_super) {
         this.hideMinimumDifficulty = hideMinimumDifficulty;
         this.showMinimumDifficulty = showMinimumDifficulty;
         this.systemId = systemId;
-        this.x = x * 32;
-        this.y = y * 32;
-        this.widthX = width * 32;
-        this.heightY = height * 32;
+        this.x = x * 64;
+        this.y = y * 64;
+        this.widthX = width * 64;
+        this.heightY = height * 64;
         if (type === "enemies") {
             this.heightY += 8;
         }

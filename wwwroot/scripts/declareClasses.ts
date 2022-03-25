@@ -26,8 +26,8 @@ abstract class PassiveGameObject extends GameObject {
     constructor(
     ) { super() }
 
-    public widthX: number = 32;
-    public heightY: number = 32;
+    public widthX: number = 64;
+    public heightY: number = 64;
     public hideMinimumDifficulty: number = 0;
     public showMinimumDifficulty: number = 0;
     public caveName: string = "";
@@ -38,10 +38,10 @@ abstract class PassiveGameObject extends GameObject {
         this.hideMinimumDifficulty = hideMinimumDifficulty;
         this.showMinimumDifficulty = showMinimumDifficulty;
         this.systemId = systemId;
-        this.x = x * 32;
-        this.y = y * 32;
-        this.widthX = width * 32;
-        this.heightY = height * 32;
+        this.x = x * 64;
+        this.y = y * 64;
+        this.widthX = width * 64;
+        this.heightY = height * 64;
         if (type === "enemies")
         {
             this.heightY += 8;
