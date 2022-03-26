@@ -3,58 +3,37 @@ index and uniqueIdentifier to be removed, in place of server-side systemId
 xMove replaced by maxx
 yMove replaced my maxy
 */
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var GameObject = /** @class */ (function () {
-    function GameObject() {
+class GameObject {
+    constructor() {
         this.systemId = 0;
         this.x = 0;
         this.y = 0;
         this.imageName = "";
     }
-    return GameObject;
-}());
-var Player = /** @class */ (function (_super) {
-    __extends(Player, _super);
-    function Player(health, maxHealth, lives, username, local) {
-        var _this = _super.call(this) || this;
-        _this.health = health;
-        _this.maxHealth = maxHealth;
-        _this.lives = lives;
-        _this.username = username;
-        _this.local = local;
-        return _this;
+}
+class Player extends GameObject {
+    constructor(health, maxHealth, lives, username, local) {
+        super();
+        this.health = health;
+        this.maxHealth = maxHealth;
+        this.lives = lives;
+        this.username = username;
+        this.local = local;
     }
-    return Player;
-}(GameObject));
-var PassiveGameObject = /** @class */ (function (_super) {
-    __extends(PassiveGameObject, _super);
-    function PassiveGameObject() {
-        var _this = _super.call(this) || this;
-        _this.widthX = 64;
-        _this.heightY = 64;
-        _this.hideMinimumDifficulty = 0;
-        _this.showMinimumDifficulty = 0;
-        _this.caveName = "";
-        _this.inCave = false;
-        _this.spriteY = 0;
-        _this.imageName = "";
-        return _this;
+}
+class PassiveGameObject extends GameObject {
+    constructor() {
+        super();
+        this.widthX = 64;
+        this.heightY = 64;
+        this.hideMinimumDifficulty = 0;
+        this.showMinimumDifficulty = 0;
+        this.caveName = "";
+        this.inCave = false;
+        this.spriteY = 0;
+        this.imageName = "";
     }
-    PassiveGameObject.prototype.setPassiveObjectProperties = function (type, systemId, x, y, caveName, hideMinimumDifficulty, showMinimumDifficulty, spriteY, width, height, imageName) {
+    setPassiveObjectProperties(type, systemId, x, y, caveName, hideMinimumDifficulty, showMinimumDifficulty, spriteY, width, height, imageName) {
         this.hideMinimumDifficulty = hideMinimumDifficulty;
         this.showMinimumDifficulty = showMinimumDifficulty;
         this.systemId = systemId;
@@ -69,57 +48,45 @@ var PassiveGameObject = /** @class */ (function (_super) {
         this.caveName = caveName || "";
         this.inCave = this.caveName.length > 0 ? true : false;
         this.imageName = imageName;
-    };
-    PassiveGameObject.prototype.getCaveDetails = function () {
+    }
+    getCaveDetails() {
         console.log(this.caveName.length > 0 ? this.caveName + ", in cave? " + this.inCave : "[no cave]");
-    };
-    return PassiveGameObject;
-}(GameObject));
-var Weapon = /** @class */ (function (_super) {
-    __extends(Weapon, _super);
-    function Weapon(hurt, rate, weaponLevel) {
-        var _this = _super.call(this) || this;
-        _this.hurt = hurt;
-        _this.rate = rate;
-        _this.weaponLevel = weaponLevel;
-        return _this;
+    }
+}
+class Weapon extends PassiveGameObject {
+    constructor(hurt, rate, weaponLevel) {
+        super();
+        this.hurt = hurt;
+        this.rate = rate;
+        this.weaponLevel = weaponLevel;
     }
     ;
-    return Weapon;
-}(PassiveGameObject));
+}
 ;
-var Cave = /** @class */ (function (_super) {
-    __extends(Cave, _super);
-    function Cave(entrance, caveWall, caveCeiling, xMove, //image manipulations
+class Cave extends PassiveGameObject {
+    constructor(entrance, caveWall, caveCeiling, xMove, //image manipulations
     yMove) {
-        var _this = _super.call(this) || this;
-        _this.entrance = entrance;
-        _this.caveWall = caveWall;
-        _this.caveCeiling = caveCeiling;
-        _this.xMove = xMove;
-        _this.yMove = yMove;
-        return _this;
+        super();
+        this.entrance = entrance;
+        this.caveWall = caveWall;
+        this.caveCeiling = caveCeiling;
+        this.xMove = xMove;
+        this.yMove = yMove;
     }
     ;
-    return Cave;
-}(PassiveGameObject));
+}
 ;
-var AnimatedGameObject = /** @class */ (function (_super) {
-    __extends(AnimatedGameObject, _super);
-    function AnimatedGameObject(animate, startFrame, endFrame) {
-        if (animate === void 0) { animate = false; }
-        if (startFrame === void 0) { startFrame = ""; }
-        if (endFrame === void 0) { endFrame = 0; }
-        var _this = _super.call(this) || this;
-        _this.animate = animate;
-        _this.startFrame = startFrame;
-        _this.endFrame = endFrame;
-        return _this;
+class AnimatedGameObject extends PassiveGameObject {
+    constructor(animate = false, startFrame = "", endFrame = 0) {
+        super();
+        this.animate = animate;
+        this.startFrame = startFrame;
+        this.endFrame = endFrame;
     }
-    AnimatedGameObject.prototype.giveAnimate = function () {
+    giveAnimate() {
         console.log(this.animate);
-    };
-    AnimatedGameObject.prototype.setAnimationProperties = function (animate, startFrame, endFrame, type) {
+    }
+    setAnimationProperties(animate, startFrame, endFrame, type) {
         this.animate = animate;
         switch (type) {
             case "checkpoint":
@@ -133,115 +100,80 @@ var AnimatedGameObject = /** @class */ (function (_super) {
                 break;
         }
         this.endFrame = endFrame;
-    };
-    return AnimatedGameObject;
-}(PassiveGameObject));
-var Item = /** @class */ (function (_super) {
-    __extends(Item, _super);
-    function Item(message) {
-        var _this = _super.call(this) || this;
-        _this.message = message;
-        return _this;
     }
-    return Item;
-}(AnimatedGameObject));
-var Checkpoint = /** @class */ (function (_super) {
-    __extends(Checkpoint, _super);
-    function Checkpoint(checkpoint, newLevel, //supposed to name the level
+}
+class Item extends AnimatedGameObject {
+    constructor(message) {
+        super();
+        this.message = message;
+    }
+}
+class Checkpoint extends AnimatedGameObject {
+    constructor(checkpoint, newLevel, //supposed to name the level
     unityLevel, messageForKey, levelName) {
-        var _this = _super.call(this) || this;
-        _this.checkpoint = checkpoint;
-        _this.newLevel = newLevel;
-        _this.unityLevel = unityLevel;
-        _this.messageForKey = messageForKey;
-        _this.levelName = levelName;
-        return _this;
+        super();
+        this.checkpoint = checkpoint;
+        this.newLevel = newLevel;
+        this.unityLevel = unityLevel;
+        this.messageForKey = messageForKey;
+        this.levelName = levelName;
     }
-    return Checkpoint;
-}(AnimatedGameObject));
-var Teleport = /** @class */ (function (_super) {
-    __extends(Teleport, _super);
-    function Teleport(world, level, whyLocked, teleportAllowed) {
-        var _this = _super.call(this) || this;
-        _this.world = world;
-        _this.level = level;
-        _this.whyLocked = whyLocked;
-        _this.teleportAllowed = teleportAllowed;
-        return _this;
+}
+class Teleport extends AnimatedGameObject {
+    constructor(world, level, whyLocked, teleportAllowed) {
+        super();
+        this.world = world;
+        this.level = level;
+        this.whyLocked = whyLocked;
+        this.teleportAllowed = teleportAllowed;
     }
-    return Teleport;
-}(AnimatedGameObject));
-var AnimatedMovementGameObject = /** @class */ (function (_super) {
-    __extends(AnimatedMovementGameObject, _super);
-    function AnimatedMovementGameObject(xend, yend, backToStartPoint) {
-        if (xend === void 0) { xend = 0; }
-        if (yend === void 0) { yend = 0; }
-        if (backToStartPoint === void 0) { backToStartPoint = 0; }
-        var _this = _super.call(this) || this;
-        _this.xend = xend;
-        _this.yend = yend;
-        _this.backToStartPoint = backToStartPoint;
-        return _this;
-    }
-    AnimatedMovementGameObject.prototype.setMovementProperties = function (xend, yend, backToStartPoint) {
+}
+class AnimatedMovementGameObject extends AnimatedGameObject {
+    constructor(xend = 0, yend = 0, backToStartPoint = 0) {
+        super();
         this.xend = xend;
         this.yend = yend;
         this.backToStartPoint = backToStartPoint;
-    };
-    return AnimatedMovementGameObject;
-}(AnimatedGameObject));
-var AnimatedHurtingGameObjectWithHealth = /** @class */ (function (_super) {
-    __extends(AnimatedHurtingGameObjectWithHealth, _super);
-    function AnimatedHurtingGameObjectWithHealth(maxHealth, currentHealth) {
-        if (maxHealth === void 0) { maxHealth = 0; }
-        if (currentHealth === void 0) { currentHealth = 0; }
-        var _this = _super.call(this) || this;
-        _this.maxHealth = maxHealth;
-        _this.currentHealth = currentHealth;
-        return _this;
     }
-    AnimatedHurtingGameObjectWithHealth.prototype.setHealth = function (maxHealth, currentHealth) {
+    setMovementProperties(xend, yend, backToStartPoint) {
+        this.xend = xend;
+        this.yend = yend;
+        this.backToStartPoint = backToStartPoint;
+    }
+}
+class AnimatedHurtingGameObjectWithHealth extends AnimatedMovementGameObject {
+    constructor(maxHealth = 0, currentHealth = 0) {
+        super();
         this.maxHealth = maxHealth;
         this.currentHealth = currentHealth;
-    };
-    return AnimatedHurtingGameObjectWithHealth;
-}(AnimatedMovementGameObject));
-var Enemy = /** @class */ (function (_super) {
-    __extends(Enemy, _super);
-    function Enemy(hurt, fly) {
-        var _this = _super.call(this) || this;
-        _this.hurt = hurt;
-        _this.fly = fly;
-        return _this;
     }
-    return Enemy;
-}(AnimatedHurtingGameObjectWithHealth));
-var Surface = /** @class */ (function (_super) {
-    __extends(Surface, _super);
-    function Surface(fan, surfaceAnimationCollection) {
-        var _this = _super.call(this) || this;
-        _this.fan = fan;
-        _this.surfaceAnimationCollection = surfaceAnimationCollection;
-        return _this;
+    setHealth(maxHealth, currentHealth) {
+        this.maxHealth = maxHealth;
+        this.currentHealth = currentHealth;
     }
-    Surface.prototype.setSurfaceCollisionProperties = function () {
+}
+class Enemy extends AnimatedHurtingGameObjectWithHealth {
+    constructor(hurt, fly) {
+        super();
+        this.hurt = hurt;
+        this.fly = fly;
+    }
+}
+class Surface extends AnimatedHurtingGameObjectWithHealth {
+    constructor(fan, surfaceAnimationCollection) {
+        super();
+        this.fan = fan;
+        this.surfaceAnimationCollection = surfaceAnimationCollection;
+    }
+    setSurfaceCollisionProperties() {
         this.minx = this.x;
         this.miny = this.y;
         this.maxx = this.x + this.widthX;
         this.maxy = this.y + this.heightY;
-    };
-    return Surface;
-}(AnimatedHurtingGameObjectWithHealth));
-var FollowMeDefinition = /** @class */ (function () {
-    function FollowMeDefinition(Enemies, Weapons, Items, Surfaces, Checkpoints, Teleports, Caves, Players) {
-        if (Enemies === void 0) { Enemies = new Array(); }
-        if (Weapons === void 0) { Weapons = new Array(); }
-        if (Items === void 0) { Items = new Array(); }
-        if (Surfaces === void 0) { Surfaces = new Array(); }
-        if (Checkpoints === void 0) { Checkpoints = new Array(); }
-        if (Teleports === void 0) { Teleports = new Array(); }
-        if (Caves === void 0) { Caves = new Array(); }
-        if (Players === void 0) { Players = new Array(); }
+    }
+}
+class FollowMeDefinition {
+    constructor(Enemies = new Array(), Weapons = new Array(), Items = new Array(), Surfaces = new Array(), Checkpoints = new Array(), Teleports = new Array(), Caves = new Array(), Players = new Array()) {
         this.Enemies = Enemies;
         this.Weapons = Weapons;
         this.Items = Items;
@@ -251,25 +183,24 @@ var FollowMeDefinition = /** @class */ (function () {
         this.Caves = Caves;
         this.Players = Players;
     }
-    FollowMeDefinition.prototype.addEnemy = function (enemy) { this.Enemies[enemy.systemId] = enemy; };
-    FollowMeDefinition.prototype.addWeapon = function (weapon) { this.Weapons[weapon.systemId] = weapon; };
-    FollowMeDefinition.prototype.addItem = function (item) { this.Items[item.systemId] = item; };
-    FollowMeDefinition.prototype.addSurface = function (surface) { this.Surfaces[surface.systemId] = surface; };
-    FollowMeDefinition.prototype.addCheckpoint = function (checkpoint) { this.Checkpoints[checkpoint.systemId] = checkpoint; };
-    FollowMeDefinition.prototype.addTeleport = function (teleport) { this.Teleports[teleport.systemId] = teleport; };
-    FollowMeDefinition.prototype.addCave = function (cave) { this.Caves[cave.systemId] = cave; };
-    FollowMeDefinition.prototype.addPlayer = function (player) { this.Players[player.systemId] = player; };
-    FollowMeDefinition.prototype.getCaves = function () { return this.Caves; };
-    FollowMeDefinition.prototype.getCheckpoints = function () { return this.Checkpoints; };
-    FollowMeDefinition.prototype.getEnemies = function () { return this.Enemies; };
-    FollowMeDefinition.prototype.getEnemy = function (systemId) { return this.Enemies.filter(function (m) { return m.systemId == systemId; }); };
-    FollowMeDefinition.prototype.getOnlinePlayers = function () { return this.Players.filter(function (m) { return m.local == true; }); };
-    FollowMeDefinition.prototype.getPlayer = function () { return this.Players.filter(function (m) { return m.local == true; }); };
-    FollowMeDefinition.prototype.getItems = function () { return this.Items; };
-    FollowMeDefinition.prototype.getWeapons = function () { return this.Weapons; };
-    FollowMeDefinition.prototype.getSurfaces = function () { return this.Surfaces; };
-    FollowMeDefinition.prototype.getSurface = function (systemId) { return this.Surfaces.filter(function (m) { return m.systemId == systemId; }); };
-    FollowMeDefinition.prototype.getTeleports = function () { return this.Teleports; };
-    return FollowMeDefinition;
-}());
+    addEnemy(enemy) { this.Enemies[enemy.systemId] = enemy; }
+    addWeapon(weapon) { this.Weapons[weapon.systemId] = weapon; }
+    addItem(item) { this.Items[item.systemId] = item; }
+    addSurface(surface) { this.Surfaces[surface.systemId] = surface; }
+    addCheckpoint(checkpoint) { this.Checkpoints[checkpoint.systemId] = checkpoint; }
+    addTeleport(teleport) { this.Teleports[teleport.systemId] = teleport; }
+    addCave(cave) { this.Caves[cave.systemId] = cave; }
+    addPlayer(player) { this.Players[player.systemId] = player; }
+    getCaves() { return this.Caves; }
+    getCheckpoints() { return this.Checkpoints; }
+    getEnemies() { return this.Enemies; }
+    getEnemy(systemId) { return this.Enemies.filter(m => m.systemId == systemId); }
+    getOnlinePlayers() { return this.Players.filter(m => m.local == true); }
+    getPlayer() { return this.Players.filter(m => m.local == true); }
+    getItems() { return this.Items; }
+    getWeapons() { return this.Weapons; }
+    getSurfaces() { return this.Surfaces; }
+    getSurface(systemId) { return this.Surfaces.filter(m => m.systemId == systemId); }
+    getTeleports() { return this.Teleports; }
+}
 //# sourceMappingURL=declareClasses.js.map

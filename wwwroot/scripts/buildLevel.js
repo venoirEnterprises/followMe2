@@ -102,7 +102,7 @@
             if ((serveranimation.xend > 0 || serveranimation.yend > 0) && serveranimation.type !== "caves") {//&&( serveranimation.xend >0 || serveranimation.yend >0) ) {
                 //1.13.1.4 extension made, surfaces can now move too
                 //Method named changed from enemyIsAnimated, as surfaces etc. should be able to move too [dependent on difficulty in futures]
-                followMe.animateObject(serveranimation.systemId, serveranimation.type)
+                followMe.animateObject(serveranimation.systemId, serveranimation.type, false, false, 0, serveranimation.xend > 0 ? serveranimation.xend : serveranimation.yend)
 
 
             }
@@ -337,7 +337,7 @@
 
 
     }
-        
+
     followMe.addSprite = function (parentId, divId, options) {
         options = $.extend({
             x: 0, y: 0, width: 64, height: 64
@@ -413,9 +413,8 @@
             .attr("id", checkpointObject.identifier + "key")
             .appendTo($("#game"))
     }
-    //1.13.1.4 extension made, surfaces can now move too
     //We'e dealing with the local objects now
-    followMe.animateObject = function (iduse, objectName) {
+    followMe.animateObject = function (iduse, objectName, isYMovement, isReverseDirection, currentState, moveDistance) {
         var object = followMe.enemies[iduse];
         var myY = 0;
         var myMaxY = 0;
@@ -443,62 +442,23 @@
         var code = 65;
         var direction = "left"//could be an option in the future
         var x = object.xend
-        var newleft2 = parseFloat(left) + 64 + "px"
-
-        if (object.backToStartPoint) {
-            setInterval(function () {
-                //The loop is right, down, left, up
-                if (object.xend > 0) {
-                    moveObjectOnLoop(object.xend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, false, false);
-                    window.console.log("right")
-                }
-                if (object.yend > 0 && (object.fly || objectName !== "enemies")) {
-                    moveObjectOnLoop(object.yend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, true, false);
-                    window.console.log("down")
-                }
-                if (object.xend > 0) {
-                    moveObjectOnLoop(object.xend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, false, true);
-                    window.console.log("left")
-                }
-                if (object.yend > 0 && (object.fly || objectName !== "enemies")) {
-                    moveObjectOnLoop(object.yend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, true, true);
-                    window.console.log("up")
-                }
-            }, 1000)
-        }
-        //sleep(500)
-        //Not back to startpoint
-        else {
-            if (object.xend > 0) {
-                moveObjectOnLoop(object.xend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, false, false);
-            }
-            if (object.yend > 0 && (object.fly || objectName !== "enemies")) {
-                moveObjectOnLoop(object.yend, top, left, object, iduse, objectName, timeToMove, code, myX, myY, true, false);
-            }
-        }
-    }
-
-    //based on surface collection, set the max and min coordinates of the "surfaceAnimationCollection"
-    function checksurfaceAnimationCollection(surfaces) {
-        return surfaces.surfaceAnimationCollection === followMe.checkSurfaceAnimationCollection;
-    }
+        var newleft2 = parseFloat(left) + 64 + "px";
+        var currentStateForNextRun = currentState;
 
 
-    //27/01/18 code centralised for object animation looping, called above
-    function moveObjectOnLoop(valueToLoop, top, left, object, iduse, objectName, timeToMove, code, myX, myY, isY, reverse) {
-        for (var i = 0; i < valueToLoop; i++) {
+        for (let i = 0; i < moveDistance; i++) {
             var newattribute = parseFloat(left) + 64 /** (i+1)*/ + "px";
-            if (reverse) {
+            if (isReverseDirection) {
                 newattribute = parseFloat(left) - 64 /** (i+1)*/ + "px"
             }
             var newattribute2 = newattribute.substring(0, newattribute.length - 2);
             var identifier = "." + objectName + "#" + iduse;
             var attributeToChange = "top";
-            if (!isY) {
+            if (!isYMovement) {
                 attributeToChange = "left";
             }
             var animationProperties = {}; animationProperties[attributeToChange] = "+=64px";
-            if (reverse) {
+            if (isReverseDirection) {
                 animationProperties = {}; animationProperties[attributeToChange] = "-=64px";
             }
 
@@ -511,11 +471,11 @@
                         switch (objectName) {
                             case "enemies":
 
-                                if (!isY) {
+                                if (!isYMovement) {
                                     followMe.enemyDrop(code, fx.end, iduse, object.fly)
                                     followMe.enemies[iduse].x = fx.end;
                                 }
-                                if (isY) {
+                                if (isYMovement) {
                                     followMe.enemies[iduse].y = fx.end;
                                 }
                                 followMe.enemyHurt(fx.end, iduse, object)
@@ -524,7 +484,7 @@
                             case "surface":
                                 object.miny = myY;
                                 var playerObj = followMe.players[1];
-                                if (!isY) {
+                                if (!isYMovement) {
                                     if (object.surfaceAnimationCollection !== "")//This should always be true for surfaces, we're in an animation collection, the min and max x forced by the overall width
                                     {
                                         //Got to make it wider for the matching to take place less harshly as they do if the surface isn't moving'
@@ -532,7 +492,7 @@
                                         var arrayToModifyXCoords = followMe.surfaces.filter(checksurfaceAnimationCollection);
                                         //object.minx = arrayToModifyXCoords[0].minx;
                                         //object.maxx = arrayToModifyXCoords[arrayToModifyXCoords.length - 1].maxx
-                                        if (reverse) {
+                                        if (isReverseDirection) {
                                             object.minx = fx.end;
                                             object.maxx = fx.end + 128;
                                         }
@@ -552,7 +512,7 @@
                                     iduse2 = iduse
                                     var realTop = $(iduse2).css("top");//will need to get the current x as it animates, so the player moves along
                                     var realLeft = $(iduse2).css("left");
-                                    if (!isY) {
+                                    if (!isYMovement) {
                                         followMe.x("player", realLeft.substring(0, realLeft.length - 2) - 10, true);
                                     }
                                     else {
@@ -561,20 +521,63 @@
                                 }
                                 break;
                         }
-                        //Special behaviour is needed here, as they are "dynamic" objects that know where the floor is
+                    },
+                    complete: function () {
 
-
+                        if (i == moveDistance - 1) {
+                            //faceSpriteToDirectionItMoves(iduse, !isReverseDirection)
+                            //0=right,1=down,2=left,3=up. Recursively call and loop all values of movement
+                            //attributes are for the next animation
+                            switch (currentState) {
+                                case 0:
+                                    faceSpriteToDirectionItMoves(iduse, !isReverseDirection)
+                                    isYMovement = object.yend > 0;
+                                    isReverseDirection = object.yend ==0;
+                                    currentStateForNextRun = object.yend > 0 ? 1 : 2;
+                                    newMoveDistance = object.yend > 0 ? object.yend : object.xend;
+                                    window.console.log("right")
+                                    break;
+                                case 1:
+                                    isYMovement = false;
+                                    isReverseDirection = true;
+                                    currentStateForNextRun = 2;
+                                    newMoveDistance = object.xend;
+                                    window.console.log("down")
+                                    break;
+                                case 2:
+                                    faceSpriteToDirectionItMoves(iduse, !isReverseDirection)
+                                    isYMovement = object.yend > 0;
+                                    isReverseDirection = object.yend != 0;
+                                    currentStateForNextRun = object.yend > 0 ? 3 : 0;
+                                    newMoveDistance = object.yend > 0 ? object.yend : object.xend;
+                                    window.console.log("left")
+                                    break;
+                                case 3:
+                                    isYMovement = false;
+                                    isReverseDirection = false;
+                                    currentStateForNextRun = 0;
+                                    newMoveDistance = object.xend;
+                                    window.console.log("up")
+                                    break;
+                            }
+                            followMe.animateObject(iduse, objectName, isYMovement, isReverseDirection, currentStateForNextRun, newMoveDistance)
+                            //    //loop is finished, animated object again
+                        }
                     }
                 })
-            if (!isY) {
-                left = newattribute2;
-            }
-            else {
-                top = newattribute2;
-            }
+        }
+        if (!isYMovement) {
+            left = newattribute2;
+        }
+        else {
+            top = newattribute2;
         }
     }
 
+    //based on surface collection, set the max and min coordinates of the "surfaceAnimationCollection"
+    function checksurfaceAnimationCollection(surfaces) {
+        return surfaces.surfaceAnimationCollection === followMe.checkSurfaceAnimationCollection;
+    }
 
     /* Detach a datepicker from its control.
      * @param  ID   int - the ID of the element from the server, to grab its object
@@ -603,7 +606,7 @@
                 break;
             case "checkpoint":
                 imageDefined.attr("alt", obj.checkpoint);
-                // console.log(obj.checkpoint);
+            // console.log(obj.checkpoint);
             default:
                 imageDefined.css("backgroundImage", "url('/images/spriteSheet.png')")
                     .css("backgroundPosition", obj.startFrame)
