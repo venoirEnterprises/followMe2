@@ -596,7 +596,8 @@
                 break;
             case "checkpoint":
                 imageDefined.attr("alt", obj.checkpoint);
-            // console.log(obj.checkpoint);
+                imageDefined.append("<img src='".concat(getImageFileURL(type, obj.imageName)).concat("' style='height:inherit'>"));
+                break;
             default:
                 imageDefined.css("backgroundImage", "url('/images/spriteSheet.png')")
                     .css("backgroundPosition", obj.startFrame)
