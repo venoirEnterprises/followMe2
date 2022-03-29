@@ -102,7 +102,7 @@
             if ((serveranimation.xend > 0 || serveranimation.yend > 0) && serveranimation.type !== "caves") {//&&( serveranimation.xend >0 || serveranimation.yend >0) ) {
                 //1.13.1.4 extension made, surfaces can now move too
                 //Method named changed from enemyIsAnimated, as surfaces etc. should be able to move too [dependent on difficulty in futures]
-                followMe.animateObject(serveranimation.systemId, serveranimation.type, false, false, 0, serveranimation.xend > 0 ? serveranimation.xend : serveranimation.yend)
+                followMe.moveObjectYandX(serveranimation.systemId, serveranimation.type, false, false, 0, serveranimation.xend > 0 ? serveranimation.xend : serveranimation.yend)
 
 
             }
@@ -414,7 +414,7 @@
             .appendTo($("#game"))
     }
     //We'e dealing with the local objects now
-    followMe.animateObject = function (iduse, objectName, isYMovement, isReverseDirection, currentState, moveDistance) {
+    followMe.moveObjectYandX = function (iduse, objectName, isYMovement, isReverseDirection, currentState, moveDistance) {
         var object = followMe.enemies[iduse];
         var myY = 0;
         var myMaxY = 0;
@@ -535,14 +535,14 @@
                                     isReverseDirection = object.yend ==0;
                                     currentStateForNextRun = object.yend > 0 ? 1 : 2;
                                     newMoveDistance = object.yend > 0 ? object.yend : object.xend;
-                                    window.console.log("right")
+                                    //window.console.log("right")
                                     break;
                                 case 1:
                                     isYMovement = false;
                                     isReverseDirection = true;
                                     currentStateForNextRun = 2;
                                     newMoveDistance = object.xend;
-                                    window.console.log("down")
+                                    //window.console.log("down")
                                     break;
                                 case 2:
                                     faceSpriteToDirectionItMoves(iduse, !isReverseDirection)
@@ -550,17 +550,17 @@
                                     isReverseDirection = object.yend != 0;
                                     currentStateForNextRun = object.yend > 0 ? 3 : 0;
                                     newMoveDistance = object.yend > 0 ? object.yend : object.xend;
-                                    window.console.log("left")
+                                    //window.console.log("left")
                                     break;
                                 case 3:
                                     isYMovement = false;
                                     isReverseDirection = false;
                                     currentStateForNextRun = 0;
                                     newMoveDistance = object.xend;
-                                    window.console.log("up")
+                                    //window.console.log("up")
                                     break;
                             }
-                            followMe.animateObject(iduse, objectName, isYMovement, isReverseDirection, currentStateForNextRun, newMoveDistance)
+                            followMe.moveObjectYandX(iduse, objectName, isYMovement, isReverseDirection, currentStateForNextRun, newMoveDistance)
                             //    //loop is finished, animated object again
                         }
                     }
@@ -586,23 +586,13 @@
     function createDisplayForInternalClass(ID, type) {
 
         var obj = getObjectsByType(type)[ID]
-        var imageDefined = $("<aside>")
-            .css("left", obj.x + "px")
-            .css("top", obj.y + "px")
-            .css("width", obj.widthX + "px")
-            .css("height", obj.heightY + "px")
-            .css("position", "absolute")
-            .css("marginLeft", "0px!important")
-            .css("transform", "scaleX(1)") // so we can flip it's direction later
-            .attr("id", obj.systemId)
-            .attr("class", type);
-
+        var imageDefined = $("<aside>");            
 
         switch (type) {
             case "enemies":
+                imageDefined.append("<img src='".concat(getImageFileURL(type, obj.imageName)).concat("' style='height:inherit'>"));
                 imageDefined.append("<progress class='standard' max='" + obj.maxHealth +
-                    "' value='" + obj.maxHealth + "' min='0' style=position:absolute;width:" + obj.widthX + "px!important" + " />");
-                imageDefined.css("backgroundImage", "url(".concat(getImageFileURL(type, obj.imageName)).concat(")"));
+                    "' value='" + obj.maxHealth + "' min='0' style=position:absolute;width:" + obj.widthX + "px!important;top:-10px;left:0px;" + " />");
                 break;
             case "checkpoint":
                 imageDefined.attr("alt", obj.checkpoint);
@@ -619,6 +609,15 @@
             imageDefined.css("height", "192px")
             imageDefined.attr("class", "surface fan")
         }
+        imageDefined.css("left", obj.x + "px")
+            .css("top", obj.y + "px")
+            .css("width", obj.widthX + "px")
+            .css("height", obj.heightY + "px")
+            .css("position", "absolute")
+            .css("marginLeft", "0px!important")
+            .css("transform", "scaleX(1)") // so we can flip it's direction later, enemies facing the right direction
+            .attr("id", obj.systemId)
+            .attr("class", type);
         imageDefined.appendTo($("#game"))
     };
 

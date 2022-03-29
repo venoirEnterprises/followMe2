@@ -1,6 +1,6 @@
 .heading a, .heading h1, .heading h4 {
     text-align: left !important;
-    color: lightblue !important;
+    color: #24b6d7 !important;
     text-decoration: none !important;
 }
 
@@ -367,4 +367,15 @@ button, input[type=button], input[type=submit] {
     left: 64px;
     position: absolute;
     top: 8px;
+}
+
+@font-face {
+    font-family: "Futurepolis3000-maY2";
+    font-style: normal;
+    src: url("../fonts/Futurepolis3000-maY2.ttf");
+}
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video 
+ {
+    font-family: 'Futurepolis3000-maY2'
 }

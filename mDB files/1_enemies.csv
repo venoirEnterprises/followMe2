@@ -1,4 +1,4 @@
 type,x,y,widthX,heightY,animate,xend,yend,backToStartPoint,hurt,fly,maxHealth,showMinimumDifficulty,hideMinimumDifficulty,imageName
-enemies,26,11,0.75,1.5,0,4,2,1,20,1,50,1,5,flight
+enemies,26,11,2,2,0,4,2,1,20,1,50,1,5,flight
 enemies,11,13.5,0.75,1.5,0,0,0,0,20,0,50,1,5,wheely
 enemies,30,20.5,0.75,1.5,0,3,0,1,20,0,50,1,5,wheely
