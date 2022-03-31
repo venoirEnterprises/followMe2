@@ -56,6 +56,9 @@
     }
 
     followMe.levelServicesDefined.on("addImageFromServer", function (serveranimation, type, username, canAccess, totalLevelToDo, playerDone, countGameObjects) {//last param specifically for teleports        
+        if (serveranimation.type == "enemies") {
+            window.console.log(serveranimation.fly,"vnorris-60", serveranimation.systemId, serveranimation.xend, serveranimation.yend)
+        }
         countLocalObjects += 1;
         addGameObject(serveranimation);
         if (type === "surface" || type === "enemies" || type == "checkpoint") {
@@ -96,11 +99,11 @@
                     $("." + type + ":last").attr("id"))
                     .appendTo($("#game"));
             }
-
-            physicalDisplayAnimationForGameObject(serveranimation, serveranimation.systemId)
-
-            if ((serveranimation.xend > 0 || serveranimation.yend > 0) && serveranimation.type !== "caves") {//&&( serveranimation.xend >0 || serveranimation.yend >0) ) {
-                //1.13.1.4 extension made, surfaces can now move too
+            
+            if (serveranimation.type == "enemies") {
+                window.console.log(serveranimation.fly, "vnorris-105, where did the flying enemy go?", serveranimation.systemId, serveranimation.xend, serveranimation.yend)
+            }
+            if ((serveranimation.xend > 0 || serveranimation.yend > 0) && serveranimation.type !== "caves") {
                 //Method named changed from enemyIsAnimated, as surfaces etc. should be able to move too [dependent on difficulty in futures]
                 followMe.moveObjectYandX(serveranimation.systemId, serveranimation.type, false, false, 0, serveranimation.xend > 0 ? serveranimation.xend : serveranimation.yend)
 
@@ -110,6 +113,7 @@
                 addDownloadKey(followMe.checkpoints[serveranimation.checkpoint]);
             }
             followMe.showCaveContents(false)
+            physicalDisplayAnimationForGameObject(serveranimation, serveranimation.systemId)
         }
 
         if (countLocalObjects === countGameObjects)//The final addition has taken place in addImage2
@@ -590,13 +594,13 @@
 
         switch (type) {
             case "enemies":
-                imageDefined.append("<img src='".concat(getImageFileURL(type, obj.imageName)).concat("' style='height:inherit'>"));
+                imageDefined.append("<img src='".concat(getImageFileURL(type, obj.imageName, obj.animate)).concat("' style='height:inherit'>"));
                 imageDefined.append("<progress class='standard' max='" + obj.maxHealth +
                     "' value='" + obj.maxHealth + "' min='0' style=position:absolute;width:" + obj.widthX + "px!important;top:-10px;left:0px;" + " />");
                 break;
             case "checkpoint":
                 imageDefined.attr("alt", obj.checkpoint);
-                imageDefined.append("<img src='".concat(getImageFileURL(type, obj.imageName)).concat("' style='height:inherit'>"));
+                imageDefined.append("<img src='".concat(getImageFileURL(type, obj.imageName, obj.animate)).concat("' style='height:inherit'>"));
                 break;
             default:
                 imageDefined.css("backgroundImage", "url('/images/spriteSheet.png')")
@@ -623,7 +627,7 @@
     };
 
     function physicalDisplayAnimationForGameObject(obj, iduse) {
-        if (obj.animate === true) {
+        if (obj.animate === true && imageName == null) {
             var frameCount = parseFloat(obj.endFrame) - parseFloat(obj.startFrame)
             if (parseFloat(obj.checkpoint) === 0) { rateDefined = 200 }
             var animationDefined = new followMe.animation(
