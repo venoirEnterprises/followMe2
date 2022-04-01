@@ -12,6 +12,8 @@ mongoimport -h 127.0.0.1:27017  -d followme -c levelSelectImagesDefinition --fil
 
 mongoimport -h 127.0.0.1:27017  -d followme -c levelSelectImagesDefinition --file "C:\Users\Vincent.Norris\workspace\personal\followMe2\mDB files\0_teleports.csv" --headerline --type csv
 
+mongoimport -h 127.0.0.1:27017  -d followme -c levelSelectImagesDefinition --file "C:\Users\Vincent.Norris\workspace\personal\followMe2\mDB files\0_fans.csv" --headerline --type csv
+
 
 mongoimport -h 127.0.0.1:27017  -d followme -c youllKnowWhatToDoImagesDefinition --file "C:\Users\Vincent.Norris\workspace\personal\followMe2\mDB files\1_surface.csv" --headerline --type csv --drop
 

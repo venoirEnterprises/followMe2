@@ -1,0 +1,16 @@
+type,x,y,widthX,heightY,animate,startFrame,startpoint,endFrame,spriteY,fan,showMinimumDifficulty,hideMinimumDifficulty,imageName
+surface,1,6,1,1,0,0,1,4,0,0,0,5,normal_start
+surface,2,6,1,1,0,1,0,0,0,0,0,5,normal_middle
+surface,3,6,1,1,0,1,0,0,0,0,0,5,normal_middle
+surface,4,6,1,1,0,1,0,0,0,0,0,5,normal_middle
+surface,5,6,1,1,0,1,0,0,0,0,0,5,normal_middle
+surface,6,6,1,1,1,2,0,3,-8.78125,1,0,5,
+surface,8,6,1,1,0,0,1,4,0,0,0,5,normal_middle
+surface,9,6,1,1,0,1,0,4,0,0,0,5,normal_middle
+surface,10,6,1,1,0,1,0,4,0,0,0,5,normal_middle
+surface,11,6,1,1,0,4,0,4,0,0,0,5,normal_middle
+surface,12,6,1,1,0,1,0,4,0,0,0,5,normal_end
+surface,6,3,1,1,0,0,0,4,0,0,0,5,normal_start
+surface,7,3,1,1,0,1,0,4,0,0,0,5,normal_middle
+surface,8,3,1,1,0,4,0,4,0,0,0,5,normal_end
+surface,1,12,7,1,0,0,0,0,0,0,0,5,normal

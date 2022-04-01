@@ -586,19 +586,32 @@
         var obj = getObjectsByType(type)[ID]
         var imageDefined = $("<aside>");            
 
+        if (type == "enemies" || type == "checkpoint" || (type =="surface" && obj.imageName !=="normal")) {
+            imageDefined.append("<img src='".concat(getImageFileURL(type, obj.imageName, obj.animate)).concat("' style='height:inherit;width:inherit'>"));
+        } else if (type == "surface") {
+            // dynamically create UI of long straight surface, rather than having to build each 64px of a surface
+            for (var i = 0; i <= obj.widthX / 64; i++) {
+                var leftX = (i * 64)-64;
+                var surfaceName = "normal_middle";
+                if (i == 0) {
+                    surfaceName = "normal_start";
+                } else if (i == (obj.widthX/64)) {
+                    surfaceName = "normal_end";
+                }
+                imageDefined.append("<img class='whereweat' src='".concat(getImageFileURL(type, surfaceName, obj.animate)).concat("' style='height:inherit;left:").concat(leftX).concat("px;position:absolute'>"));
+            }
+        } else {
+            imageDefined.css("backgroundImage", "url('/images/spriteSheet.png')")
+                .css("backgroundPosition", obj.startFrame)
+        }
+
         switch (type) {
-            case "enemies":
-                imageDefined.append("<img src='".concat(getImageFileURL(type, obj.imageName, obj.animate)).concat("' style='height:inherit'>"));
+            case "enemies":                
                 imageDefined.append("<progress class='standard' max='" + obj.maxHealth +
                     "' value='" + obj.maxHealth + "' min='0' style=position:absolute;width:" + obj.widthX + "px!important;top:-10px;left:0px;" + " />");
                 break;
             case "checkpoint":
                 imageDefined.attr("alt", obj.checkpoint);
-                imageDefined.append("<img src='".concat(getImageFileURL(type, obj.imageName, obj.animate)).concat("' style='height:inherit'>"));
-                break;
-            default:
-                imageDefined.css("backgroundImage", "url('/images/spriteSheet.png')")
-                    .css("backgroundPosition", obj.startFrame)
                 break;
         }
         if (obj.fan === true) {
