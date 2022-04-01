@@ -55,10 +55,7 @@
         return newmessage;
     }
 
-    followMe.levelServicesDefined.on("addImageFromServer", function (serveranimation, type, username, canAccess, totalLevelToDo, playerDone, countGameObjects) {//last param specifically for teleports        
-        if (serveranimation.type == "enemies") {
-            window.console.log(serveranimation.fly,"vnorris-60", serveranimation.systemId, serveranimation.xend, serveranimation.yend)
-        }
+    followMe.levelServicesDefined.on("addImageFromServer", function (serveranimation, type, username, canAccess, totalLevelToDo, playerDone, countGameObjects) {//last param specifically for teleports
         countLocalObjects += 1;
         addGameObject(serveranimation);
         if (type === "surface" || type === "enemies" || type == "checkpoint") {
@@ -99,10 +96,7 @@
                     $("." + type + ":last").attr("id"))
                     .appendTo($("#game"));
             }
-            
-            if (serveranimation.type == "enemies") {
-                window.console.log(serveranimation.fly, "vnorris-105, where did the flying enemy go?", serveranimation.systemId, serveranimation.xend, serveranimation.yend)
-            }
+
             if ((serveranimation.xend > 0 || serveranimation.yend > 0) && serveranimation.type !== "caves") {
                 //Method named changed from enemyIsAnimated, as surfaces etc. should be able to move too [dependent on difficulty in futures]
                 followMe.moveObjectYandX(serveranimation.systemId, serveranimation.type, false, false, 0, serveranimation.xend > 0 ? serveranimation.xend : serveranimation.yend)

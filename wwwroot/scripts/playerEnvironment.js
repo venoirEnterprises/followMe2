@@ -59,18 +59,10 @@
             var object = followMe.players[playerId];
             followMe.showPlayerStats(user);
 
+            //Set that checkpoint to be "current", so that it glows
+            $("#".concat(getCheckpointByPlayerCheckpoint(serveranimation.checkpoint).systemId).concat(" img")).attr("src", "/images/checkpoint_current.png")
+
             $("#" + theId).show();
-            var id = ("#" + serveranimation.x * 64 + "_" + serveranimation.y * 64 +
-                "-" + (parseFloat(serveranimation.widthX * 64) + serveranimation.x * 64) +
-                "y" + (serveranimation.y * 64 + parseFloat(serveranimation.heightY * 64))).toString();
-            if (user.checkpoint != -1) {
-                $("#checkpoint" + serveranimation.checkpoint).remove();
-                $(followMe.addImage2("startpoint", "background", serveranimation).appendTo($("#game")))
-            }
-            if (serveranimation.checkpoint != "") {
-                $(id).attr("class", "background checkpoint")
-                $(id).attr("alt", serveranimation.checkpoint)
-            }
             if (followMe.url.search("/connect") == -1 && $("#isGame").val() == "yes") {
                 //setInterval(function(){
                 followMe.communityServices.server.recordLevelAccomplishment(username, "checkpoint", user.checkpoint, $("#welcome").text(), "EndingTheBeginning")

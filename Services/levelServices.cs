@@ -115,9 +115,6 @@ namespace FollowMe2.Services
                     {
                         startpoint = collection.Find(Query.Exists("checkpoint")).Where(
                         m => m.checkpoint == 0).FirstOrDefault();
-                        startpoint.systemId = startpoint._id.Timestamp;
-                    } else {
-                        startpoint.systemId = startpoint._id.Timestamp;
                     }
                     
                     Clients.All.SendAsync("Startpoint",startpoint, startpoint.y + startpoint.heightY, theUser, true, usernameForClient);
