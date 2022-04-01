@@ -1,4 +1,4 @@
-type,x,y,widthX,heightY,animate,startFrame,endFrame,message,spriteY
-Items,6,8.5,1,1,TRUE,0,1,< Other Worlds | World 1 >,-6
-Items,10,8.5,1,1,TRUE,0,1,^ Other Levels | Level 1 >,-6
-Items,14,6,1,1,TRUE,0,1,< Other Levels |  Level 2 >,-6
+type,x,y,widthX,heightY,animate,startFrame,endFrame,message,spriteY,showMinimumDifficulty,hideMinimumDifficulty,imageName
+item,2,4.5,1,1,1,3,3,< Other Worlds | World 1 >,-6,0,5,question
+item,10,4.5,1,1,1,3,3,^ Other Levels | Level 1 >,-6,0,5,question
+item,6,1,1,1,1,3,3,< Other Levels |  Level 2 >,-6,0,5,question

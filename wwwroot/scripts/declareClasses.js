@@ -261,6 +261,7 @@ var FollowMeDefinition = /** @class */ (function () {
     FollowMeDefinition.prototype.addPlayer = function (player) { this.Players[player.systemId] = player; };
     FollowMeDefinition.prototype.getCaves = function () { return this.Caves; };
     FollowMeDefinition.prototype.getCheckpoints = function () { return this.Checkpoints; };
+    FollowMeDefinition.prototype.getCheckpoint = function (systemId) { return this.Checkpoints.filter(function (m) { return m.systemId == systemId; }); };
     FollowMeDefinition.prototype.getCheckpointByCheckpointId = function (checkpoint) { return this.Checkpoints.filter(function (m) { return m.checkpoint == checkpoint; }); };
     FollowMeDefinition.prototype.getEnemies = function () { return this.Enemies; };
     FollowMeDefinition.prototype.getEnemy = function (systemId) { return this.Enemies.filter(function (m) { return m.systemId == systemId; }); };

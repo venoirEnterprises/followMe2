@@ -209,6 +209,7 @@ class FollowMeDefinition {
     addPlayer(player: Player) { this.Players[player.systemId] = player; }
     getCaves() { return this.Caves; }
     getCheckpoints() { return this.Checkpoints; }
+    getCheckpoint(systemId: number) { return this.Checkpoints.filter(m => m.systemId == systemId) }
     getCheckpointByCheckpointId(checkpoint: number) { return this.Checkpoints.filter(m => m.checkpoint == checkpoint) }
     getEnemies() { return this.Enemies; }
     getEnemy(systemId: number) { return this.Enemies.filter(m => m.systemId == systemId) }

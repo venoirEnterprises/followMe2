@@ -72,7 +72,7 @@ namespace FollowMe2.Controllers
         }
 
         //GET: /levelSelect/      
-        public ActionResult levelSelect()
+        public ActionResult LevelSelect()
         {
             ViewBag.isGame = "yes";
             return View();

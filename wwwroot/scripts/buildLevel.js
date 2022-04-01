@@ -67,7 +67,7 @@
 
 
         if (username === localStorage.getItem("username")) {
-            if (type === "Items") {
+            if (type === "item") {
                 $(followMe.addImage2("readitem", "item", serveranimation, canAccess)
                     .appendTo($("#game")))
             }
@@ -88,7 +88,7 @@
                 )
                 $(whatToAdd.appendTo($("#game")))
             }
-            if (type === "Items") {
+            if (type === "item") {
                 addItemMessage(
                     serveranimation.message,
                     serveranimation.x,
@@ -234,7 +234,7 @@
             }
         }
         else {
-            if (object.message !== null && type === "ITems") {
+            if (object.message !== null && type === "item") {
                 imageDefined.css("backgroundPosition", (-64 * object.startFrame) + "px -384px")
             }
             if (isUpdate === "readitem") {

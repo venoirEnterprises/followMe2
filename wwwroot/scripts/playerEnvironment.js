@@ -293,7 +293,7 @@
                     objectToQuery = followMe.teleports[x];
                 }
                 if (classCheck == ".teleports" || classCheck == ".checkpoint") {
-
+                    if (objectToQuery == undefined) { window.console.log(classCheck, objectToQuery, $(classCheck), x, gameProperties.getCheckpoints())}
                     minx = objectToQuery.x;
                     maxx = objectToQuery.maxx;
                     miny = objectToQuery.y;
@@ -363,7 +363,7 @@
                     if (classCheck == ".teleports" && followMe.teleports[x].teleportAllowed) {
                         if (confirm("Are you sure you want to travel to the " +
                             objectToQuery.level + " level of world " + objectToQuery.world + "?")) {
-                            followMe.levelServicesDefined.server.redirectFromTeleport(localStorage.getItem("username"),
+                            followMe.levelServicesDefined.invoke("redirectFromTeleport",localStorage.getItem("username"),
                                 objectToQuery.world, objectToQuery.level, followMe.players[1]);
                         }
                         continuing = false;
@@ -585,7 +585,7 @@
     }
     followMe.checkForItems = function (xSubmitted) {
         var continuing = true;
-        $(".Items").each(function () {
+        $(".item").each(function () {
             var xToUse = followMe.x("player");
             if (xSubmitted) {
                 xToUse = xSubmitted;
