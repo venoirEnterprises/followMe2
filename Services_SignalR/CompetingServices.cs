@@ -1,15 +1,13 @@
 ﻿using FollowMe2.Models;
 using MongoDB.Driver.Builders;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace FollowMe2.Services
+namespace FollowMe2.Services_SignalR
 {
-    public class competingServices
+    public class CompetingServices
     {
-        public communityServices comm = new communityServices();
-        public deployment deploy = new deployment();
-        messageServices messaging = new messageServices();
+        public CommunityServices comm = new CommunityServices();
+        public Deployment deploy = new Deployment();
+        MessageServices messaging = new MessageServices();
 
         public bool checkCreateCompetition(competition comp)
         {

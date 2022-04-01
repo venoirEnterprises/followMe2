@@ -1,14 +1,16 @@
 ﻿using FollowMe2.Models;
+using FollowMe2.Services;
 using Microsoft.AspNetCore.SignalR;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 
-namespace FollowMe2.Services
+namespace FollowMe2.Services_SignalR
 {
-    public class userMethods : Hub
+    public class UserMethods : Hub
     {
-        multiplayerServices multi = new multiplayerServices();
-        deployment deploy = new deployment();
+        MultiplayerServices multi = new MultiplayerServices();
+        Deployment deploy = new Deployment();
+        PlayerServices playerServices = new PlayerServices();
         public async Task SendMessage(string user, string message)
         {
             await Clients.All.SendAsync("ReceiveMessage", user, message);
@@ -33,7 +35,7 @@ namespace FollowMe2.Services
 
         public void quitUser(string username)
         {
-            username = changeStringDots(username, false);
+            username = playerServices.changeStringDots(username, false);
             updateAccessTime("exit", username);
             var server = deploy.getMongoClient();
             var mongo = server.GetServer();
@@ -50,7 +52,7 @@ namespace FollowMe2.Services
         }
         public async Task getWeapons(string username)
         {
-            deployment deploy = new deployment();
+            Deployment deploy = new Deployment();
             var server = deploy.getMongoClient();
             var mongo = server.GetServer();
             var db = mongo.GetDatabase("followme");
@@ -65,8 +67,8 @@ namespace FollowMe2.Services
         }
         public async Task getWeapon(string username, bool online, bool community)
         {
-            var username2 = changeStringDots(username, false);
-            deployment deploy = new deployment();
+            var username2 = playerServices.changeStringDots(username, false);
+            Deployment deploy = new Deployment();
             var server = deploy.getMongoClient();
             var mongo = server.GetServer();
             var db = mongo.GetDatabase("followme");
@@ -87,8 +89,8 @@ namespace FollowMe2.Services
         }
         public string manipulateName(string existingName, string newname, string method, string username)
         {
-            username = changeStringDots(username, false);
-            deployment deploy = new deployment();
+            username = playerServices.changeStringDots(username, false);
+            Deployment deploy = new Deployment();
             var server = deploy.getMongoClient();
             var mongo = server.GetServer();
             var db = mongo.GetDatabase("followme");
@@ -120,7 +122,7 @@ namespace FollowMe2.Services
         }
         public void getUserStats(bool leader, string username, string levelName)
         {
-            deployment deploy = new deployment();
+            Deployment deploy = new Deployment();
             var server = deploy.getMongoClient();
             var mongo = server.GetServer();
             var db = mongo.GetDatabase("followme");
@@ -130,7 +132,7 @@ namespace FollowMe2.Services
             var statsUserLog = db.GetCollection<xpStatsUserLog>("xpStatsUserLog");
             var xptoRankAll = db.GetCollection<xpToRank>("xpToRank");
 
-            var username2 = changeStringDots(username, false);
+            var username2 = playerServices.changeStringDots(username, false);
             if (username != null)
             {
                 var showPrizes = true;
@@ -183,8 +185,8 @@ namespace FollowMe2.Services
         }
         public void updateHealth(string username, int newhealth, int oldHealth, bool dying, int maxLives)
         {
-            username = changeStringDots(username, false);
-            deployment deploy = new deployment();
+            username = playerServices.changeStringDots(username, false);
+            Deployment deploy = new Deployment();
             var db = deploy.getDB();
             var person = db.GetCollection<userDefined>("userDefined");
             var levelListing = db.GetCollection<levelList>("levelList");
@@ -214,8 +216,8 @@ namespace FollowMe2.Services
         }
         public void gameOver(string username, int lifeCount, int maxHealth)
         {
-            username = changeStringDots(username, false);
-            deployment deploy = new deployment();
+            username = playerServices.changeStringDots(username, false);
+            Deployment deploy = new Deployment();
             var db = deploy.getDB();
             var person = db.GetCollection<userDefined>("userDefined");
             var userToQuery = person.FindOne(Query.EQ("username", username));
@@ -224,21 +226,10 @@ namespace FollowMe2.Services
             userToQuery.health = maxHealth;
             person.Save(userToQuery);
         }
-        public void surrender(string username)
-        {
-            username = changeStringDots(username, false);
-            deployment deploy = new deployment();
-            var db = deploy.getDB();
-            var person = db.GetCollection<userDefined>("userDefined");
-            var userToQuery = person.FindOne(Query.EQ("username", username));
-            userToQuery.checkpoint = 0;
-            userToQuery.levelPlayTime = 0;
-            person.Save(userToQuery);
-        }
         public void updateXPorLevel(string username, int xp)
         {
-            username = changeStringDots(username, false);
-            deployment deploy = new deployment();
+            username = playerServices.changeStringDots(username, false);
+            Deployment deploy = new Deployment();
             var db = deploy.getDB();
             var person = db.GetCollection<userDefined>("userDefined");
             var userToQuery = person.FindOne(Query.EQ("username", username));
@@ -258,12 +249,12 @@ namespace FollowMe2.Services
             userToQuery.XP = xp;
             person.Save(userToQuery);
             var xpNextRank = xptoRankAll.FindOne(Query.EQ("rank", userToQuery.rank));
-            Clients.All.SendAsync("playerNewXPAndRank",changeStringDots(username, true), userToQuery.XP, userToQuery.rank, xpNextRank.maxXP, statsToQuery);
+            Clients.All.SendAsync("playerNewXPAndRank", playerServices.changeStringDots(username, true), userToQuery.XP, userToQuery.rank, xpNextRank.maxXP, statsToQuery);
         }
         public void updateXPLogForUser(string username, string XPStatsAction, string XPStatsType, string levelName)
         {
-            username = changeStringDots(username, false);
-            deployment deploy = new deployment();
+            username = playerServices.changeStringDots(username, false);
+            Deployment deploy = new Deployment();
             var db = deploy.getDB();
             var person = db.GetCollection<userDefined>("userDefined");
             var userToQuery = person.FindOne(Query.EQ("username", username));
@@ -303,34 +294,7 @@ namespace FollowMe2.Services
                 personStatToAdd.Save(userLogForXP);
             }
         }
-
-        public string changeStringDots(string email, bool recover)
-        {
-            var returnString = "";
-            var checkForThis = ".";
-            var replaceCharacter = ",";
-            if (email != null)
-            {
-                for (int i = 0; i < email.Length; i++)
-                {
-                    var characterToCheck = email.Substring(i, 1);
-                    var newCharacter = "";
-                    if (characterToCheck == checkForThis)
-                    {
-                        newCharacter = replaceCharacter;
-                    }
-                    else
-                    {
-                        newCharacter = characterToCheck;
-                    }
-                    returnString += newCharacter;
-
-                }
-            }
-            return returnString;
-
-        }
-
+        
         public int getTypeOfObjectForLevel(MongoDatabase db, string levelName, string worldName, string objectType)//as of 1.12.4 no "worlds"
         {
             int returnThis = 0;

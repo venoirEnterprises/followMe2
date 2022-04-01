@@ -1,4 +1,4 @@
-﻿using FollowMe2.Services;
+﻿using FollowMe2.Services_SignalR;
 using Microsoft.AspNetCore.Mvc;
 using FollowMe2.Models;
 using MongoDB.Driver.Builders;
@@ -16,9 +16,9 @@ namespace FollowMe2.Controllers
 
     public class playerCommunityController : Controller
     {
-        public deployment deploy = new deployment();
-        public communityServices comm = new communityServices();
-        public levelServices level = new levelServices();
+        public Deployment deploy = new Deployment();
+        public CommunityServices comm = new CommunityServices();
+        public LevelServices level = new LevelServices();
 
         public JsonResult checkFriendStatus(string me, string them)
         {

@@ -1,8 +1,8 @@
 ﻿using FollowMe2.Models;
+using FollowMe2.Services_SignalR;
 using FollowMe2.Services;
 using FollowMe2.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 
 
@@ -10,11 +10,12 @@ namespace FollowMe2.Controllers
 {
     public class ConnectController : Controller
     {
-        userMethods userChange = new Services.userMethods();
-        authServices auth = new authServices();
-        deployment deploy = new deployment();
-        communityServices comm = new communityServices();
-        levelServices level = new levelServices();
+        UserMethods userChange = new UserMethods();
+        AuthServices auth = new AuthServices();
+        Deployment deploy = new Deployment();
+        CommunityServices comm = new CommunityServices();
+        LevelServices level = new LevelServices();
+        PlayerServices playerServices = new PlayerServices();
 
         public JsonResult getRedirection(string username)
         {
@@ -34,7 +35,7 @@ namespace FollowMe2.Controllers
             var db = deploy.getDB();
             var levels = db.GetCollection<levelList>("levelList");
             var person = db.GetCollection<userDefined>("userDefined");
-            userDefined userToQuery = person.FindOne(Query.EQ("username", userChange.changeStringDots(model.username, false)));
+            userDefined userToQuery = person.FindOne(Query.EQ("username", playerServices.changeStringDots(model.username, false)));
             //We need to check the model isn't passing 0 because it takes a second for the UI to load the actual parameters with the dropdowns and so on
             //Or the UI might not keep up
             //Otherwise submit as normal
@@ -107,7 +108,7 @@ namespace FollowMe2.Controllers
 
                 var db = deploy.getDB();
                 var person = db.GetCollection<userDefined>("userDefined");
-                var userToQuery = person.FindOne(Query.EQ("username", userChange.changeStringDots(model.username, false)));
+                var userToQuery = person.FindOne(Query.EQ("username", playerServices.changeStringDots(model.username, false)));
                 userToQuery.head = model.head;
                 userToQuery.chest = model.chest;
                 userToQuery.legs = model.legs;

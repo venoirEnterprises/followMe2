@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using MongoDB.Driver.Builders;
 
-namespace FollowMe2.Services
+namespace FollowMe2.Services_SignalR
 {
     public class shot
     {
@@ -13,9 +13,9 @@ namespace FollowMe2.Services
         public string identifier { get; set; }
     }
 
-    public class multiplayerServices : Hub
+    public class MultiplayerServices : Hub
     {
-        deployment deploy = new deployment();
+        Deployment deploy = new Deployment();
         public void shareXP(string shareUsername, string helpRequest, int newXPValueForShow, string message)
         {
             var db = deploy.getDB();
@@ -42,7 +42,7 @@ namespace FollowMe2.Services
         public void showPrimaryHealth(float health, string username, float lives)
         {
             var dying = false;
-            deployment deploy = new deployment();
+            Deployment deploy = new Deployment();
             var database = deploy.getDB();
             var userDefined = database.GetCollection<userDefined>("userDefined").FindOneAs<userDefined>(Query.EQ("username", username));
             var xpStats = database.GetCollection<statsForRank>("statsToRank").FindOneAs<statsForRank>(Query.EQ("rank", userDefined.rank));

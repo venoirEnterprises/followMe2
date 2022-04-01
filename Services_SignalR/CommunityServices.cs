@@ -2,14 +2,16 @@
 using Microsoft.AspNetCore.SignalR;
 using MongoDB.Driver.Builders;
 using MongoDB.Driver;
+using FollowMe2.Services;
 
-namespace FollowMe2.Services
+namespace FollowMe2.Services_SignalR
 {
 
-    public class communityServices : Hub
+    public class CommunityServices : Hub
     {
-        public deployment deploy = new deployment();
-        public userMethods user = new userMethods();
+        public Deployment deploy = new Deployment();
+        public UserMethods user = new UserMethods();
+        public PlayerServices playerServices = new PlayerServices();
 
         public List<string> getMyLevels(string username, bool onlyDone)
         {
@@ -300,7 +302,7 @@ namespace FollowMe2.Services
 
         public void addPlayerProgress(string username, string levelName, string worldName)
         {
-            username = user.changeStringDots(username, true);
+            username = playerServices.changeStringDots(username, true);
 
             var db = deploy.getDB();
             var progressDefinition = db.GetCollection<playerProgressInLevel>("playerProgressInLevel");
@@ -327,11 +329,11 @@ namespace FollowMe2.Services
 
         public void setFastestLevelTime(string username, string levelName, float timeToFinish)
         {
-            deployment deploy = new deployment();
+            Deployment deploy = new Deployment();
             var db = deploy.getDB();
             var progressDefinition = db.GetCollection<playerProgressInLevel>("playerProgressInLevel");
             var levelProgressToUpdate = progressDefinition.FindOne(Query.And(
-                Query.EQ("username", user.changeStringDots(username, true)),
+                Query.EQ("username", playerServices.changeStringDots(username, true)),
                 Query.EQ("levelIdentifier", levelName)
                 ));
             if (levelProgressToUpdate.quickestSecondsToFinish == 0 ||
@@ -345,14 +347,14 @@ namespace FollowMe2.Services
         public int targetProgressCount(string username, bool forLevel, string levelIdent, int worldNumber, string objectType)
         {
             int valueToReturn = 0;
-            deployment deploy = new deployment();
+            Deployment deploy = new Deployment();
             var db = deploy.getDB();
             if (forLevel == false)
             {
                 var level = db.GetCollection<levelList>("levelList").FindOne(Query.EQ("identifier", levelIdent));
 
                 var progressLog = db.GetCollection<playerProgressInLevel>("playerProgressInLevel").FindOneAs<playerProgressInLevel>(Query.And(
-                    Query.EQ("username", user.changeStringDots(username, true)),
+                    Query.EQ("username", playerServices.changeStringDots(username, true)),
                     Query.EQ("levelIdentifier", level.fullName)
                     //Nothing is outside of worlds
                     ));
@@ -419,8 +421,8 @@ namespace FollowMe2.Services
 
         public void recordLevelAccomplishment(string username, string objectType, string objectIdentifier, string levelName, string worldName)
         {
-            username = user.changeStringDots(username, true);
-            deployment deploy = new deployment();
+            username = playerServices.changeStringDots(username, true);
+            Deployment deploy = new Deployment();
             var db = deploy.getDB();
             //Find the overall progress for that level [add 1 if ID is new]
             var progressLog = db.GetCollection<playerProgressInLevel>("playerProgressInLevel");
@@ -474,10 +476,10 @@ namespace FollowMe2.Services
         {
             string totalProgressInWorld = "0th";
             int totalProgress = 0;
-            deployment deploy = new deployment();
+            Deployment deploy = new Deployment();
             var db = deploy.getDB();
             var progressDefinition = db.GetCollection<playerProgressInLevel>("playerProgressInLevel");
-            string username2 = user.changeStringDots(username, true);
+            string username2 = playerServices.changeStringDots(username, true);
             var levelProgressToUpdate = progressDefinition.FindAs<playerProgressInLevel>(Query.EQ("username", username2));
             var worldName = "";
             int checking = 1;
@@ -592,7 +594,7 @@ namespace FollowMe2.Services
 
         public void levelUniqueProgress(string username, string levelName)
         {
-            deployment deploy = new deployment();
+            Deployment deploy = new Deployment();
             var db = deploy.getDB();
             var progressDefinition = db.GetCollection<playerProgressFullDefinition>("playerProgressFullDefinition")
                 .FindAs<playerProgressFullDefinition>(Query.And(Query.EQ("username", username), Query.EQ("whichLevel", levelName)));

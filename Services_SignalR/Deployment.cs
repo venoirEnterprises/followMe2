@@ -1,8 +1,8 @@
 ﻿using MongoDB.Driver;
 
-namespace FollowMe2.Services
+namespace FollowMe2.Services_SignalR
 {
-    public class deployment
+    public class Deployment
     {
         public MongoClient getMongoClient()
         {

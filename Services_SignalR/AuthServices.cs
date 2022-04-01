@@ -4,13 +4,13 @@ using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using BC = BCrypt.Net.BCrypt;
 
-namespace FollowMe2.Services
+namespace FollowMe2.Services_SignalR
 {
-    public class authServices : Hub
+    public class AuthServices : Hub
     {
         public void newLevelAccess(string username, string level, int world)
         {
-            deployment deploy = new deployment();
+            Deployment deploy = new Deployment();
             var db = deploy.getDB();
             var levelAccessing = db.GetCollection<levelAccess>("levelAccess");
             if (hasAccessToLevel(username, level, world) == false)
@@ -25,7 +25,7 @@ namespace FollowMe2.Services
         }
         public bool hasAccessToLevel(string username, string level, int world)
         {
-            deployment deploy = new deployment();
+            Deployment deploy = new Deployment();
             var db = deploy.getDB();
             var levelAcces = db.GetCollection<levelAccess>("levelAccess");
             var countHasAccess = levelAcces.Find(Query.EQ("username", username))
@@ -44,7 +44,7 @@ namespace FollowMe2.Services
         }
         public bool checkpassword(string username, string password)
         {
-            deployment deploy = new deployment();
+            Deployment deploy = new Deployment();
             var db = deploy.getDB();
             var person = db.GetCollection<userDefined>("userDefined");
             var userToQuery = person.FindOne(Query.EQ("username", username));
@@ -62,7 +62,7 @@ namespace FollowMe2.Services
         }
         public void registerUser(string username, MongoCollection loginLog, string password, bool second, string email, bool isVenoir, bool online)
         {
-            deployment deploy = new deployment();
+            Deployment deploy = new Deployment();
             var database = deploy.getDB();
             var collection = database.GetCollection<userDefined>("userDefined");
 

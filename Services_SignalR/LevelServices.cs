@@ -1,16 +1,18 @@
 ﻿using FollowMe2.Models;
+using FollowMe2.Services;
 using Microsoft.AspNetCore.SignalR;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 
-namespace FollowMe2.Services
+namespace FollowMe2.Services_SignalR
 {
-    public class levelServices : Hub
+    public class LevelServices : Hub
     {
-        userMethods user = new userMethods();
-        authServices auth = new authServices();
-        communityServices comm = new communityServices();
-        deployment deploy = new deployment();
+        UserMethods user = new UserMethods();
+        AuthServices auth = new AuthServices();
+        CommunityServices comm = new CommunityServices();
+        Deployment deploy = new Deployment();
+        PlayerServices playerServices = new PlayerServices();
 
         //temporary test script
         public string sendMessage(string msg)
@@ -57,9 +59,9 @@ namespace FollowMe2.Services
                 username = helpUsername;
                 usingHelp = true;
             }
-            var username2 = user.changeStringDots(username, false);
+            var username2 = playerServices.changeStringDots(username, false);
             level = level + "ImagesDefinition";
-            deployment deploy = new deployment();
+            Deployment deploy = new Deployment();
             var server = deploy.getMongoClient();
             var mongo = server.GetServer();
             var db = mongo.GetDatabase("followme");
@@ -124,8 +126,8 @@ namespace FollowMe2.Services
         }
         public void updateCheckpoint(string username, int index, string levelname, int oldCheckpoint, string levelUnlocked, float timeToFinish, bool wasInvincible)
         {
-            var username2 = user.changeStringDots(username, false);
-            deployment deploy = new deployment();
+            var username2 = playerServices.changeStringDots(username, false);
+            Deployment deploy = new Deployment();
             var server = deploy.getMongoClient();
             var mongo = server.GetServer();
             var db = mongo.GetDatabase("followme");
@@ -181,12 +183,12 @@ namespace FollowMe2.Services
         }
         public void redirectFromTeleport(string username, int worldNumber, string levelNumber, userDefined player)
         {
-            deployment deploy = new deployment();
+            Deployment deploy = new Deployment();
             var db = deploy.getDB();
             var levels = db.GetCollection<levelList>("levelList");
             var users = db.GetCollection<userDefined>("userDefined");
 
-            var userToUpdate = users.FindOneAs<userDefined>(Query.EQ("username", user.changeStringDots(username, true)));
+            var userToUpdate = users.FindOneAs<userDefined>(Query.EQ("username", playerServices.changeStringDots(username, true)));
             userToUpdate.levelPlayTime = 0;
             users.Save(userToUpdate);
 
@@ -196,7 +198,7 @@ namespace FollowMe2.Services
                 ));
 
 
-            comm.addPlayerProgress(user.changeStringDots(username, true), world.fullName, world.worldName);
+            comm.addPlayerProgress(playerServices.changeStringDots(username, true), world.fullName, world.worldName);
             Clients.All.SendAsync("newLevel",world.fullName, world.worldName, username, true);
         }
     }

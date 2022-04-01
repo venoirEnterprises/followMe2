@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using FollowMe2.ViewModels;
 using System;
-using FollowMe2.Services;
+using FollowMe2.Services_SignalR;
 
 namespace followMe.Controllers
 {
     public class CommunityController : Controller
     {
-        public competingServices comp = new competingServices();
+        public CompetingServices comp = new CompetingServices();
         [HttpGet]
         public ActionResult players()
         {

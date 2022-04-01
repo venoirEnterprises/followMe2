@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net.Mail;
 
-namespace FollowMe2.Services
+namespace FollowMe2.Services_SignalR
 {
-    public class messageServices
+    public class MessageServices
     {
         public string projectionHighlight = "grey";
         public string projectionBackground = "black";

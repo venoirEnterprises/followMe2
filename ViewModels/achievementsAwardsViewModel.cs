@@ -1,5 +1,5 @@
 ﻿using FollowMe2.Models;
-using FollowMe2.Services;
+using FollowMe2.Services_SignalR;
 using MongoDB.Driver.Builders;
 using MongoDB.Driver;
 
@@ -11,7 +11,7 @@ namespace FollowMe2.ViewModels
         public List<statsForXP> achievementsList { get; set; }
         public achievementsAwardsViewModel()
         {
-            deployment deploy = new deployment();
+            Deployment deploy = new Deployment();
             var server = deploy.getMongoClient();
             var mongo = server.GetServer();
             var db = mongo.GetDatabase("followme");

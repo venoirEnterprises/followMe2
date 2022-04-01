@@ -1,4 +1,5 @@
 ﻿using FollowMe2.Models;
+using FollowMe2.Services_SignalR;
 using FollowMe2.Services;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
@@ -9,10 +10,11 @@ namespace FollowMe2.Controllers
 {
     public class HomeController : Controller
     {
-        userMethods userChange = new userMethods();
-        deployment deploy = new deployment();
-        authServices auth = new authServices();
-        levelServices level = new levelServices();
+        UserMethods userChange = new UserMethods();
+        Deployment deploy = new Deployment();
+        AuthServices auth = new AuthServices();
+        LevelServices level = new LevelServices();
+        PlayerServices playerServices = new PlayerServices();
 
         private readonly ILogger<HomeController> _logger;
 
@@ -43,7 +45,7 @@ namespace FollowMe2.Controllers
             {
                 if (model.Email != null && model.Email != "")//Can't store email "."'s, so will need to have translation service back and to email
                 {
-                    model.Email = userChange.changeStringDots(model.Email, false);
+                    model.Email = playerServices.changeStringDots(model.Email, false);
                 }
 
 
@@ -140,7 +142,7 @@ namespace FollowMe2.Controllers
                 //If the count is 0 then they are allowed to connect
                 if (userExistsCount > 0 && model.Register == false) // && loginLogCount == 0)
                 {
-                    model.Username = userChange.changeStringDots(model.Username, false);
+                    model.Username = playerServices.changeStringDots(model.Username, false);
                     var person = db.GetCollection<userDefined>("userDefined");
                     var personToUpdate = person.FindOne(Query.EQ("username", model.Username));
                     personToUpdate.online = model.GoOnline;

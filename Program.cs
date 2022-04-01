@@ -1,4 +1,6 @@
 using FollowMe2.Services;
+using FollowMe2.Services_SignalR;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseDefaultFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -26,10 +29,10 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Welcome}/{id?}");
-app.MapHub<userMethods>("/userMethods"); 
-app.MapHub<authServices>("/authServices");
-app.MapHub<levelServices>("/levelServices");
-app.MapHub<multiplayerServices>("/multiplayerServices");
-app.MapHub<communityServices>("/communityServices");
+app.MapHub<UserMethods>("/userMethods"); 
+app.MapHub<AuthServices>("/authServices");
+app.MapHub<LevelServices>("/levelServices");
+app.MapHub<MultiplayerServices>("/multiplayerServices");
+app.MapHub<CommunityServices>("/communityServices");
 
 app.Run();
