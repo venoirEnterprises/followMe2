@@ -17,6 +17,7 @@
     <Content Remove="wwwroot\scripts\levelBuilder.ts" />
     <Content Remove="wwwroot\scripts\levelDisplay.ts" />
     <Content Remove="wwwroot\scripts\PlayerActions.ts" />
+    <Content Remove="wwwroot\scripts\Trajectory.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +43,7 @@
     <TypeScriptCompile Include="wwwroot\scripts\levelBuilder.ts" />
     <TypeScriptCompile Include="wwwroot\scripts\levelDisplay.ts" />
     <TypeScriptCompile Include="wwwroot\scripts\PlayerActions.ts" />
+    <TypeScriptCompile Include="wwwroot\scripts\Trajectory.ts" />
   </ItemGroup>
 
 </Project>

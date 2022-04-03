@@ -1,30 +1,16 @@
-﻿@page
-page for @ViewContext.RouteData.Values["id"]
-
-<div class="container">
-    <div class="row">
-
-        <div class="col-2">User</div>
-        <div class="col-4"><input type="text" id="userInput" /></div>
-    </div>
-    <div class="row">
-        <div class="col-2">Message</div>
-        <div class="col-4"><input type="text" id="messageInput" /></div>
-    </div>
-    <div class="row">&nbsp;</div>
-    <div class="row">
-        <div class="col-6">
-            <input type="button" id="sendButton" value="Send Message" />
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-12">
-        <hr />
-    </div>
-</div>
-<div class="row">
-    <div class="col-6">
-        <ul id="messagesList"></ul>
-    </div>
-</div>
+﻿<p>
+<label for="angle">Angle</label>
+<input type="range" min="0" max="90" id="angle" />
+</p>
+<p>
+<label for="speed">Speed</label>
+<input type="range" min="0" max="10" id="speed" />
+</p>
+<p>
+<label for="animation">Animation Speed</label>
+<input type="range" min="0" max="100" id="animation" />
+</p>
+<p>
+<input type="button" id="start" value="Start" />
+</p>
+<script src="~/scripts/Trajectory.js"></script>
