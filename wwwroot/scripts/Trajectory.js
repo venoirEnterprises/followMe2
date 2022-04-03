@@ -58,11 +58,27 @@ function update() {
 function draw() {
     drawing.clearRect(0, 0, canvas.width, canvas.height);// remove all old objects
     drawing.beginPath();
+    drawing.fillStyle = "green";
+    drawing.rect(0, canvas.height, canvas.width, -canvas.height + 200);
+    drawing.fill();
+    drawing.beginPath();
+    drawing.fillStyle = "blue";
+    drawing.rect(0, -canvas.height + 200, canvas.width, canvas.height);
+    drawing.fill();
+    drawing.beginPath();
+    drawing.fillStyle = "black";
     drawing.arc(x, y, 10, 0, 2 * Math.PI);
     drawing.fill();
+    drawing.fillStyle = "white";
     drawing.fillText("Angle: " + angle.value, 50, 80);
     drawing.fillText("Speed: " + speed.value, 50, 90);
     drawing.fillText("Animation speed: " + animationSpeed.value, 50, 100);
+    drawing.beginPath();
+    drawing.moveTo(xStart, yStart);
+    drawing.strokeStyle = "grey";
+    drawing.lineTo(xStart + 80 * Math.cos(angle.value * Math.PI / 180), yStart - 80 * Math.sin(angle.value * Math.PI / 180));
+    drawing.lineWidth = "40";
+    drawing.stroke();
 }
 
 document.body.appendChild(canvas);
