@@ -2,6 +2,7 @@
     var countLocalObjects = 0;
     var numberx = 0;
     var numbery = 0;
+    const imageSize = 16
     followMe.teleportPicture = -562;
     localStorage.setItem("fanHit", "00000")
     followMe.teleports = [];
@@ -32,7 +33,7 @@
     followMe.animation = function (options) {
         var defaultValues =
         {
-            url: false, width: 64, numberOfFrames: 2, currentFrame: 0, rate: 200, pace: 3,
+            url: false, width: imageSize, numberOfFrames: 2, currentFrame: 0, rate: 200, pace: 3,
             top: 100,
             id: ""
         };
@@ -43,11 +44,11 @@
     };
 
     function addItemMessage(message, x, y, id) {
-        var newmessage = $("<p>").css("left", (x * 64) + 64)
-            .css("top", y * 64)
+        var newmessage = $("<p>").css("left", (x * imageSize) + imageSize)
+            .css("top", y * imageSize)
             .css("position", "absolute")
             .attr("id", "newmessage")
-            .css("width", "64px")
+            .css("width", `${imageSize}px`)
             .css("border", "1px dashed black")
             .text(message)
             .attr("id", id + "message")
@@ -76,7 +77,7 @@
             if (type === "teleports") {
                 //alert("Total for level: " + totalLevelToDo + ", " + serveranimation.level + ", player has done: " + playerDone)
                 $("range#" + serveranimation.level).remove();
-                $("<progress title ='Detail in Options and Achievements' id='" + serveranimation.level + "' max='" + totalLevelToDo + "' value='" + playerDone + "' style='left:" + parseInt(parseInt((parseInt(serveranimation.x) * 64)) + 64) + "px;top:" + parseInt(parseInt((parseInt(serveranimation.y) * 64)) + 32) + "px;position:absolute;' class='xp'>").appendTo($("#game"));
+                $("<progress title ='Detail in Options and Achievements' id='" + serveranimation.level + "' max='" + totalLevelToDo + "' value='" + playerDone + "' style='left:" + parseInt(parseInt((parseInt(serveranimation.x) * imageSize)) + imageSize) + "px;top:" + parseInt(parseInt((parseInt(serveranimation.y) * imageSize)) + imageSize/2) + "px;position:absolute;' class='xp'>").appendTo($("#game"));
             }
 
             if (whatToAdd !== false && type !== "surface" && type !== "enemies" && type !== "checkpoint") {
@@ -141,7 +142,7 @@
 
 
     followMe.addImage2 = function (isUpdate, type, object, hasAccess) {
-        //64px restriction of size dividing        
+        //imageSizepx restriction of size dividing        
         //hasAccess for teleport lock show
 
         var startFrame = (-64 * object.startFrame) + "px 0px";
@@ -154,8 +155,8 @@
             startFrame = (-64 * object.startFrame) + "px -64px";
 
 
-            var y = parseFloat(object.y * 64);
-            var x = parseFloat(object.x * 64);
+            var y = parseFloat(object.y * imageSize);
+            var x = parseFloat(object.x * imageSize);
             if (object.heightY === 0) {
                 object.heightY = 1
             }
@@ -182,10 +183,10 @@
 
         var valueToAdd = 1
         var imageDefined = $("<aside>").css("backgroundImage", url)
-            .css("left", object.x * 64 + "px")
-            .css("top", object.y * 64 + "px")
-            .css("width", (object.widthX * 64) + "px")
-            .css("height", (object.heightY * 64) + "px")
+            .css("left", object.x * imageSize + "px")
+            .css("top", object.y * imageSize + "px")
+            .css("width", (object.widthX * imageSize) + "px")
+            .css("height", (object.heightY * imageSize) + "px")
             .css("position", "absolute")
             .css("marginLeft", "0px!important")
             .css("backgroundPosition", startFrame)
@@ -201,8 +202,8 @@
         //START
 
         if (type === "teleports") {
-            y = parseFloat(object.y * 64);
-            x = parseFloat(object.x * 64);
+            y = parseFloat(object.y * imageSize);
+            x = parseFloat(object.x * imageSize);
             imageDefined.css("backgroundPosition", (-64 * object.startFrame) + "px " + followMe.teleportPicture + "px")
             var identifier = object.level.substring(0, 1) + object.world
             imageDefined.attr("id", identifier);
@@ -211,9 +212,9 @@
                 world: object.world,
                 level: object.level,
                 x: x,
-                maxx: parseFloat(x + parseFloat(object.widthX * 64)),
+                maxx: parseFloat(x + parseFloat(object.widthX * imageSize)),
                 y: y,
-                maxy: parseFloat(y + parseFloat(object.heightY * 64)),
+                maxy: parseFloat(y + parseFloat(object.heightY * imageSize)),
                 teleportAllowed: hasAccess,
                 whyLocked: object.whyLocked
             });
@@ -221,11 +222,11 @@
             iduse = identifier
             if (hasAccess === false) {
                 var teleportBlocked = $("<aside>")
-                    .attr("id", (parseFloat(teleportId.x) - 64) + "_" + (parseFloat(teleportId.y) - 64)
-                        + "-" + parseFloat(teleportId.maxx - 64) + "y"
-                        + parseFloat(teleportId.maxy - 64))
+                    .attr("id", (parseFloat(teleportId.x) - imageSize) + "_" + (parseFloat(teleportId.y) - imageSize)
+                        + "-" + parseFloat(teleportId.maxx - imageSize) + "y"
+                        + parseFloat(teleportId.maxy - imageSize))
                     .css("left", teleportId.x - 80).css("top", teleportId.y - 62).css("position", "absolute")
-                    .css("backgroundPosition", "-256px " + followMe.teleportPicture + "px").css("height", "126px").css("width", "64px")
+                    .css("backgroundPosition", "-256px " + followMe.teleportPicture + "px").css("height", "126px").css("width", `${imageSize}px`)
                     .attr("class", "background block").css("backgroundImage", url)
                     .css("position", "absolute")
 
@@ -255,20 +256,20 @@
 
                 imageDefined.css("backgroundPosition", imageX + "px " + imageY + "px").attr("id", "cave" + object.systemId)
 
-                y = parseFloat(object.y * 64);
-                x = parseFloat(object.x * 64);
+                y = parseFloat(object.y * imageSize);
+                x = parseFloat(object.x * imageSize);
 
                 followMe.caves[object.systemId] = new followMe.cave({
                     caveName: object.caveName,
-                    height: object.heightY * 64 + "px",
-                    width: object.widthX * 64 + "px",
+                    height: object.heightY * imageSize + "px",
+                    width: object.widthX * imageSize + "px",
                     xMove: object.xMove,
                     yMove: object.yMove,
                     entrance: object.entrance,
                     x: x,
-                    maxx: parseFloat(x + parseFloat(object.widthX * 64)),
+                    maxx: parseFloat(x + parseFloat(object.widthX * imageSize)),
                     y: y,
-                    maxy: parseFloat(y + parseFloat(object.heightY * 64)),
+                    maxy: parseFloat(y + parseFloat(object.heightY * imageSize)),
                     isWall: object.caveWall,
                     isCeiling: object.caveCeiling
                 });
@@ -338,7 +339,7 @@
 
     followMe.addSprite = function (parentId, divId, options) {
         options = $.extend({
-            x: 0, y: 0, width: 64, height: 64
+            x: 0, y: 0, width: imageSize, height: imageSize
         }, options);
     }
     setFrame = function (divId, animation) {
@@ -440,14 +441,14 @@
         var code = 65;
         var direction = "left"//could be an option in the future
         var x = object.xend
-        var newleft2 = parseFloat(left) + 64 + "px";
+        var newleft2 = parseFloat(left) + imageSize + "px";
         var currentStateForNextRun = currentState;
 
 
         for (let i = 0; i < moveDistance; i++) {
-            var newattribute = parseFloat(left) + 64 /** (i+1)*/ + "px";
+            var newattribute = parseFloat(left) + imageSize /** (i+1)*/ + "px";
             if (isReverseDirection) {
-                newattribute = parseFloat(left) - 64 /** (i+1)*/ + "px"
+                newattribute = parseFloat(left) - imageSize /** (i+1)*/ + "px"
             }
             var newattribute2 = newattribute.substring(0, newattribute.length - 2);
             var identifier = "." + objectName + "#" + iduse;
@@ -455,9 +456,9 @@
             if (!isYMovement) {
                 attributeToChange = "left";
             }
-            var animationProperties = {}; animationProperties[attributeToChange] = "+=64px";
+            var animationProperties = {}; animationProperties[attributeToChange] = `+=${imageSize}px`;
             if (isReverseDirection) {
-                animationProperties = {}; animationProperties[attributeToChange] = "-=64px";
+                animationProperties = {}; animationProperties[attributeToChange] = `-=${imageSize}px`;
             }
 
 
@@ -530,7 +531,7 @@
                                 case 0:
                                     faceSpriteToDirectionItMoves(iduse, !isReverseDirection)
                                     isYMovement = object.yend > 0;
-                                    isReverseDirection = object.yend ==0;
+                                    isReverseDirection = object.yend == 0;
                                     currentStateForNextRun = object.yend > 0 ? 1 : 2;
                                     newMoveDistance = object.yend > 0 ? object.yend : object.xend;
                                     //window.console.log("right")
@@ -584,18 +585,18 @@
     function createDisplayForInternalClass(ID, type) {
 
         var obj = getObjectsByType(type)[ID]
-        var imageDefined = $("<aside>");            
+        var imageDefined = $("<aside>");
 
-        if (type == "enemies" || type == "checkpoint" || (type =="surface" && obj.imageName !=="normal")) {
+        if (type == "enemies" || type == "checkpoint" || (type == "surface" && obj.imageName !== "normal")) {
             imageDefined.append("<img src='".concat(getImageFileURL(type, obj.imageName, obj.animate)).concat("' style='height:inherit;width:inherit'>"));
         } else if (type == "surface") {
-            // dynamically create UI of long straight surface, rather than having to build each 64px of a surface
-            for (var i = 0; i <= obj.widthX / 64; i++) {
-                var leftX = (i * 64)-64;
+            // dynamically create UI of long straight surface, rather than having to build each imageSize of a surface
+            for (var i = 0; i <= obj.widthX / imageSize; i++) {
+                var leftX = (i * imageSize) - imageSize;
                 var surfaceName = "normal_middle";
                 if (i == 0) {
                     surfaceName = "normal_start";
-                } else if (i == (obj.widthX/64)) {
+                } else if (i == (obj.widthX / imageSize)) {
                     surfaceName = "normal_end";
                 }
                 imageDefined.append("<img class='whereweat' src='".concat(getImageFileURL(type, surfaceName, obj.animate)).concat("' style='height:inherit;left:").concat(leftX).concat("px;position:absolute'>"));
@@ -606,7 +607,7 @@
         }
 
         switch (type) {
-            case "enemies":                
+            case "enemies":
                 imageDefined.append("<progress class='standard' max='" + obj.maxHealth +
                     "' value='" + obj.maxHealth + "' min='0' style=position:absolute;width:" + obj.widthX + "px!important;top:-10px;left:0px;" + " />");
                 break;
@@ -617,7 +618,7 @@
         if (obj.fan === true) {
             //alert()
             imageDefined.css("backgroundPosition", (-64 * obj.startFrame) + "px " + followMe.imageDefintion.fan)
-            imageDefined.css("top", (parseFloat(obj.y) - 2) * 64 + "px")
+            imageDefined.css("top", (parseFloat(obj.y) - 2) * imageSize + "px")
             imageDefined.css("height", "192px")
             imageDefined.attr("class", "surface fan")
         }
