@@ -100,7 +100,7 @@
 
             if ((serveranimation.xend > 0 || serveranimation.yend > 0) && serveranimation.type !== "caves") {
                 //Method named changed from enemyIsAnimated, as surfaces etc. should be able to move too [dependent on difficulty in futures]
-                followMe.moveObjectYandX(serveranimation.systemId, serveranimation.type, false, false, 0, serveranimation.xend > 0 ? serveranimation.xend : serveranimation.yend)
+                followMe.moveObjectYandX(serveranimation.systemId, serveranimation.type, serveranimation.yend > 0 && serveranimation.xend == 0, false, serveranimation.xend > 0 ? 0: 1, serveranimation.xend > 0 ? serveranimation.xend : serveranimation.yend)
 
 
             }
@@ -461,7 +461,6 @@
                 animationProperties = {}; animationProperties[attributeToChange] = `-=${imageSize}px`;
             }
 
-
             $(identifier).animate(animationProperties,
                 {
                     duration: timeToMove
@@ -471,7 +470,7 @@
                             case "enemies":
 
                                 if (!isYMovement) {
-                                    followMe.enemyDrop(code, fx.end, iduse, object.fly)
+                                    //followMe.enemyDrop(code, fx.end, iduse, object.fly)
                                     followMe.enemies[iduse].x = fx.end;
                                 }
                                 if (isYMovement) {
@@ -515,7 +514,7 @@
                                         followMe.x("player", realLeft.substring(0, realLeft.length - 2) - 10, true);
                                     }
                                     else {
-                                        followMe.y("player", realTop.substring(0, realTop.length - 2) - 96, 0, true);//Set the physical here, the other one will just move when an animation ends
+                                        followMe.y("player", realTop.substring(0, realTop.length - 2) - 24, 0, true);//Set the physical here, the other one will just move when an animation ends
                                     }
                                 }
                                 break;
@@ -527,6 +526,7 @@
                             //faceSpriteToDirectionItMoves(iduse, !isReverseDirection)
                             //0=right,1=down,2=left,3=up. Recursively call and loop all values of movement
                             //attributes are for the next animation
+
                             switch (currentState) {
                                 case 0:
                                     faceSpriteToDirectionItMoves(iduse, !isReverseDirection)
@@ -537,11 +537,12 @@
                                     //window.console.log("right")
                                     break;
                                 case 1:
-                                    isYMovement = false;
+                                    isYMovement = object.xend == 0;
                                     isReverseDirection = true;
-                                    currentStateForNextRun = 2;
-                                    newMoveDistance = object.xend;
+                                    currentStateForNextRun = object.xend > 0 ? 2: 3;
+                                    newMoveDistance = object.xend > 0? object.xend: object.yend;
                                     //window.console.log("down")
+                                    if (object.imageName == "normal" && object.yend >0) { window.console.log(currentStateForNextRun) }
                                     break;
                                 case 2:
                                     faceSpriteToDirectionItMoves(iduse, !isReverseDirection)
@@ -552,10 +553,10 @@
                                     //window.console.log("left")
                                     break;
                                 case 3:
-                                    isYMovement = false;
+                                    isYMovement = object.xend == 0;
                                     isReverseDirection = false;
-                                    currentStateForNextRun = 0;
-                                    newMoveDistance = object.xend;
+                                    currentStateForNextRun = object.xend > 0 ? 0: 1;
+                                    newMoveDistance = object.xend > 0? object.xend: object.yend;
                                     //window.console.log("up")
                                     break;
                             }

@@ -28,8 +28,8 @@
                     followMe.players[1].hasSurvived = 0
                 }
             }
-            var startY = (y * 64) - 128
-            var startX = (serveranimation.x * 64)
+            var startY = (y * 16) - 128
+            var startX = (serveranimation.x * 16)
             var theId = "player"
             if (firstplayer) {
                 localStorage.setItem("startX", startX)
@@ -38,7 +38,7 @@
             }
             if (playerObject.online) {
                 $("p#" + playerObject.username + "name").remove();
-                $("<p class='linkNoBorder' style=':" + (startY - 64) + "px;top:" + startX + "px;position:absolute;' id='" + playerObject.username + "name'>" + playerObject.username + "</p>").appendTo($("#game"))
+                $("<p class='linkNoBorder' style=':" + (startY - 16) + "px;top:" + startX + "px;position:absolute;' id='" + playerObject.username + "name'>" + playerObject.username + "</p>").appendTo($("#game"))
 
                 followMe.showOtherPlayer(startX, startY + 32, followMe.players[1].username)
 
@@ -49,10 +49,10 @@
             if (serveranimation.x == 0 && theId == "player" &&
                 localStorage.getItem("multi") == false) { followMe.x(theId, (114)); }
             if (serveranimation.x == 0 && theId == "player2") { followMe.x(theId, (10)); playerId = 2 }
-            else { followMe.x(theId, (serveranimation.x * 64)) };
+            else { followMe.x(theId, (serveranimation.x * 16)) };
             followMe.y(
                 theId,
-                ((y - 1) * 64) - 32,
+                ((y - 1) * 16) - 2,
                 50
             );
 

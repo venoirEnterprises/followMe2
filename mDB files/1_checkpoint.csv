@@ -1,5 +1,5 @@
 type,x,y,widthX,heightY,animate,startFrame,endFrame,checkpoint,newLevel,caveName,inCave,message,spriteY,showMinimumDifficulty,hideMinimumDifficulty,imageName
-checkpoint,12,3,1,2,0,0,1,0,,,0,,0,1,5,normal
-checkpoint,20,2,1,2,1,0,0,-1,2nd,,0,,-1,1,5,finish
-checkpoint,13,13,1,2,0,0,1,1,,,0,,0,1,5,normal
-checkpoint,32,20,1,2,0,0,1,2,,,0,,0,1,5,normal
+checkpoint,9,7,1,2,0,0,1,0,,,0,,0,1,5,normal
+checkpoint,20,6,1,2,1,0,0,-1,2nd,,0,,-1,1,5,finish
+checkpoint,13,17,1,2,0,0,1,1,,,0,,0,1,5,normal
+checkpoint,32,24,1,2,0,0,1,2,,,0,,0,1,5,normal

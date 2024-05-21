@@ -190,7 +190,7 @@ $(document).ready(function () {
                     $("#weapon1").animate({ "top": position - 10 }, rate / 4);
                 }
                 $("#" + divId).css("top", position);
-                $("#" + followMe.players[1].username + "name").css("top", position - 64);
+                $("#" + followMe.players[1].username + "name").css("top", position - 16);
                 $("#weapon1").css("top", position - 10);
             }
 

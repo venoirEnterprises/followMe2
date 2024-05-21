@@ -112,8 +112,8 @@ aside {
     display: block;
     /*border:0px white!important;*/
     border: 0px !important;
-    height: 96px !important;
-    width: 48px !important;
+    height: 24px !important;
+    width: 12px !important;
     margin: 0px !important;
     padding: 0px !important;
     z-index: 99 !important;
@@ -128,26 +128,26 @@ aside {
 }
 
 .head {
-    width: 48px;
-    height: 26px;
+    width: 12px;
+    height: 6.5px;
 }
 
 .torso {
-    top: 26px;
-    width: 48px;
-    height: 37px;
+    top: 6.5px;
+    width: 12px;
+    height: 9.25px;
 }
 
 .legs {
-    top: 63px;
-    width: 48px;
-    height: 33px;
+    top: 15.75px;
+    width: 12px;
+    height: 8.25px;
 }
 
 .weapon {
     top: 50%;
-    width: 96px;
-    height: 48px;
+    width: 24px;
+    height: 12px;
 }
 
 fieldset {
